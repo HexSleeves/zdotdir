@@ -23,12 +23,10 @@ path=(
   # emacs
   $HOME/.emacs.d/bin(N)
   $XDG_CONFIG_HOME/emacs/bin(N)
-
-  # keg only brew apps
-  $HOMEBREW_PREFIX/opt/curl/bin(N)
-  $HOMEBREW_PREFIX/opt/go/libexec/bin(N)
-  $HOMEBREW_PREFIX/share/npm/bin(N)
-  $HOMEBREW_PREFIX/opt/ruby/bin(N)
-  $HOMEBREW_PREFIX/lib/ruby/gems/*/bin(N)
-  $HOME/.gem/ruby/*/bin(N)
 )
+
+# Keep these arrays unique to avoid bloating PATH/FPATH on repeated loads.
+typeset -U path fpath cdpath
+
+# Keep completion dumps in cache, not $HOME.
+ZSH_COMPDUMP=${ZSH_COMPDUMP:-$ZSH_CACHE_DIR/.zcompdump}

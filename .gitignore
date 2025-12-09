@@ -17,6 +17,8 @@
 *.bak
 *.local
 *.local.zsh
+conf.d/ai-providers.local.zsh
+conf.d/aws.local.zsh
 *.zwc
 *.zwc.old
 .zplugins.zsh

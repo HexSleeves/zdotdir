@@ -1,4 +1,4 @@
-(( $+functions[history-substring-search-up] )) || return 1
+(($ + functions[history - substring - search - up])) || return 1
 
 # zstyle -s ':prezto:module:history-substring-search:color' found \
 #   'HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND' \

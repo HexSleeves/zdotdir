@@ -30,6 +30,3 @@ export XDG_PROJECTS_DIR=${XDG_PROJECTS_DIR:-$HOME/Projects}
 if [[ "$OSTYPE" == darwin* ]]; then
   export SHELL_SESSIONS_DISABLE=1
 fi
-
-export PATH="/Users/jacob.lecoq.ext/.cache/.bun/bin:$PATH"
-eval "$(mise activate zsh)"

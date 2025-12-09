@@ -15,6 +15,10 @@ I like my Zsh to behave like [Fish][fish], so there's a lot of features that wil
 - A conf.d directory so that .zshrc isn't a cluttered mess
 - My custom plugins in a separate `$ZSH_CUSTOM` project similar to how OMZ works
 
+### Enabling optional plugins
+
+Set `ZSH_ENABLE_<NAME>=0` before Zsh starts to disable a module. Available toggles: `MISE`, `NVM`, `BUN`, `FZF`, `AWS`, `AI_PROVIDERS`. Secrets live in `conf.d/*.local.zsh` (ignored by git); copy from the provided `.example` files and add your keys locally.
+
 ## Installation
 
 Since this is my personal `$ZDOTDIR`, this installation procedure is mostly for my personal use.
