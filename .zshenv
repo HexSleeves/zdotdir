@@ -30,3 +30,4 @@ export XDG_PROJECTS_DIR=${XDG_PROJECTS_DIR:-$HOME/Projects}
 if [[ "$OSTYPE" == darwin* ]]; then
   export SHELL_SESSIONS_DISABLE=1
 fi
+. "/Users/jacob.lecoq.ext/.local/share/cargo/env"
