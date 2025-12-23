@@ -76,12 +76,9 @@ mattmc3/zman
 mattmc3/zephyr path:plugins/macos conditional:is-macos
 
 #
-# Final - defer loading for faster startup
+# Final - zsh-defer for lazy loading heavy plugins
 #
 
 romkatv/zsh-defer
-zdharma-continuum/fast-syntax-highlighting
-zsh-users/zsh-autosuggestions
-zsh-users/zsh-history-substring-search
 
 # vi: ft=properties

@@ -46,7 +46,6 @@ for _rc in $ZDOTDIR/conf.d/*.zsh; do
   # ignore files that begin with ~
   [[ "${_rc:t}" != '~'* ]] || continue
   [[ "${IGNORE_LIST[(I)${_rc:t}]}" -eq 0 ]] || continue
-
   source "$_rc"
 done
 unset _rc
