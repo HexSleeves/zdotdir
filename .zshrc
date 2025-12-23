@@ -3,10 +3,11 @@
 # .zshrc - Zsh file loaded on interactive shell sessions.
 #
 
+export ZSH_ENABLE_NVM=0
+
 # Profiling
 [[ "$ZPROFRC" -ne 1 ]] || zmodload zsh/zprof
 alias zprofrc="ZPROFRC=1 zsh"
-
 
 # Set Zsh location vars.
 ZSH_CONFIG_DIR="${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}"
@@ -33,10 +34,19 @@ unset _fndir
 # Create an amazing Zsh config using antidote plugins.
 source $ZSH_CONFIG_DIR/lib/antidote.zsh
 
+IGNORE_LIST=(
+  dotnet.zsh
+  jupyter.zsh
+  nim.zsh
+  nvm.zsh
+)
+
 # Source conf.d.
 for _rc in $ZDOTDIR/conf.d/*.zsh; do
   # ignore files that begin with ~
   [[ "${_rc:t}" != '~'* ]] || continue
+  [[ "${IGNORE_LIST[(I)${_rc:t}]}" -eq 0 ]] || continue
+
   source "$_rc"
 done
 unset _rc

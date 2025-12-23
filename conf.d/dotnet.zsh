@@ -9,8 +9,8 @@ fi
 # nuget
 export NUGET_PACKAGES="${NUGET_PACKAGES:-$XDG_CACHE_HOME/NuGetPackages}"
 
-_dotnet_zsh_complete()
-{
+# Defer completion setup until after compinit runs
+_dotnet_zsh_complete() {
   local completions=("$(dotnet complete "$words")")
 
   # If the completion list is empty, just continue with filename selection
@@ -24,4 +24,10 @@ _dotnet_zsh_complete()
   _values = "${(ps:\n:)completions}"
 }
 
-compdef _dotnet_zsh_complete dotnet
+# Register completion after compinit (using add-zsh-hook if available)
+if (( $+functions[add-zsh-hook] )); then
+  add-zsh-hook -Uz zshdelete '_dotnethookcleanup' 2>/dev/null || true
+fi
+
+autoload -Uz +X compinit && compinit -C -d "${ZSH_COMPDUMP}"
+compdef _dotnet_zsh_complete dotnet 2>/dev/null || true

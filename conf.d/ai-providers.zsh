@@ -23,3 +23,6 @@ if [[ -f "$AI_PROVIDERS_FILE" ]]; then
   source "$AI_PROVIDERS_FILE"
   unsetopt allexport
 fi
+
+# opencode
+export PATH=/Users/jacob.lecoq.ext/.opencode/bin:$PATH

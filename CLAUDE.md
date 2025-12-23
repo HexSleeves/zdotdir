@@ -4,98 +4,139 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This is a personal zsh configuration directory (`$ZDOTDIR`) designed to provide Fish-like behavior in zsh. The configuration is modular and organized with a plugin-based architecture.
+This is a personal zsh configuration directory (`$ZDOTDIR`) forked from [mattmc3/zdotdir](https://github.com/mattmc3/zdotdir), designed to provide Fish-like behavior in zsh. The configuration uses Antidote for plugin management and a modular `conf.d/` architecture.
 
-## Directory Structure & Architecture
+## Architecture
 
-### Core Directories
+### Core Initialization Files
 
-- **`conf.d/`** - Configuration initialization files loaded before plugins
-- **`custom/`** - Custom plugins, aliases, functions, and themes (Oh-My-Zsh compatible)
-- **`functions/`** - Custom shell functions (auto-loaded)
+- **`.zshenv`** - Loaded first; sets `ZDOTDIR` and XDG base directories
+- **`.zshrc`** - Loaded for interactive shells; initializes Antidote, loads `conf.d/`, sets up functions and completions
+- **`.zstyles`** - Centralized `zstyle` configuration for Antidote, Zephyr, and editor plugins
 
-### Plugin System
+### Plugin Management
 
-The configuration uses a custom plugin system that's Oh-My-Zsh compatible:
+The configuration uses **Antidote** (`lib/antidote.zsh`) for plugin management:
+- Plugins are statically defined in `lib/antidote.zsh` via `antidote load`
+- Bundled plugins are cached in `$XDG_CACHE_HOME/repos`
+- Auto-compilation is enabled for fast loading
 
-1. **Plugin Loading**: Plugins are stored in `custom/plugins/` and loaded via zstyle configuration
-2. **Plugin Structure**: Each plugin has a `.plugin.zsh` file and marks itself as loaded with `zstyle ':zsh_custom:plugin:PLUGINNAME' loaded 'yes'`
-3. **External Repos**: External repositories are managed via the `repo` command using `custom/repos.txt`
+### Directory Structure
 
-### Key Architecture Components
+- **`conf.d/`** - Modular configuration files loaded alphabetically (files starting with `~` are skipped)
+- **`functions/`** - Autoloaded shell functions (each file = one function, use `##?` for help comments)
+- **`lib/`** - Supporting libraries (zsh-hooks, wezterm integration, zsh-no-ps2)
+- **`completions/`** - Custom completion definitions
+- **`.docs/`** - Zsh reference documentation and cheat sheets
 
-- **`custom/lib/__init__.zsh`** - Core initialization, XDG directory setup, plugin management functions
-- **`conf.d/__init__.zsh`** - Early initialization, PATH/CDPATH setup, environment variables
-- **`custom/repos.txt`** - External repository manifest for dependency management
-- **Plugin Extensions** - Editor plugin supports extensions in `extensions/` subdirectory
+### Optional Modules
+
+Modules can be disabled by setting `ZSH_ENABLE_<NAME>=0` before shell starts:
+- `ZSH_ENABLE_MISE` - mise version manager (`conf.d/mise.zsh`)
+- `ZSH_ENABLE_NVM` - Node Version Manager (`conf.d/~nvm.zsh`)
+- `ZSH_ENABLE_BUN` - Bun JavaScript runtime (`conf.d/bun.zsh`)
+- `ZSH_ENABLE_FZF` - fzf fuzzy finder (`conf.d/fzf.zsh`)
+- `ZSH_ENABLE_AWS` - AWS CLI (`conf.d/aws.zsh`)
+- `ZSH_ENABLE_AI_PROVIDERS` - AI API keys (`conf.d/ai-providers.zsh`)
+
+### Local Configuration Pattern
+
+Secrets and machine-specific settings belong in `conf.d/*.local.zsh` files (git-ignored):
+- Copy from `.example` files: `aws.local.zsh.example`, `ai-providers.local.zsh.example`
+- These files are sourced automatically with `allexport` option
+
+### Editor Configuration
+
+Vi keybindings are enabled by default (`.zstyles`):
+```zsh
+zstyle ':zsh_custom:plugin:editor' key-bindings 'vi'
+```
+Custom extensions are enabled via:
+```zsh
+zstyle ':zsh_custom:plugin:editor:*' 'enabled' 'yes'
+```
+
+### Prompt System
+
+Uses Powerlevel10k with instant prompt:
+- Configured in `conf.d/prompt.zsh`
+- Theme config in `.p10k.zsh`
+- Instant prompt enabled for fast shell startup
+
+### History Configuration
+
+- Location: `$ZSH_DATA_DIR/.zsh_history` (XDG-compliant)
+- Large history: `HISTSIZE=20000`, `SAVEHIST=20000`
+- Settings: `INC_APPEND_HISTORY_TIME`, `EXTENDED_HISTORY`, `SHARE_HISTORY`, etc.
+
+### History Substring Search
+
+Custom key bindings in `conf.d/zsh-history-substring-search.zsh`:
+- Vi mode: `k` (up), `j` (down)
+- Emacs mode: `^P` (up), `^N` (down)
+- Both modes: arrow keys
 
 ## Common Development Tasks
 
-### Testing Performance
+### Performance Testing
+
 ```zsh
-# Benchmark shell startup time
+# Benchmark with zsh-bench (external tool)
 zsh-bench
 
-# Simple exit timing test  
-zbench
+# Simple exit timing
+zbench  # alias for: for i in {1..10}; do /usr/bin/time zsh -lic exit; done
+
+# Profile startup
+zprofrc  # runs ZPROFRC=1 zsh
 ```
 
-### Managing External Dependencies
-```zsh
-# Install/update external repos from repos.txt
-repo in <custom/repos.txt
-```
+### Managing Functions
 
-### Plugin Development
-
-When creating new plugins:
-1. Create directory in `custom/plugins/PLUGINNAME/`
-2. Create `PLUGINNAME.plugin.zsh` file
-3. End plugin with: `zstyle ':zsh_custom:plugin:PLUGINNAME' loaded 'yes'`
-4. Use conditional loading: `if ! zstyle -t ':zsh_custom:plugin:PLUGINNAME:feature' skip; then`
-
-### Function Management
-
-Functions are auto-loaded from the `functions/` directory. Each function should:
-- Be in its own file named after the function
-- Include `##?` comments for help text
+Functions are autoloaded from `functions/`:
+- One function per file, named after the function
+- Use `##?` comments for help text
 - Use `emulate -L zsh; setopt local_options` for proper scoping
 
-## Configuration Patterns
+### Adding Configuration
 
-### Zstyle Configuration System
-The configuration uses zstyle extensively for feature toggling:
+Add new files to `conf.d/`:
+- Prefix with `~` to disable (e.g., `~module.zsh`)
+- Use `ZSH_ENABLE_<NAME>` pattern for optional modules
+- Follow existing patterns for conditional loading
+
+### Cleaning Compiled Files
+
 ```zsh
-# Check if feature should be skipped
-if ! zstyle -t ':zsh_custom:plugin:git:alias' skip; then
-  # Define aliases
-fi
+# Remove zwc files
+rmzwc
 
-# Enable/disable editor extensions
-zstyle ':zsh_custom:plugin:editor:EXTENSION' enabled yes
+# Dry run
+rmzwc --dry-run
+
+# Compile a directory
+zcompiledir /path/to/dir
+zcompiledir -c /path/to/dir  # clean only
 ```
 
-### XDG Base Directory Compliance
-All configurations follow XDG standards:
+## XDG Base Directory Compliance
+
+All paths follow XDG standards:
 - `XDG_CONFIG_HOME` (default: `~/.config`)
-- `XDG_CACHE_HOME` (default: `~/.cache`) 
+- `XDG_CACHE_HOME` (default: `~/.cache`)
 - `XDG_DATA_HOME` (default: `~/.local/share`)
 - `XDG_STATE_HOME` (default: `~/.local/state`)
+- `XDG_PROJECTS_DIR` (default: `~/Projects`)
 
-### Cached Evaluation
-Use `cached-eval` function for expensive command outputs that don't change frequently (caches for 20 hours).
+## Helper Variables
 
-## Key Files to Understand
+- `$ZSH_CONFIG_DIR` - `$ZDOTDIR` (defaults to `~/.config/zsh`)
+- `$ZSH_DATA_DIR` - `$XDG_DATA_HOME/zsh`
+- `$ZSH_CACHE_DIR` - `$XDG_CACHE_HOME/zsh`
 
-- **`custom/myaliases.zsh`** - Personal aliases and shortcuts
-- **`custom/myfuncs.zsh`** - Custom utility functions
-- **`custom/plugins/git/git.plugin.zsh`** - Git aliases and completion setup
-- **`custom/plugins/editor/editor.plugin.zsh`** - Line editor configuration with keymap management
+## Key Aliases
 
-## Development Notes
-
-- Plugins mark themselves as loaded using zstyle for tracking
-- Use `is-callable`, `is-true`, `is-macos` helper functions for conditionals
-- The `repo` command manages external dependencies from GitHub
-- Performance is regularly monitored with `zsh-bench`
-- Configuration supports both emacs and vi key bindings via editor plugin
+- `zshrc` - Edit `.zshrc` in `$EDITOR`
+- `nv` - Neovim shortcut
+- `g` - Git shortcut
+- `cls` - Clear screen with scrollback clear
