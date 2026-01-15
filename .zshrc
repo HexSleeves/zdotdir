@@ -57,5 +57,9 @@ unset _rc
 [[ "$ZPROFRC" -eq 1 ]] && zprof
 [[ -v ZPROFRC ]] && unset ZPROFRC
 
+. "$HOME/.local/share/../bin/env"
+
 # Always return success
 true
+
+

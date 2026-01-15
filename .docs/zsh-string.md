@@ -5,6 +5,7 @@ Fish has a utility for [string maniplulation][string].
 This is how you can do the same things with vanilla Zsh.
 
 References:
+
 - [Zsh regex][3]
 - [String modifiers][1]
 - [String expansion][2]
@@ -213,16 +214,13 @@ Collect, replace, trim.
 [1]: https://zsh.sourceforge.io/Doc/Release/Expansion.html#Modifiers
 [2]: https://zsh.sourceforge.io/Doc/Release/Expansion.html#Parameter-Expansion-Flags
 [3]: https://zsh.sourceforge.io/Doc/Release/Zsh-Modules.html#The-zsh_002fpcre-Module
-[collect]: https://fishshell.com/docs/current/cmds/string-collect.html
 [escape]: https://fishshell.com/docs/current/cmds/string-escape.html
 [join]: https://fishshell.com/docs/current/cmds/string-join.html
 [join0]: https://fishshell.com/docs/current/cmds/string-join0.html
 [length]: https://fishshell.com/docs/current/cmds/string-length.html
 [lower]: https://fishshell.com/docs/current/cmds/string-lower.html
-[match]: https://fishshell.com/docs/current/cmds/string-match.html
 [pad]: https://fishshell.com/docs/current/cmds/string-pad.html
 [repeat]: https://fishshell.com/docs/current/cmds/string-repeat.html
-[replace]: https://fishshell.com/docs/current/cmds/string-replace.html
 [split]: https://fishshell.com/docs/current/cmds/string-split.html
 [split0]: https://fishshell.com/docs/current/cmds/string-split0.html
 [string]: https://fishshell.com/docs/current/cmds/string.html

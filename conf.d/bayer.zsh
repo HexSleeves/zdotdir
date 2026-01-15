@@ -1,9 +1,3 @@
-# NVM is now lazy-loaded via conf.d/~nvm.zsh for instant shell startup
-# The following direct loading has been removed to enable lazy loading:
-# export NVM_DIR="$HOME/.nvm"
-# [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
-# [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
-
 export PATH="$HOME/.local/bin:$PATH"
 export VAULT_ADDR='https://vault.agro.services'
 

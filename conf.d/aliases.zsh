@@ -11,20 +11,23 @@
 
 # single character shortcuts - be sparing!
 alias _=sudo
-alias l=ls
 alias g=git
 
 # mask built-ins with better defaults
-alias ping='ping -c 5'
+# Note: modern tool replacements are in modern-tools.zsh
+# ping is replaced by gping in modern-tools.zsh
 alias vi=vim
 alias nv=nvim
-alias grep="${aliases[grep]:-grep} --exclude-dir={.git,.vscode}"
 
-# more ways to ls
-alias ll='ls -lh'
-alias la='ls -lAh'
-alias lsa="ls -aG"
-alias ldot='ls -ld .*'
+# ls aliases are handled by eza in modern-tools.zsh
+# Keeping these as fallbacks if eza is not available
+if ! command -v eza &>/dev/null; then
+  alias l=ls
+  alias ll='ls -lh'
+  alias la='ls -lAh'
+  alias lsa="ls -aG"
+  alias ldot='ls -ld .*'
+fi
 
 # fix typos
 alias get=git
@@ -43,15 +46,18 @@ alias isodate="date +%Y-%m-%dT%H:%M:%S%z"
 alias utc="date -u +%Y-%m-%dT%H:%M:%SZ"
 alias unixepoch="date +%s"
 
-# find
+# find - fd tool handles this in modern-tools.zsh
 # alias fd='find . -type d -name'
 # alias ff='find . -type f -name'
 
-# disk usage
-alias biggest='du -s ./* | sort -nr | awk '\''{print $2}'\'' | xargs du -sh'
-alias dux='du -x --max-depth=1 | sort -n'
-alias dud='du -d 1 -h'
-alias duf='du -sh *'
+# disk usage - dust/duf tools handle this in modern-tools.zsh
+# Keeping these as fallbacks if modern tools are not available
+if ! command -v dust &>/dev/null; then
+  alias biggest='du -s ./* | sort -nr | awk '\''{print $2}'\'' | xargs du -sh'
+  alias dux='du -x --max-depth=1 | sort -n'
+  alias dud='du -d 1 -h'
+  alias duf='du -sh *'
+fi
 
 # url encode/decode
 alias urldecode='python3 -c "import sys, urllib.parse as ul; \

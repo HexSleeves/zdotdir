@@ -90,7 +90,7 @@ function zparseopts_demo() {
 }
 ```
 
-## Here are some examples of the manual parsing function in action...
+## Here are some examples of the manual parsing function in action
 
 Call with no args
 
@@ -137,7 +137,7 @@ optparsing_demo: Unknown option '-vh'
 
 ---
 
-## Here are some examples of the zparseopt version in action...
+## Here are some examples of the zparseopt version in action
 
 Call with no args
 
