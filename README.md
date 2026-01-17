@@ -1,166 +1,103 @@
-# zdotdir
+# Zsh Configuration (`$ZDOTDIR`)
 
-My `$ZDOTDIR` [dotfiles] directory, which contains my zsh configuration.
+A modular, performance-oriented Zsh configuration designed to provide a "Fish-like" user experience. It uses **Antidote** as the primary plugin manager and adheres to XDG Base Directory standards.
 
-## My Terminal
+## Overview
 
-![My Terminal][zdotdir_gif]
-
-## My setup
-
-I like my Zsh to behave like [Fish][fish], so there's a lot of features that will be very familiar to other Fish users. I also like the basic plugin structure of [Oh-My-Zsh][oh-my-zsh], even if I'm not as big of a fan of OMZ itself. My Zsh has things like:
-
-- A functions directory for my custom functions
-- A completions directory for my custom completions
-- A conf.d directory so that .zshrc isn't a cluttered mess
-- My custom plugins in a separate `$ZSH_CUSTOM` project similar to how OMZ works
-
-### Enabling optional plugins
-
-Set `ZSH_ENABLE_<NAME>=0` before Zsh starts to disable a module. Available toggles: `MISE`, `NVM`, `BUN`, `FZF`, `AWS`, `AI_PROVIDERS`. Secrets live in `conf.d/*.local.zsh` (ignored by git); copy from the provided `.example` files and add your keys locally.
+This configuration is built with three core goals:
+1.  **Performance**: Fast startup times using lazy-loading and compiled modules.
+2.  **Modularity**: Configuration is split into topic-specific files in `conf.d/`.
+3.  **Modernity**: Prefers modern Rust-based CLI tools (e.g., `eza`, `bat`, `ripgrep`) over legacy Unix commands.
 
 ## Installation
 
-Since this is my personal `$ZDOTDIR`, this installation procedure is mostly for my personal use.
+### Prerequisites
+- Zsh
+- Git
+- [Nerd Fonts](https://www.nerdfonts.com/) (recommended for prompt and icons)
 
-It's a good idea to backup existing files first:
+### Setup
+1.  Clone the repository to your preferred location (typically `~/.config/zsh`):
+    ```zsh
+    export ZDOTDIR=~/.config/zsh
+    git clone --recursive git@github.com:mattmc3/zdotdir.git $ZDOTDIR
+    ```
 
+2.  Point your shell to this directory by adding this to `~/.zshenv`:
+    ```zsh
+    echo 'export ZDOTDIR=~/.config/zsh' >> ~/.zshenv
+    echo '[[ -f $ZDOTDIR/.zshenv ]] && . $ZDOTDIR/.zshenv' >> ~/.zshenv
+    ```
+
+3.  Restart your shell or run `exec zsh`.
+
+## Architecture
+
+The configuration loading order is orchestrated by `.zshrc`:
+
+1.  **`.zshenv`**: Sets environment variables and XDG base directories.
+2.  **`.zshrc`**: Initializes the shell, loads Antidote, and sources modules.
+3.  **`conf.d/__init__.zsh`**: Sets up core paths and options.
+4.  **`lib/antidote.zsh`**: Loads plugins defined in `.zsh_plugins.txt`.
+5.  **`conf.d/*.zsh`**: Loads remaining configuration modules alphabetically.
+
+### Directory Structure
+- **`conf.d/`**: Modular configuration files (aliases, language setups, tool integrations).
+- **`functions/`**: Autoloaded Zsh functions. File names match function names.
+- **`lib/`**: Core libraries and helper scripts.
+- **`bin/`**: Custom executable scripts.
+- **`custom/`**: Local overrides and plugins (Oh-My-Zsh compatible structure).
+
+## Configuration
+
+### Enabling/Disabling Modules
+Modules in `conf.d/` can be selectively enabled or disabled using environment variables in `.zshenv` or before `zsh` starts.
+
+Common feature toggles:
+- `ZSH_ENABLE_MISE`: Enable [mise](https://mise.jdx.dev) version manager.
+- `ZSH_ENABLE_NVM`: Enable Node Version Manager.
+- `ZSH_ENABLE_BUN`: Enable Bun runtime.
+- `ZSH_ENABLE_FZF`: Enable fzf integration.
+- `ZSH_ENABLE_AWS`: Enable AWS CLI completions and helpers.
+- `ZSH_ENABLE_AI_PROVIDERS`: Enable AI API configurations.
+
+### Local Customization
+**Do not modify tracked files for local secrets.** Instead, use the `*.local.zsh` pattern in `conf.d/`. These files are ignored by git.
+
+Example: To add AWS keys, copy the example and edit:
 ```zsh
-setopt extended_glob
-zfiles=(
-  ${ZDOTDIR:-~}/.zsh*(.N)
-  ${ZDOTDIR:-~}/.zlog*(.N)
-  ${ZDOTDIR:-~}/.zprofile(.N)
-)
-mkdir -p ~/.bak
-for zfile in $zfiles; do
-  cp $zfile ~/.bak
-done
-unset zfile zfiles
+cp conf.d/aws.local.zsh.example conf.d/aws.local.zsh
+# Edit conf.d/aws.local.zsh with your secrets
 ```
 
-Install this dotfiles repo to your `$ZDOTDIR`:
+### Modern Tools (`modern-tools.zsh`)
+If installed, modern replacements are automatically aliased:
+- `ls` -> `eza`
+- `cat` -> `bat`
+- `grep` -> `rg`
+- `find` -> `fd`
+- `cd` -> `zoxide` (via `z` alias)
+- `du` -> `dust`
+- `df` -> `duf`
 
-```zsh
-# set the amazing ZDOTDIR variable
-export ZDOTDIR=~/.config/zsh
+## Utilities
 
-# clone this repo
-git clone --recursive git@github.com:mattmc3/zdotdir.git $ZDOTDIR
+### Included Scripts (`bin/`)
+- **`repo`**: A lightweight git repository manager.
+    - `repo in < list.txt`: Install repositories from a list.
+    - `repo up`: Update all repositories in `$XDG_CACHE_HOME/repos`.
+    - `repo ls`: List managed repositories.
+- **`prj`**: A project jumper to quickly navigate between projects.
 
-# change the root .zshenv file to use ZDOTDIR
-cat << 'EOF' >| ~/.zshenv
-export ZDOTDIR=~/.config/zsh
-[[ -f $ZDOTDIR/.zshenv ]] && . $ZDOTDIR/.zshenv
-EOF
+### Autoloaded Functions (`functions/`)
+- **`clone <user>/<repo>`**: Smart wrapper for `git clone` that organizes projects into `$XDG_PROJECTS_DIR`.
+- **`cdpr`**: `cd` to the Project Root of the current git repository.
 
-# load zsh
-zsh
-```
+## Key Bindings
+- **Vi Mode**: Enabled by default.
+- **History Search**:
+    - `Up`/`Down`: Fuzzy search history based on current command line prefix.
+    - `k`/`j` (in normal mode): Same as above.
 
-## Performance
-
-A snappy shell is very important. I regularly run [zsh-bench](https://github.com/romkatv/zsh-bench) to make sure my shell feels snappy.
-
-The latest benchmark run shows that we load a new shell pretty fast.
-
-```zsh
-% # MacBook Air (M3, 2024): starship prompt
-% zsh-bench
-==> benchmarking login shell of user matt ...
-creates_tty=0
-has_compsys=1
-has_syntax_highlighting=1
-has_autosuggestions=1
-has_git_prompt=1
-first_prompt_lag_ms=130.800
-first_command_lag_ms=139.313
-command_lag_ms=126.693
-input_lag_ms=11.314
-exit_time_ms=65.501
-
-% # MacBook Air (M3, 2024): p10k prompt
-==> benchmarking login shell of user matt ...
-creates_tty=0
-has_compsys=1
-has_syntax_highlighting=1
-has_autosuggestions=1
-has_git_prompt=1
-first_prompt_lag_ms=13.365
-first_command_lag_ms=125.555
-command_lag_ms=47.757
-input_lag_ms=8.953
-exit_time_ms=70.038
-```
-
-If you prefer a naive, completely meaningless Zsh 'exit' benchmark, I include that too for legacy reasons.
-
-```zsh
-% # MacBook Air (M3, 2024)
-% for i in {1..10}; do; /usr/bin/time zsh -lic exit; done
-        0.09 real         0.03 user         0.02 sys
-        0.07 real         0.02 user         0.01 sys
-        0.06 real         0.02 user         0.01 sys
-        0.07 real         0.02 user         0.01 sys
-        0.07 real         0.02 user         0.01 sys
-        0.06 real         0.02 user         0.01 sys
-        0.07 real         0.02 user         0.01 sys
-        0.07 real         0.02 user         0.01 sys
-        0.06 real         0.02 user         0.01 sys
-        0.07 real         0.02 user         0.01 sys
-```
-
-## Look-and-feel
-
-### Fonts
-
-Install [nerd fonts][nerd-fonts] via homebrew:
-
-```zsh
-brew tap homebrew/cask-fonts
-brew install --cask font-meslo-lg-nerd-font
-brew install --cask font-fira-code-nerd-font
-brew install --cask font-hack-nerd-font
-brew install --cask font-inconsolata-nerd-font
-brew install --cask font-sauce-code-pro-nerd-font
-```
-
-### Color schemes
-
-iTerm2 has some awesome [color schemes][iterm2-colors]. You can use them for more than
-just iTerm2.
-
-I use Space Gray:
-
-<p align="center">
-  <img alt="space gray" src="https://github.com/mbadolato/iTerm2-Color-Schemes/blob/master/screenshots/space_gray.png?raw=true"/>
-</p>
-
-## Resources
-
-- [fish][fish]
-- [antidote][antidote]
-- [zephyr][zephyr]
-- [zshzoo][zshzoo]
-- [zsh_unplugged][zsh_unplugged]
-- [prezto][prezto]
-- [oh-my-zsh][oh-my-zsh]
-- [supercharge your terminal with zsh][supercharge-zsh]
-- [awesome zsh][awesome-zsh-plugins]
-
-[antidote]: https://github.com/mattmc3/antidote
-[awesome-zsh-plugins]: https://github.com/unixorn/awesome-zsh-plugins
-[fish]: https://fishshell.com
-[dotfiles]: https://dotfiles.github.io/
-[homebrew]: https://brew.sh
-[iterm2-colors]: https://github.com/mbadolato/iTerm2-Color-Schemes
-[nerd-fonts]: https://github.com/ryanoasis/nerd-fonts
-[oh-my-zsh]: https://github.com/ohmyzsh/ohmyzsh
-[prezto]: https://github.com/sorin-ionescu/prezto
-[starship-toml]: https://github.com/mattmc3/zdotdir/blob/main/prompt/starship.toml
-[starship]: https://starship.rs
-[supercharge-zsh]: https://blog.callstack.io/supercharge-your-terminal-with-zsh-8b369d689770
-[zdotdir_gif]: https://raw.githubusercontent.com/mattmc3/zdotdir/resources/img/zdotdir.gif
-[zephyr]: https://github.com/zshzoo/zephyr
-[zsh_unplugged]: https://github.com/mattmc3/zsh_unplugged
-[zshzoo]: https://github.com/zshzoo/zshzoo
+## Documentation
+For more detailed information, check the `.docs/` directory or the comments within specific `conf.d/` files.

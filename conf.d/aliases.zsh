@@ -82,3 +82,8 @@ alias todos="$VISUAL $HOME/Desktop/todo.txt"
 
 # auto-orient images based on exif tags
 alias autorotate="jhead -autorot"
+
+# process search with auto-filtering of rg itself
+pps() {
+  ps aux | rg "$@" | rg -v rg
+}
