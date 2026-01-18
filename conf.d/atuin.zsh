@@ -21,7 +21,7 @@ if command -v atuin &>/dev/null; then
   alias hstats='atuin stats'
 
   # Quick import of existing history (run once)
-  if [[ ! -f ~/.local/share/atuin/history.db ]]; then
+  if [[ ! -f $HOME/.local/share/atuin/history.db ]]; then
     print -P "%F{yellow}Atuin history database not found. Run 'atuin import auto' to import existing history.%f"
   fi
 fi

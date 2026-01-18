@@ -41,7 +41,7 @@ IGNORE_LIST=(
   nvm.zsh
 )
 
-# Source conf.d.
+# Source conf.d.zsh
 for _rc in $ZDOTDIR/conf.d/*.zsh; do
   # ignore files that begin with ~
   [[ "${_rc:t}" != '~'* ]] || continue
@@ -61,5 +61,3 @@ unset _rc
 
 # Always return success
 true
-
-

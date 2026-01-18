@@ -134,7 +134,7 @@ if command -v fzf &>/dev/null; then
   # SSH host selector
   fzf-ssh() {
     local host
-    host=$(grep -E '^Host ' ~/.ssh/config 2>/dev/null |
+    host=$(grep -E '^Host ' $HOME/.ssh/config 2>/dev/null |
       grep -v '*' |
       awk '{print $2}' |
       fzf --exit-0)
