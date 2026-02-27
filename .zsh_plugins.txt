@@ -6,9 +6,15 @@
 # Init
 #
 
-mattmc3/zephyr path:plugins/history
 mattmc3/zephyr path:plugins/environment
 mattmc3/zephyr path:plugins/homebrew conditional:is-macos
+
+#
+# History
+#
+
+mattmc3/zephyr path:plugins/history
+larkery/zsh-histdb pre:init_histdb
 
 #
 # Completions
@@ -31,10 +37,10 @@ $ZDOTDIR/lib/zsh-no-ps2.zsh
 # Prompts
 #
 
-sindresorhus/pure kind:fpath
-# romkatv/powerlevel10k kind:fpath
+# sindresorhus/pure kind:fpath
 # miekg/lean kind:fpath
-mattmc3/zephyr path:plugins/prompt
+# mattmc3/zephyr path:plugins/prompt
+romkatv/powerlevel10k
 
 #
 # Clipboard
