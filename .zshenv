@@ -31,4 +31,7 @@ export XDG_WORK_DIR=${XDG_WORK_DIR:-$HOME/Work}
 if [[ "$OSTYPE" == darwin* ]]; then
   export SHELL_SESSIONS_DISABLE=1
 fi
-. "/Users/lecoqjacob/.local/share/cargo/env"
+if [[ -d "$HOME/.cargo/bin" ]]; then
+  typeset -gU PATH path
+  path=("$HOME/.cargo/bin" $path)
+fi

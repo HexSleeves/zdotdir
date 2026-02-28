@@ -35,7 +35,6 @@ unset _fndir
 source $ZSH_CONFIG_DIR/lib/antidote.zsh
 
 IGNORE_LIST=(
-  dotnet.zsh
   jupyter.zsh
   nim.zsh
   nvm.zsh
@@ -67,4 +66,10 @@ true
 # opencode
 export PATH=/Users/lecoqjacob/.opencode/bin:$PATH
 
-source /Users/lecoqjacob/.config/broot/launcher/bash/br
+if [[ -r /Users/lecoqjacob/.config/broot/launcher/bash/br ]]; then
+  br() {
+    unfunction br
+    source /Users/lecoqjacob/.config/broot/launcher/bash/br
+    br "$@"
+  }
+fi

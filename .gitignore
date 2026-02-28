@@ -19,6 +19,7 @@
 *.local.zsh
 conf.d/ai-providers.local.zsh
 conf.d/aws.local.zsh
+conf.d/solace.local.zsh
 *.zwc
 *.zwc.old
 .zplugins.zsh

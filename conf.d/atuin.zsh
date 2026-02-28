@@ -3,6 +3,8 @@
 # atuin.zsh - Atuin shell history configuration
 #
 
+[[ -o interactive ]] || return
+
 # Initialize atuin if available
 if command -v atuin &>/dev/null; then
   # Initialize atuin

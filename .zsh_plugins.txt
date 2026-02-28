@@ -40,7 +40,7 @@ $ZDOTDIR/lib/zsh-no-ps2.zsh
 # sindresorhus/pure kind:fpath
 # miekg/lean kind:fpath
 # mattmc3/zephyr path:plugins/prompt
-romkatv/powerlevel10k
+romkatv/powerlevel10k path:powerlevel10k.zsh-theme
 
 #
 # Clipboard

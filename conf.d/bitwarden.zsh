@@ -209,9 +209,5 @@ bw-init() {
     fi
 }
 
-# Auto-initialize on shell startup (silent, deferred to avoid blocking)
-if (( $+functions[zsh-defer] )); then
-  zsh-defer bw-init 2>/dev/null
-else
-  bw-init 2>/dev/null
-fi
+# Skip automatic startup initialization to keep shell launch fast.
+# Run `bw-init` manually (or call `bw-status`/`bw-login`) when needed.

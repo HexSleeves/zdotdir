@@ -10,7 +10,9 @@ case "${TERM_PROGRAM:l}" in
   vscode)
     # https://code.visualstudio.com/docs/terminal/shell-integration
     MY_HISTFILE=${HISTFILE:-${XDG_DATA_HOME:-$HOME/.local/share}/zsh/zsh_history}
-    source "$(code --locate-shell-integration-path zsh)"
+    if command -v code &>/dev/null; then
+      source "$(code --locate-shell-integration-path zsh)"
+    fi
     HISTFILE=$MY_HISTFILE
     #unset MY_HISTFILE
     ;;

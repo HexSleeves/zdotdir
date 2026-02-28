@@ -103,15 +103,13 @@ recompile-zsh() {
   done
 } &!
 
-# Faster keyboard repeat rate (macOS only)
-if [[ "$OSTYPE" == darwin* ]]; then
-  # Check if already set to avoid repeated writes
-  if ! defaults read NSGlobalDomain KeyRepeat &>/dev/null || \
-     [[ $(defaults read NSGlobalDomain KeyRepeat) -gt 2 ]]; then
-    defaults write NSGlobalDomain KeyRepeat -int 2
-    defaults write NSGlobalDomain InitialKeyRepeat -int 15
-  fi
-fi
+# macOS keyboard repeat helper (run manually, not at startup)
+set-macos-key-repeat-fast() {
+  [[ "$OSTYPE" == darwin* ]] || return 0
+  defaults write NSGlobalDomain KeyRepeat -int 2
+  defaults write NSGlobalDomain InitialKeyRepeat -int 15
+  print -r -- "Applied macOS key repeat settings. Log out/in if needed."
+}
 
 # Smart URL pasting (prevent auto-escaping)
 autoload -Uz url-quote-magic

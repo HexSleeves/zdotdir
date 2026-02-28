@@ -3,6 +3,8 @@
 # modern-tools.zsh - Modern CLI tool aliases and configurations
 #
 
+[[ -o interactive ]] || return
+
 # Use modern tools if available
 if command -v eza &>/dev/null; then
   alias ls='eza --group-directories-first --icons'
@@ -56,12 +58,12 @@ if command -v delta &>/dev/null; then
   export GIT_PAGER='delta'
 fi
 
-if command -v xh &>/dev/null; then
-  alias curl='xh'
-  alias ccurl='/usr/bin/curl'  # Preserve original curl
-  alias http='xh'
-  alias https='xh --https'
-fi
+# if command -v xh &>/dev/null; then
+#   alias curl='xh'
+#   alias ccurl='/usr/bin/curl'  # Preserve original curl
+#   alias http='xh'
+#   alias https='xh --https'
+# fi
 
 if command -v doggo &>/dev/null; then
   alias dig='doggo'
@@ -122,9 +124,8 @@ if command -v tokei &>/dev/null; then
   alias loc='tokei'
 fi
 
-# Zoxide (smarter cd)
+# Zoxide aliases are configured in conf.d/zoxide.zsh
 if command -v zoxide &>/dev/null; then
-  eval "$(zoxide init zsh)"
   alias cd='z'
   alias ccd='builtin cd'  # Preserve original cd
   alias zi='zi'  # Interactive zoxide

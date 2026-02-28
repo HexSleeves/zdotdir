@@ -4,6 +4,7 @@
 
 # Allow opting out by setting ZSH_ENABLE_MISE=0 before .zshrc loads.
 [[ ${ZSH_ENABLE_MISE:-1} -eq 1 ]] || return
+[[ -o interactive ]] || return
 
 # Add mise shims to PATH (required for mise-managed tools to work)
 typeset -gU PATH path
