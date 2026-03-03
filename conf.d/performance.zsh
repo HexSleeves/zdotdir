@@ -134,9 +134,9 @@ bindkey '^[[3~' delete-char         # Delete
 bindkey '^[[1;5C' forward-word      # Ctrl+Right
 bindkey '^[[1;5D' backward-word     # Ctrl+Left
 
-# Better search
-bindkey '^[[A' history-substring-search-up      # Up arrow
-bindkey '^[[B' history-substring-search-down    # Down arrow
+# Better search (handled by zsh-history-substring-search.zsh)
+# bindkey '^[[A' history-substring-search-up      # Up arrow
+# bindkey '^[[B' history-substring-search-down    # Down arrow
 
 # Quick clear screen
 bindkey '^l' clear-screen

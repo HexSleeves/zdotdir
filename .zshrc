@@ -37,7 +37,6 @@ source $ZSH_CONFIG_DIR/lib/antidote.zsh
 IGNORE_LIST=(
   jupyter.zsh
   nim.zsh
-  nvm.zsh
 )
 
 # Source conf.d.zsh
@@ -65,11 +64,3 @@ true
 
 # opencode
 export PATH=/Users/lecoqjacob/.opencode/bin:$PATH
-
-if [[ -r /Users/lecoqjacob/.config/broot/launcher/bash/br ]]; then
-  br() {
-    unfunction br
-    source /Users/lecoqjacob/.config/broot/launcher/bash/br
-    br "$@"
-  }
-fi

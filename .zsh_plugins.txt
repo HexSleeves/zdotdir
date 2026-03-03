@@ -74,6 +74,7 @@ ohmyzsh/ohmyzsh path:plugins/extract
 romkatv/zsh-bench kind:path
 # aloxaf/fzf-tab
 mattmc3/zman
+zsh-users/zsh-history-substring-search
 
 #
 # macOS

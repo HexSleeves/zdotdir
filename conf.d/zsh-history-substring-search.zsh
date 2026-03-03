@@ -40,21 +40,13 @@ _zsh_history_substring_bind() {
 # fi
 
 #
-# Key Bindings
+# Key Bindings - Deferred loading after plugin is ready
 #
 
-# Emacs
-bindkey -M emacs '^P' history-substring-search-up
-bindkey -M emacs '^N' history-substring-search-down
-
-# Vi
-bindkey -M vicmd "k" history-substring-search-up
-bindkey -M vicmd "j" history-substring-search-down
-
-# Emacs and Vi
-for _keymap in 'main' 'emacs' 'viins'; do
-  bindkey -M "$_keymap" "$terminfo[kcuu1]" history-substring-search-up
-  bindkey -M "$_keymap" "$terminfo[kcud1]" history-substring-search-down
-done
-
-unset _keymap
+# Use zsh-defer to bind keys after plugin loads
+if (( $+functions[zsh-defer] )); then
+  zsh-defer _zsh_history_substring_bind
+else
+  # Fallback if zsh-defer isn't loaded yet
+  _zsh_history_substring_bind
+fi
