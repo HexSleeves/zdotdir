@@ -122,3 +122,18 @@ Host localhost 127.0.0.1
 # Required: Create the sockets directory:
 #   mkdir -p ~/.ssh/sockets && chmod 700 ~/.ssh/sockets
 # =============================================================================
+
+Host noon-disk.exe.xyz
+  User exedev
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+
+Host vs3.spacecats.dev *.vs3.spacecats.dev
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes
+
+Host safe-tide
+  HostName vs3.spacecats.dev
+  User safe-tide
+  IdentityFile ~/.ssh/id_ed25519
+  IdentitiesOnly yes

@@ -1,91 +1,109 @@
 {
   // =====================================================================================
-  // OS & TERMINAL (External + Integrated)
+  // WINDOW & WORKBENCH
   // =====================================================================================
-  "terminal.external.osxExec": "Warp.app", // or "Terminal.app"
-  "terminal.integrated.fontFamily": "MesloLGS NF",
-  "debug.console.fontFamily": "MesloLGS NF",
-  "terminal.integrated.fontWeightBold": "normal",
-  "terminal.integrated.cursorStyle": "line",
-  "terminal.integrated.cursorWidth": 2,
-  "terminal.integrated.lineHeight": 1.1,
-  "terminal.integrated.suggest.enabled": true,
+  "window.commandCenter": true,
+  "window.density.editorTabHeight": "compact",
   "workbench.activityBar.orientation": "vertical",
+  "workbench.colorTheme": "One Dark Pro Mix",
+  "workbench.iconTheme": "material-icon-theme",
+  "workbench.settings.editor": "json",
+  "workbench.tree.enableStickyScroll": true,
+  "workbench.tree.indent": 11,
+  "workbench.tree.renderIndentGuides": "always",
+  "workbench.colorCustomizations": {
+    "tree.indentGuidesStroke": "#999999"
+  },
   "workbench.editor.decorations.colors": true,
   "workbench.editor.pinnedTabSizing": "shrink",
   "workbench.editor.pinnedTabsOnSeparateRow": true,
   "workbench.editor.wrapTabs": true,
-  "workbench.colorCustomizations": {
-    "tree.indentGuidesStroke": "#999999",
-  },
-  "workbench.tree.enableStickyScroll": true,
-  "workbench.tree.indent": 11,
-  "workbench.tree.renderIndentGuides": "always",
-  "workbench.settings.editor": "json",
-  "window.density.editorTabHeight": "compact",
-  "window.commandCenter": true,
+
   // =====================================================================================
-  // EDITOR — CORE BEHAVIOR & LOOK
+  // TERMINAL (External + Integrated)
+  // =====================================================================================
+  "terminal.external.osxExec": "Warp.app",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "terminal.integrated.cursorStyle": "line",
+  "terminal.integrated.cursorWidth": 2,
+  "terminal.integrated.enableImages": true,
+  "terminal.integrated.fontFamily": "MesloLGS NF",
+  "terminal.integrated.fontWeightBold": "normal",
+  "terminal.integrated.lineHeight": 1.1,
+  "terminal.integrated.suggest.enabled": true,
+
+  // =====================================================================================
+  // EDITOR — CORE BEHAVIOR & APPEARANCE
   // =====================================================================================
   "breadcrumbs.enabled": true,
-  "editor.tabSize": 2,
+  "editor.accessibilitySupport": "off",
+  "editor.bracketPairColorization.enabled": true,
   "editor.cursorBlinking": "expand",
   "editor.cursorSmoothCaretAnimation": "on",
   "editor.cursorStyle": "line",
+  "editor.detectIndentation": true,
+  "editor.experimentalGpuAcceleration": "off",
   "editor.fontFamily": "'CaskaydiaCove Nerd Font Propo', 'FiraCode Nerd Font', 'Droid Sans Mono', Consolas, 'Courier New', monospace",
   "editor.fontLigatures": true,
   "editor.fontSize": 13,
-  "editor.smoothScrolling": true,
-  //   "editor.wordWrap": "wordWrapColumn",
-  "editor.wordWrapColumn": 120,
-  "editor.linkedEditing": true,
-  "editor.detectIndentation": true,
-  "editor.renderWhitespace": "boundary",
-  "editor.stickyScroll.enabled": true,
   "editor.guides.bracketPairs": "active",
-  "editor.bracketPairColorization.enabled": true,
+  "editor.linkedEditing": true,
+  "editor.renderWhitespace": "boundary",
   "editor.rulers": [120],
+  "editor.smoothScrolling": true,
+  "editor.stickyScroll.enabled": true,
+  "editor.tabSize": 2,
+  // "editor.wordWrap": "wordWrapColumn",
+  "editor.wordWrapColumn": 120,
+
   // =====================================================================================
-  // EDITOR — MINIMAP & INLINE
+  // EDITOR — MINIMAP
   // =====================================================================================
   "editor.minimap.enabled": true,
-  "editor.minimap.size": "fill",
   "editor.minimap.maxColumn": 100,
   "editor.minimap.renderCharacters": false,
   "editor.minimap.showSlider": "always",
-  "editor.inlineSuggest.suppressSuggestions": true,
-  "editor.inlineSuggest.syntaxHighlightingEnabled": true,
+  "editor.minimap.size": "fill",
+
   // =====================================================================================
-  // EDITOR — INTELLISENSE, HINTS & Codelens
+  // EDITOR — INTELLISENSE, HINTS & CODELENS
   // =====================================================================================
+  "debug.console.fontFamily": "MesloLGS NF",
   "diffEditor.codeLens": true,
+  "diffEditor.ignoreTrimWhitespace": false,
   "editor.find.autoFindInSelection": "multiline",
   "editor.inlayHints.enabled": "offUnlessPressed",
+  "editor.inlineSuggest.suppressSuggestions": true,
+  "editor.inlineSuggest.syntaxHighlightingEnabled": true,
   "javascript.referencesCodeLens.enabled": true,
+
   // =====================================================================================
   // EDITOR — FORMATTING & ON SAVE
   // =====================================================================================
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnSave": true,
-  "editor.formatOnPaste": false,
-  "editor.formatOnType": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll": "always",
+    "source.fixAll": "always"
   },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnType": false,
+  "notebook.defaultFormatter": "esbenp.prettier-vscode",
+
   // =====================================================================================
-  // SEMANTIC TOKEN CUSTOMIZATION (Theme-Specific)
+  // EDITOR — SEMANTIC TOKEN CUSTOMIZATION (Theme-Specific)
   // =====================================================================================
   "editor.semanticTokenColorCustomizations": {
     "[Nebula Oni (Cerberus)]": {
       "rules": {
         "function.declaration": {
           "foreground": "#2FDE73",
-          "fontStyle": "bold italic",
+          "fontStyle": "bold italic"
         },
-        "function": "#2FDE73",
-      },
-    },
+        "function": "#2FDE73"
+      }
+    }
   },
+
   // =====================================================================================
   // FILES — SAVE, ENCODING & TRIMMING
   // =====================================================================================
@@ -97,6 +115,7 @@
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
   "json.schemaDownload.enable": true,
+
   // =====================================================================================
   // FILES — EXCLUDE & WATCHER EXCLUDE
   // =====================================================================================
@@ -105,82 +124,93 @@
     "**/.trunk/*logs/": true,
     "**/.trunk/*notifications/": true,
     "**/.trunk/*out/": true,
-    "**/.trunk/*plugins/": true,
+    "**/.trunk/*plugins/": true
   },
   "files.watcherExclude": {
+    "**/.git/**": true,
+    "**/.next/**": true,
     "**/.trunk/*actions/": true,
     "**/.trunk/*logs/": true,
     "**/.trunk/*notifications/": true,
     "**/.trunk/*out/": true,
     "**/.trunk/*plugins/": true,
-    "**/.git/**": true,
-    "**/node_modules/**": true,
-    "**/dist/**": true,
     "**/coverage/**": true,
-    "**/.next/**": true
+    "**/dist/**": true,
+    "**/node_modules/**": true
   },
-  "typescript.tsserver.maxTsServerMemory": 6144,
-  "typescript.tsserver.useSyntaxServer": "auto",
-  "typescript.disableAutomaticTypeAcquisition": true,
+
   // =====================================================================================
   // EXPLORER & SEARCH
   // =====================================================================================
   "explorer.compactFolders": false,
-  "explorer.sortOrder": "type",
   "explorer.fileNesting.enabled": true,
-  "search.exclude": {
-    "**/node_modules": true,
-    "**/dist": true,
-    "**/coverage": true,
-    "**/.next": true
+  "explorer.fileNesting.patterns": {
+    "*.db": "${capture}.${extname}-*",
+    "*.db3": "${capture}.${extname}-*",
+    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
+    "*.jsx": "${capture}.js",
+    "*.s3db": "${capture}.${extname}-*",
+    "*.sdb": "${capture}.${extname}-*",
+    "*.sqlite": "${capture}.${extname}-*",
+    "*.sqlite3": "${capture}.${extname}-*",
+    "*.ts": "${capture}.js",
+    "*.tsx": "${capture}.ts",
+    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock",
+    "tsconfig.json": "tsconfig.*.json"
   },
+  "explorer.sortOrder": "type",
+  "search.exclude": {
+    "**/.next": true,
+    "**/coverage": true,
+    "**/dist": true,
+    "**/node_modules": true
+  },
+
   // =====================================================================================
-  // GIT, GITHUB & GITLENS
+  // GIT & GITHUB
   // =====================================================================================
+  "git.allowForcePush": true,
   "git.autofetch": true,
+  "git.autorefresh": true,
   "git.autoStash": true,
+  "git.confirmSync": false,
   "git.enableSmartCommit": true,
   "git.mergeEditor": true,
+  "git.showPushSuccessNotification": true,
   "git.useEditorAsCommitInput": false,
-  "git.autorefresh": true,
-  "git.confirmSync": false,
   "githubPullRequests.pullBranch": "never",
+
+  // =====================================================================================
+  // GITLENS
+  // =====================================================================================
   "gitlens.advanced.messages": {
-    "suppressLineUncommittedWarning": true,
+    "suppressLineUncommittedWarning": true
   },
-  "gitlens.graph.dimMergeCommits": true,
-  "gitlens.views.repositories.showIncomingActivity": true,
-  "gitlens.views.repositories.showStashes": true,
+  "gitlens.ai.gitkraken.model": "gemini:gemini-2.5-flash",
   "gitlens.ai.model": "gitkraken",
   "gitlens.ai.vscode.model": "copilot:gpt-4o",
-  "gitlens.ai.gitkraken.model": "gemini:gemini-2.5-flash",
+  "gitlens.graph.dimMergeCommits": true,
+  "gitlens.outputLevel": "error",
+  "gitlens.rebaseEditor.ordering": "asc",
+  "gitlens.views.repositories.showIncomingActivity": true,
+  "gitlens.views.repositories.showStashes": true,
+
   // =====================================================================================
-  // COPILOT & AI ASSISTANTS (VSCode)
+  // TYPESCRIPT & JAVASCRIPT — LANGUAGE SERVER
   // =====================================================================================
-  "github.copilot.enable": {
-    "*": false,
-    "plaintext": false,
-    "markdown": true,
-    "scminput": false,
-  },
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.disableAutomaticTypeAcquisition": true,
+  "typescript.experimental.useTsgo": true,
+  "typescript.tsserver.maxTsServerMemory": 6144,
+  "typescript.tsserver.nodePath": "node",
+  "typescript.tsserver.useSyntaxServer": "auto",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+
   // =====================================================================================
-  // HTTP & SECURITY
+  // TYPESCRIPT & JAVASCRIPT — INLAY HINTS
   // =====================================================================================
-  "http.experimental.systemCertificatesV2": true,
-  "http.proxyStrictSSL": false,
-  "http.proxySupport": "fallback",
-  "security.promptForLocalFileProtocolHandling": false,
-  "security.workspace.trust.untrustedFiles": "open",
-  "redhat.telemetry.enabled": false,
-  // =====================================================================================
-  // WINDOW & DEBUG
-  // =====================================================================================
-  "debug.toolBarLocation": "commandCenter",
-  // =====================================================================================
-  // LANGUAGE OVERRIDES — GLOBAL JS/TS INLAY HINTS
-  // =====================================================================================
-  "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
   "javascript.inlayHints.enumMemberValues.enabled": true,
+  "javascript.inlayHints.functionLikeReturnTypes.enabled": true,
   "javascript.inlayHints.parameterTypes.enabled": true,
   "javascript.inlayHints.variableTypes.enabled": true,
   "typescript.inlayHints.enumMemberValues.enabled": true,
@@ -189,369 +219,208 @@
   "typescript.inlayHints.parameterTypes.enabled": true,
   "typescript.inlayHints.propertyDeclarationTypes.enabled": true,
   "typescript.inlayHints.variableTypes.enabled": true,
-  // =====================================================================================
-  // LANGUAGE OVERRIDES — BY FILETYPE
-  // =====================================================================================
-  "[astro]": {
-    "editor.defaultFormatter": "astro-build.astro-vscode",
-  },
-  "[css]": {
-    "editor.defaultFormatter": "denoland.vscode-deno",
-  },
-  "[dotenv]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format",
-  },
-  "[go]": {
-    "editor.defaultFormatter": "golang.go",
-  },
-  "[go.mod]": {
-    "editor.defaultFormatter": "golang.go",
-  },
-  "[ignore]": {
-    "editor.defaultFormatter": "foxundermoon.shell-format",
-  },
-  "[javascript]": {
-    "editor.defaultFormatter": "vscode.typescript-language-features",
-  },
-  "[javascriptreact]": {
-    "editor.defaultFormatter": "dbaeumer.vscode-eslint",
-  },
-  "[json]": {
-    "editor.quickSuggestions": {
-      "strings": true,
-    },
-    "editor.suggest.insertMode": "replace",
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-  },
-  "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome",
-  },
-  "[lua]": {
-    "editor.defaultFormatter": "JohnnyMorganz.stylua",
-  },
-  "[markdown]": {
-    "editor.unicodeHighlight.invisibleCharacters": true,
-    "editor.defaultFormatter": "DavidAnson.vscode-markdownlint",
-  },
-  "[plaintext]": {
-    "editor.unicodeHighlight.invisibleCharacters": true,
-  },
-  "[postcss]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-  },
-  "[shellscript]": {
-    "editor.defaultFormatter": "mkhl.shfmt",
-  },
-  "[typescript]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-  },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome",
-  },
-  "[yaml]": {
-    "editor.defaultFormatter": "redhat.vscode-yaml",
-  },
+
   // =====================================================================================
   // GO TOOLING
   // =====================================================================================
-  "go.formatTool": "custom",
-  "go.lintTool": "golangci-lint",
-  "go.toolsManagement.autoUpdate": true,
+  "go.alternateTools": {
+    "customFormatter": "/Users/jacob.lecoq.ext/.local/share/mise/shims/gofmt"
+  },
   "go.inlayHints.compositeLiteralTypes": true,
   "go.inlayHints.constantValues": true,
   "go.inlayHints.functionTypeParameters": true,
+  "go.lintTool": "golangci-lint",
   "go.testFlags": ["-v"],
+  "go.toolsManagement.autoUpdate": true,
+
   // =====================================================================================
-  // LUA (Sumneko) SETTINGS
+  // LUA (Sumneko)
   // =====================================================================================
   "Lua.codeLens.enable": false,
-  "Lua.workspace.library": [
-    "~/.local/share/nvim/lazy/",
-    "~/.local/share/nvim/mason",
-  ],
-  // =====================================================================================
-  // QUALITY/TYPE CHECKERS & LINT
-  // =====================================================================================
-  "eslint.useESLintClass": true,
-  "eslint.format.enable": true,
-  "jest.runMode": "on-demand",
-  "sonarlint.connectedMode.connections.sonarqube": [
-    {
-      "serverUrl": "https://sonar.cloud.bayer.com",
-      "connectionId": "https-sonar-cloud-bayer-com-",
-    },
-  ],
-  "sonarlint.ls.javaHome": "/Library/Java/JavaVirtualMachines/jdk-25.jdk/Contents/Home",
-  "sonarlint.rules": {
-    "typescript:S6819": {
-      "level": "off",
-    },
-    "typescript:S2301": {
-      "level": "off",
-    },
-    "typescript:S6759": {
-      "level": "off",
-    },
-    "cpp:S125": {
-      "level": "off",
-    },
-    "typescript:S1135": {
-      "level": "off",
-    },
-    "typescript:S7735": {
-      "level": "off",
-    },
-    "typescript:S107": {
-      "level": "off",
-    },
-    "typescript:S6848": {
-      "level": "off",
-    },
-    "typescript:S6564": {
-      "level": "off",
-    },
-  },
-  // =====================================================================================
-  // THEMES & THEME EXTENSIONS
-  // =====================================================================================
-  "oneDarkPro.bold": true,
-  "catppuccin-noctis-icons.hidesExplorerArrows": false,
-  "nebulaOni.update.restoreConfiguration": {
-    "themeSettings": {
-      "background": "Grey",
-      "main": "Bumblebee",
-      "highlight": "Ultra Violet",
-      "focusBorder": "ON",
-      "fontStyle": "Italic",
-      "syntaxBrightness": "Normal",
-      "comments": "Dark Violet",
-      "favorite": "OFF",
-    },
-    "favoriteSettings": {
-      "background": "Glacial Blue",
-      "main": "Sakura",
-      "highlight": "Ultra Violet",
-      "focusBorder": "ON",
-      "fontStyle": "Italic",
-      "syntaxBrightness": "Dimmed",
-      "comments": "Dark Magenta",
-      "favorite": "Nebula Oni (Pegasus)",
-    },
-  },
-  // =====================================================================================
-  // RANDOM / POWER-USER EXTENSIONS & INTEGRATIONS
-  // =====================================================================================
-  "cursor.cmdk.useThemedDiffBackground": true,
-  "cursor.composer.shouldAllowCustomModes": true,
-  "cursor.composer.shouldChimeAfterChatFinishes": true,
-  "cursor.cpp.enablePartialAccepts": true,
-  "cursor.diffs.useCharacterLevelDiffs": true,
-  "cursor.terminal.usePreviewBox": true,
-  "cursor.windowSwitcher.sidebarHoverCollapsed": true,
-  "cursorStats.showTotalRequests": true,
-  "cursor.cpp.disabledLanguages": ["plaintext", "scminput"],
-  "cursor.composer.queueMessageDefaultBehavior": "queue",
-  "cursor.composer.usageSummaryDisplay": "always",
-  "roo-cline.allowedCommands": [
-    "npm test",
-    "npm install",
-    "tsc",
-    "git log",
-    "git diff",
-    "git show",
-  ],
-  "roo-cline.deniedCommands": [],
-  "kilo-code.allowedCommands": [
-    "git log",
-    "git diff",
-    "git show",
-    "cd",
-    "go",
-    "git",
-    "npm",
-    "nx",
-    "nx run",
-    "npm run",
-    "npm run test -- --silent --libs features-common-reporting -- ViewReport.spec.tsx",
-    "make",
-    "npm test",
-    "npm install",
-    "tsc",
-  ],
-  "kilo-code.deniedCommands": [],
-  "traycer.additionalAgents": [
-    "Claude Code",
-    "Augment",
-    "Roo Code",
-    "Codex",
-    "Augment",
-    "Export as Markdown",
-    "Amp",
-    "Codex Extension",
-    "Claude Code Extension",
-  ],
-  "traycer.enableAutoAnalysis": false,
-  "traycer.enableCommentsHighlighting": true,
-  "amp.url": "https://ampcode.com/",
-  "amp.experimental.connections": true,
-  "amp.tools.disable": [
-    "mcp__playwright__browser_click",
-    "mcp__playwright__browser_close",
-    "mcp__playwright__browser_console_messages",
-    "mcp__playwright__browser_drag",
-    "mcp__playwright__browser_evaluate",
-    "mcp__playwright__browser_file_upload",
-    "mcp__playwright__browser_fill_form",
-    "mcp__playwright__browser_handle_dialog",
-    "mcp__playwright__browser_hover",
-    "mcp__playwright__browser_install",
-    "mcp__playwright__browser_navigate",
-    "mcp__playwright__browser_navigate_back",
-    "mcp__playwright__browser_network_requests",
-    "mcp__playwright__browser_press_key",
-    "mcp__playwright__browser_resize",
-    "mcp__playwright__browser_select_option",
-    "mcp__playwright__browser_snapshot",
-    "mcp__playwright__browser_tabs",
-    "mcp__playwright__browser_take_screenshot",
-    "mcp__playwright__browser_type",
-    "mcp__playwright__browser_wait_for",
-  ],
-  "amp.mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["-y", "@playwright/mcp@latest", "--headless", "--isolated"],
-      "_target": "global",
-    },
-    "sequential-thinking": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
-      "env": {},
-    },
-  },
-  "evenBetterToml.formatter.alignComments": true,
-  "evenBetterToml.formatter.alignEntries": true,
-  "augment.completions.enableAutomaticCompletions": false,
-  "augment.nextEdit.enableGlobalBackgroundSuggestions": true,
-  "augment.nextEdit.showDiffInHover": true,
-  "totalTypeScript.hideAllTips": false,
-  "totalTypeScript.hideBasicTips": true,
-  "totalTypeScript.hiddenTips": [
-    "typeof",
-    "passing-generics-to-types",
-    "returntype-utility-type",
-    "generic-slots-in-functions",
-    "interface-with-generics",
-    "record-utility-type",
-    "type-alias-with-generics",
-    "omit-utility-type",
-    "readonly-utility-type",
-    "keyof",
-    "type-alias-with-multiple-generics",
-    "never-keyword",
-    "required-utility-type",
-    "partial-utility-type",
-    "type-predicate",
-    "mapped-type",
-    "as-const",
-    "as-const-on-object",
-    "in-operator-narrowing",
-    "conditional-type",
-    "tuple-type",
-    "exclude-utility-type",
-    "pick-utility-type",
-    "interface-with-multiple-generics",
-    "non-null-expression",
-    "parameters-utility-type",
-    "nonnullable-utility-type",
-    "awaited-utility-type",
-    "extract-utility-type",
-    "nested-conditional-type",
-    "infer",
-    "remapping-in-mapped-type",
-  ],
-  "notebook.defaultFormatter": "esbenp.prettier-vscode",
-  "astro.content-intellisense": true,
-  // =====================================================================================
-  // VENDOR / SERVICE INTEGRATIONS
-  // =====================================================================================
-  "datadog.connection.oauth.setup.domain": "us5.datadoghq.com/",
-  "amp.gpt5": true,
-  "amp.permissions": [
-    {
-      "tool": "Bash",
-      "action": "ask",
-      "matches": {
-        "cmd": ["*rm*rf*", "*find*exec*", "*find*delete*", "*git*push*"],
-      },
-    },
-    {
-      "tool": "*",
-      "action": "allow",
-      "matches": {},
-    },
-    {
-      "tool": "Bash",
-      "action": "allow",
-      "matches": {
-        "cmd": "nx run features-common-reporting:test --silent --testPathPattern=libs/features/common/reporting/src/components/view-report/ViewReport.spec.tsx",
-      },
-    },
-  ],
-  "editor.accessibilitySupport": "off",
-  "editor.experimentalGpuAcceleration": "off",
-  "terminal.integrated.enableImages": true,
-  "amazonQ.suppressPrompts": {
-    "amazonQChatPairProgramming": true,
-    "amazonQChatDisclaimer": true,
-  },
-  "playwright.reuseBrowser": true,
-  "playwright.showTrace": false,
-  "terminal.integrated.defaultProfile.osx": "zsh",
-  "typescript.updateImportsOnFileMove.enabled": "always",
-  "testExplorer.useNativeTesting": true,
-  "javascript.updateImportsOnFileMove.enabled": "always",
+  "Lua.hint.awaitPropagate": true,
   "Lua.hint.enable": true,
   "Lua.hint.setType": true,
   "Lua.semantic.keyword": true,
   "Lua.type.inferParamType": true,
-  "cursor.enable_agent_window_setting": true,
-  "geminicodeassist.displayInlineContextHint": false,
-  "Lua.hint.awaitPropagate": true,
-  "[dockercompose]": {
-    "editor.insertSpaces": true,
-    "editor.tabSize": 2,
-    "editor.autoIndent": "advanced",
-    "editor.defaultFormatter": "redhat.vscode-yaml",
-  },
-  "[github-actions-workflow]": {
-    "editor.defaultFormatter": "redhat.vscode-yaml",
-  },
-  "[toml]": {
-    "editor.defaultFormatter": "tamasfe.even-better-toml",
-  },
-  "geminicodeassist.inlineSuggestions.enableAuto": false,
-  "amp.tab.enabled": false,
-  "database-client.autoSync": true,
-  "diffEditor.ignoreTrimWhitespace": false,
-  "aws.cloudformation.telemetry.enabled": true,
-  "[python]": {
-    "editor.defaultFormatter": "charliermarsh.ruff",
-  },
-  "python.defaultInterpreterPath": "/opt/homebrew/bin/python3",
+  "Lua.workspace.library": [
+    "~/.local/share/nvim/lazy/",
+    "~/.local/share/nvim/mason"
+  ],
+
+  // =====================================================================================
+  // PYTHON
+  // =====================================================================================
+  "python.defaultInterpreterPath": "/Users/lecoqjacob/.local/share/mise/installs/python/3.14.3/bin/python",
   "python.terminal.useEnvFile": true,
-  "python.terminal.shellIntegration.enabled": true,
-  "amp.experimental.dojoMode": true,
-  "amp.experimental.planMode": true,
-  "amp.experimental.reviewSubagent": true,
-  "amp.guidanceFiles.specs": true,
-  "amp.tab.experimental.review": true,
-  "amp.tab.experimental.showHotStreakProgress": true,
-  "amp.tab.experimental.unobtrusiveDiffs": true,
-  "amp.tab.hoverDiagnosticSuggestions": true,
-  "gitlens.outputLevel": "error",
-  "workbench.colorTheme": "One Dark Pro",
-  "workbench.iconTheme": "material-icon-theme",
+
+  // =====================================================================================
+  // RUST
+  // =====================================================================================
+  "rust-analyzer.check.command": "clippy",
+
+  // =====================================================================================
+  // QUALITY / LINT
+  // =====================================================================================
+  "eslint.format.enable": true,
+  "eslint.useESLintClass": true,
+  "jest.runMode": "on-demand",
+
+  // =====================================================================================
+  // DEBUG
+  // =====================================================================================
+  "debug.javascript.unmapMissingSources": true,
+  "debug.showBreakpointsInOverviewRuler": true,
+  "debug.toolBarLocation": "commandCenter",
+  "notebook.diff.overviewRuler": true,
+
+  // =====================================================================================
+  // HTTP & SECURITY
+  // =====================================================================================
+  "http.experimental.systemCertificatesV2": true,
+  "http.proxyStrictSSL": false,
+  "http.proxySupport": "fallback",
+  "security.promptForLocalFileProtocolHandling": false,
+  "security.promptForRemoteFileProtocolHandling": false,
+  "security.workspace.trust.untrustedFiles": "open",
+
+  // =====================================================================================
+  // REMOTE SSH
+  // =====================================================================================
+  "remote.autoForwardPortsSource": "hybrid",
+  "remote.SSH.remotePlatform": {
+    "crow-wolf.exe.xyz": "linux",
+    "eagle": "linux",
+    "emerald": "linux",
+    "emerald-loader.exe.xyz": "linux",
+    "jade-harbor.exe.xyz": "linux",
+    "jade-harbor.exe.xyz/": "linux",
+    "meteor-edit.exe.xyz": "linux",
+    "noon": "linux",
+    "noon-disk.exe.xyz": "linux",
+    "pulse": "linux",
+    "pulse-sky": "linux",
+    "pulsar-reef.exe.xyz": "linux",
+    "pulsar-sky.exe.xyz": "linux",
+    "ssh jade-harbor.exe.xyz": "linux",
+    "switch-rain.exe.xyz": "linux",
+    "trout-eagle.exe.xyz": "linux",
+    "yankee": "linux",
+    "yankee-jig.exe.xyz": "linux",
+    "vs3.spacecats.dev": "linux",
+    "safe-tide": "linux"
+  },
+
+  // =====================================================================================
+  // GITHUB COPILOT
+  // =====================================================================================
+  "github.copilot.enable": {
+    "*": false,
+    "markdown": true,
+    "plaintext": false,
+    "scminput": false
+  },
+
+  // =====================================================================================
+  // CURSOR AI
+  // =====================================================================================
+  "cursor.composer.queueMessageDefaultBehavior": "queue",
+  "cursor.composer.shouldChimeAfterChatFinishes": true,
+  "cursor.composer.usageSummaryDisplay": "always",
+  "cursor.cpp.disabledLanguages": ["plaintext", "scminput"],
+  "cursor.cpp.enablePartialAccepts": true,
+  "cursor.enable_agent_window_setting": true,
+  "cursor.terminal.usePreviewBox": true,
+  "cursor.windowSwitcher.sidebarHoverCollapsed": true,
+  "cursorStats.showDailyRemaining": true,
+  "cursorStats.showProgressBars": true,
+  "cursorStats.showTotalRequests": true,
+
+  // =====================================================================================
+  // GEMINI CODE ASSIST
+  // =====================================================================================
+  "geminicodeassist.displayInlineContextHint": false,
+  "geminicodeassist.inlineSuggestions.enableAuto": false,
+  "geminicodeassist.project": "citric-thought-vrqlm",
+
+  // =====================================================================================
+  // KILO CODE
+  // =====================================================================================
+  "kilo-code.allowedCommands": [
+    "cd",
+    "git",
+    "git diff",
+    "git log",
+    "git show",
+    "go",
+    "make",
+    "npm",
+    "npm install",
+    "npm run",
+    "npm run test -- --silent --libs features-common-reporting -- ViewReport.spec.tsx",
+    "npm test",
+    "nx",
+    "nx run",
+    "tsc"
+  ],
+  "kilo-code.debug": false,
+  "kilo-code.deniedCommands": [],
+
+  // =====================================================================================
+  // KIMI
+  // =====================================================================================
+  "kimi.alwaysExpandThinking": true,
+  "kimi.yoloMode": true,
+
+  // =====================================================================================
+  // TRAYCER
+  // =====================================================================================
+  "traycer.additionalAgents": [
+    "Amp",
+    "Augment",
+    "Claude Code",
+    "Claude Code Extension",
+    "Codex",
+    "Codex Extension",
+    "Export as Markdown",
+    "Roo Code"
+  ],
+  "traycer.enableAutoAnalysis": false,
+  "traycer.enableCommentsHighlighting": true,
+
+  // =====================================================================================
+  // THEMES & THEME EXTENSIONS
+  // =====================================================================================
+  "nebulaOni.update.restoreConfiguration": {
+    "favoriteSettings": {
+      "background": "Glacial Blue",
+      "comments": "Dark Magenta",
+      "favorite": "Nebula Oni (Pegasus)",
+      "focusBorder": "ON",
+      "fontStyle": "Italic",
+      "highlight": "Ultra Violet",
+      "main": "Sakura",
+      "syntaxBrightness": "Dimmed"
+    },
+    "themeSettings": {
+      "background": "Grey",
+      "comments": "Dark Violet",
+      "favorite": "OFF",
+      "focusBorder": "ON",
+      "fontStyle": "Italic",
+      "highlight": "Ultra Violet",
+      "main": "Bumblebee",
+      "syntaxBrightness": "Normal"
+    }
+  },
+  "oneDarkPro.bold": true,
+
+  // =====================================================================================
+  // MISCELLANEOUS EXTENSIONS
+  // =====================================================================================
+  "aws.cloudformation.telemetry.enabled": true,
+  "database-client.autoSync": true,
+  "evenBetterToml.formatter.alignComments": true,
+  "evenBetterToml.formatter.alignEntries": true,
   "markdownlint.lintWorkspaceGlobs": [
     "**/*.{md,mkd,mdwn,mdown,markdown,markdn,mdtxt,mdtext,workbook}",
     "!**/*.code-search",
@@ -559,77 +428,143 @@
     "!**/node_modules",
     "!**/.git",
     "!**/vendor",
-    "!**/*.mdc",
+    "!**/*.mdc"
   ],
-  "geminicodeassist.project": "citric-thought-vrqlm",
-  "sonarlint.automaticAnalysis": true,
-  "sonarlint.focusOnNewCode": false,
+  "playwright.reuseBrowser": true,
+  "playwright.showTrace": false,
+  "redhat.telemetry.enabled": false,
+  "testExplorer.useNativeTesting": true,
+  "totalTypeScript.hideAllTips": false,
+  "totalTypeScript.hideBasicTips": true,
+  "totalTypeScript.hiddenTips": [
+    "as-const",
+    "as-const-on-object",
+    "awaited-utility-type",
+    "conditional-type",
+    "exclude-utility-type",
+    "extract-utility-type",
+    "generic-slots-in-functions",
+    "in-operator-narrowing",
+    "infer",
+    "interface-with-generics",
+    "interface-with-multiple-generics",
+    "keyof",
+    "mapped-type",
+    "never-keyword",
+    "non-null-expression",
+    "nonnullable-utility-type",
+    "omit-utility-type",
+    "parameters-utility-type",
+    "partial-utility-type",
+    "passing-generics-to-types",
+    "pick-utility-type",
+    "record-utility-type",
+    "readonly-utility-type",
+    "remapping-in-mapped-type",
+    "required-utility-type",
+    "returntype-utility-type",
+    "tuple-type",
+    "type-alias-with-generics",
+    "type-alias-with-multiple-generics",
+    "type-predicate",
+    "typeof",
+    "nested-conditional-type"
+  ],
+  "update.releaseTrack": "prerelease",
+
+  // =====================================================================================
+  // LANGUAGE OVERRIDES — BY FILETYPE
+  // =====================================================================================
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
   "[cpp]": {
-    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "denoland.vscode-deno"
+  },
+  "[dockercompose]": {
+    "editor.autoIndent": "advanced",
+    "editor.defaultFormatter": "redhat.vscode-yaml",
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[github-actions-workflow]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[go]": {
+    "editor.defaultFormatter": "golang.go"
+  },
+  "[go.mod]": {
+    "editor.defaultFormatter": "golang.go"
+  },
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.quickSuggestions": {
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "biomejs.biome"
+  },
+  "[lua]": {
+    "editor.defaultFormatter": "JohnnyMorganz.stylua"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "trunk.io",
+    "editor.unicodeHighlight.invisibleCharacters": true
+  },
+  "[plaintext]": {
+    "editor.unicodeHighlight.invisibleCharacters": true
+  },
+  "[postcss]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "trunk.io"
   },
   "[rust]": {
-    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
   },
-  "sonarlint.ideLabsEnabled": true,
-  "debug.javascript.unmapMissingSources": true,
-  "cursorStats.showProgressBars": true,
-  "rust-analyzer.check.command": "clippy",
-  "remote.SSH.remotePlatform": {
-    "yankee-jig.exe.xyz": "linux",
-    "crow-wolf.exe.xyz": "linux",
-    "meteor-edit.exe.xyz": "linux",
-    "switch-rain.exe.xyz": "linux",
-    "yankee": "linux",
-    "trout-eagle.exe.xyz": "linux",
-    "pulsar-reef.exe.xyz": "linux",
-    "pulse": "linux",
-    "eagle": "linux",
-    "jade-harbor.exe.xyz": "linux",
-    "ssh jade-harbor.exe.xyz": "linux",
-    "jade-harbor.exe.xyz/": "linux",
-    "pulsar-sky.exe.xyz": "linux",
-    "pulse-sky": "linux",
-    "emerald-loader.exe.xyz": "linux",
-    "emerald": "linux",
-    "noon": "linux",
-    "noon-disk.exe.xyz": "linux"
+  "[shellscript]": {
+    "editor.defaultFormatter": "mkhl.shfmt"
   },
-  "debug.showBreakpointsInOverviewRuler": true,
-  "notebook.diff.overviewRuler": true,
-  "security.promptForRemoteFileProtocolHandling": false,
-  "git.allowForcePush": true,
-  "git.showPushSuccessNotification": true,
-  "gitlens.rebaseEditor.ordering": "asc",
-  "cursorStats.showDailyRemaining": true,
-  "explorer.fileNesting.patterns": {
-    "*.ts": "${capture}.js",
-    "*.js": "${capture}.js.map, ${capture}.min.js, ${capture}.d.ts",
-    "*.jsx": "${capture}.js",
-    "*.tsx": "${capture}.ts",
-    "tsconfig.json": "tsconfig.*.json",
-    "package.json": "package-lock.json, yarn.lock, pnpm-lock.yaml, bun.lockb, bun.lock",
-    "*.sqlite": "${capture}.${extname}-*",
-    "*.db": "${capture}.${extname}-*",
-    "*.sqlite3": "${capture}.${extname}-*",
-    "*.db3": "${capture}.${extname}-*",
-    "*.sdb": "${capture}.${extname}-*",
-    "*.s3db": "${capture}.${extname}-*",
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
   },
-  "sonarlint.connectedMode.connections.sonarcloud": [
-    {
-      "organizationKey": "hexsleeves",
-      "connectionId": "HexSleeves",
-      "region": "EU",
-    },
-  ],
-  "remote.autoForwardPortsSource": "hybrid",
-  "svelte.enable-ts-plugin": true,
-  "typescript.tsserver.nodePath": "node",
-  "kimi.alwaysExpandThinking": true,
-  "kimi.yoloMode": true,
-  "kilo-code.debug": false,
-  "go.alternateTools": {
-    "customFormatter": "/Users/jacob.lecoq.ext/.local/share/mise/shims/gofmt",
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "update.releaseTrack": "prerelease"
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "redhat.vscode-yaml"
+  },
+  "[jinja-html]": {
+    "editor.defaultFormatter": "monosans.djlint"
+  },
+  "cSpell.userWords": [
+    "carc",
+    "journalctl",
+    "luxon",
+    "rarc",
+    "timesheet",
+    "timesheets",
+    "timespan"
+  ]
 }

@@ -9,16 +9,16 @@
 # Run `sudo -v` to cache credentials at the start of the run
 # This avoids a blocking password prompt in the middle of an unattended run
 # (default: false)
-# pre_sudo = false
+pre_sudo = true
 
 # Sudo command to be used
 # sudo_command = "sudo"
 
 # Disable specific steps - same options as the command line flag
-disable = ["system", "rustup", "pnpm", "nix"]
+disable = ["system", "rustup", "pnpm", "nix", "chezmoi"]
 
 # Ignore failures for these steps
-# ignore_failures = ["powershell"]
+ignore_failures = ["containers"]
 
 # List of remote machines with Topgrade installed on them
 # remote_topgrades = ["toothless", "pi", "parnas"]
@@ -42,7 +42,7 @@ disable = ["system", "rustup", "pnpm", "nix"]
 # assume_yes = true
 
 # Do not ask to retry failed steps (default: false)
-# no_retry = true
+auto_retry = 1
 
 # Run inside tmux (default: false)
 # run_in_tmux = true
@@ -54,19 +54,19 @@ disable = ["system", "rustup", "pnpm", "nix"]
 # tmux_session_mode = "attach_if_not_in_session"
 
 # Cleanup temporary or old files (default: false)
-# cleanup = true
+cleanup = true
 
 # Send a notification for every step (default: false)
 # notify_each_step = false
 
 # Skip sending a notification at the end of a run (default: false)
-# skip_notify = true
+notify_end = "on_failure"
 
 # The Bash-it branch to update (default: "stable")
 # bashit_branch = "stable"
 
 # Run specific steps - same options as the command line flag
-# only = ["system", "emacs"]
+only = ["brew_formula", "brew_cask", "claude_code", "custom_commands"]
 
 # Whether to self update
 #
@@ -93,8 +93,8 @@ disable = ["system", "rustup", "pnpm", "nix"]
 
 # Custom commands
 [commands]
-# "Python Environment" = "~/dev/.env/bin/pip install -i https://pypi.python.org/simple -U --upgrade-strategy eager jupyter"
-# "Custom command using interactive shell (unix)" = "-i vim_upgrade"
+"Codex CLI" = "bun update -g @openai/codex"
+"OpenCode CLI" = "opencode upgrade"
 
 
 [python]
@@ -131,11 +131,11 @@ disable = ["system", "rustup", "pnpm", "nix"]
 # If `Repo Cask Upgrade` does not exist, then use the `--greedy_auto_updates` option.
 # NOTE: the above entry `greedy_cask` contains this entry, though you can enable
 # both of them, they won't clash with each other.
-# greedy_auto_updates = true
+greedy_auto_updates = true
 
 # For the BrewFormula step
 # Execute `brew autoremove` after the step.
-# autoremove = true
+autoremove = true
 
 # For the BrewFormula step
 # Upgrade formulae built from the HEAD branch; `brew upgrade --fetch-HEAD`
@@ -194,7 +194,7 @@ disable = ["system", "rustup", "pnpm", "nix"]
 
 [git]
 # How many repos to pull at max in parallel
-# max_concurrency = 5
+max_concurrency = 10
 
 # Additional git repositories to pull
 # repos = [
@@ -206,7 +206,7 @@ disable = ["system", "rustup", "pnpm", "nix"]
 # pull_predefined = false
 
 # Arguments to pass Git when pulling Repositories
-# arguments = "--rebase --autostash"
+arguments = "--rebase --autostash"
 
 
 [windows]

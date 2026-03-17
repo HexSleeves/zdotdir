@@ -17,3 +17,12 @@ sso_account_id = 435797107917
 sso_role_name = sso-standard-user
 region = us-east-1
 output = json
+[profile power-dev]
+sso_session = Dev
+sso_account_id = 912458378451
+sso_role_name = PowerUserAccess
+region = us-east-1
+[sso-session Dev]
+sso_start_url = https://solace.awsapps.com/start/#
+sso_region = us-east-1
+sso_registration_scopes = sso:account:access
