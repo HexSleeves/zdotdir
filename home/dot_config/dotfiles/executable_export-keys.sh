@@ -113,7 +113,7 @@ chezmoi_export() {
 
   local tmpdir
   tmpdir="$(mktemp -d)"
-  trap 'rm -rf "$tmpdir"' EXIT
+  trap "rm -rf '$tmpdir'" EXIT
 
   mkdir -p "$tmpdir/keyring"
 
@@ -153,7 +153,7 @@ chezmoi_import() {
 
   local tmpdir
   tmpdir="$(mktemp -d)"
-  trap 'rm -rf "$tmpdir"' EXIT
+  trap "rm -rf '$tmpdir'" EXIT
 
   local tgz="$tmpdir/gpg-keyring.tgz"
   case "$archive_path" in
