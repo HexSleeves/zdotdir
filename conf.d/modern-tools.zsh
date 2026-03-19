@@ -113,6 +113,38 @@ alias gcm='git commit -m'
 alias gp='git push'
 alias gpl='git pull'
 
+# Compression/decompression (ouch handles zip, tar, gz, bz2, xz, 7z, etc.)
+if command -v ouch &>/dev/null; then
+  alias compress='ouch compress'
+  alias decompress='ouch decompress'
+  alias lsarchive='ouch list'
+fi
+
+# Interactive JSON viewer
+if command -v jless &>/dev/null; then
+  alias jv='jless'
+fi
+
+# File watcher - run commands on file changes
+if command -v watchexec &>/dev/null; then
+  alias watch='watchexec'
+fi
+
+# Interactive disk usage (complements dust for exploration)
+if command -v dua &>/dev/null; then
+  alias dui='dua interactive'
+fi
+
+# Bandwidth monitor by process
+if command -v bandwhich &>/dev/null; then
+  alias bwich='sudo bandwhich'
+fi
+
+# Friendlier cut/awk for field extraction
+if command -v choose &>/dev/null; then
+  alias field='choose'
+fi
+
 # Quick benchmarking
 if command -v hyperfine &>/dev/null; then
   alias bench='hyperfine'
