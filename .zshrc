@@ -70,12 +70,12 @@ unset _rc
 # !! Do not edit manually - changes will be overwritten !!
 
 # Load forge shell plugin (commands, completions, keybindings) if not already loaded
-if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && (( $+commands[forge] )) && [[ -z "$_FORGE_PLUGIN_LOADED" ]]; then
+if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && (( ZSH_INTERACTIVE_TTY )) && (( $+commands[forge] )) && [[ -z "$_FORGE_PLUGIN_LOADED" ]]; then
     eval "$(forge zsh plugin)"
 fi
 
 # Load forge shell theme (prompt with AI context) if not already loaded
-if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && (( $+commands[forge] )) && [[ -z "$_FORGE_THEME_LOADED" ]]; then
+if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && (( ZSH_INTERACTIVE_TTY )) && (( $+commands[forge] )) && [[ -z "$_FORGE_THEME_LOADED" ]]; then
     eval "$(forge zsh theme)"
 fi
 # <<< forge initialize <<<
