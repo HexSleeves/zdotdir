@@ -184,7 +184,8 @@
   // GITLENS
   // =====================================================================================
   "gitlens.advanced.messages": {
-    "suppressLineUncommittedWarning": true
+    "suppressLineUncommittedWarning": true,
+    "suppressIntegrationDisconnectedTooManyFailedRequestsWarning": true
   },
   "gitlens.ai.gitkraken.model": "gemini:gemini-2.5-flash",
   "gitlens.ai.model": "gitkraken",
@@ -194,17 +195,11 @@
   "gitlens.rebaseEditor.ordering": "asc",
   "gitlens.views.repositories.showIncomingActivity": true,
   "gitlens.views.repositories.showStashes": true,
-
-  // =====================================================================================
-  // TYPESCRIPT & JAVASCRIPT — LANGUAGE SERVER
-  // =====================================================================================
-  "javascript.updateImportsOnFileMove.enabled": "always",
   "typescript.disableAutomaticTypeAcquisition": true,
   "typescript.experimental.useTsgo": true,
   "typescript.tsserver.maxTsServerMemory": 6144,
   "typescript.tsserver.nodePath": "node",
   "typescript.tsserver.useSyntaxServer": "auto",
-  "typescript.updateImportsOnFileMove.enabled": "always",
 
   // =====================================================================================
   // TYPESCRIPT & JAVASCRIPT — INLAY HINTS
@@ -518,9 +513,6 @@
     },
     "editor.suggest.insertMode": "replace"
   },
-  "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome"
-  },
   "[lua]": {
     "editor.defaultFormatter": "JohnnyMorganz.stylua"
   },
@@ -549,9 +541,6 @@
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "[typescriptreact]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
-  },
   "[yaml]": {
     "editor.defaultFormatter": "redhat.vscode-yaml"
   },
@@ -566,5 +555,16 @@
     "timesheet",
     "timesheets",
     "timespan"
-  ]
+  ],
+  "makefile.configureOnOpen": false,
+  "markdown.updateLinksOnFileMove.enabled": "prompt",
+  "terminal.integrated.commandsToSkipShell": [
+    "kilo-code.new.agentManagerOpen",
+    "kilo-code.new.agentManager.showTerminal"
+  ],
+  "kilo-code.new.autocomplete.enableAutoTrigger": true,
+  "kilo-code.new.autocomplete.enableSmartInlineTaskKeybinding": true,
+  "kilo-code.new.autocomplete.enableChatAutocomplete": true,
+  "kilo-code.new.browserAutomation.enabled": true,
+  "cursorpyright.nodeExecutable": "/Users/lecoqjacob/.xdg/fnm_multishells/95356_1774832918379/bin/node"
 }

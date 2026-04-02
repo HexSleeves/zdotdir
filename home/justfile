@@ -5,7 +5,7 @@ set unstable := true
 
 export JUST_UNSTABLE := "true"
 
-mod bw '.justfiles/bitwarden.justfile'
+mod op '.justfiles/1password.justfile'
 mod claude '.justfiles/claude.justfile'
 mod codex '.justfiles/codex.justfile'
 mod gemini '.justfiles/gemini.justfile'
@@ -27,7 +27,7 @@ HOST := `hostname -s`
 [group("utils")]
 @fmt:
     just --fmt --unstable
-    just bw fmt
+    just op fmt
     just claude fmt
     just codex fmt
     just gemini fmt

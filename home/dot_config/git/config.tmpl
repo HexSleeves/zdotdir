@@ -17,6 +17,8 @@
 	whitespace = trailing-space,space-before-tab
 	excludesfile = ~/.config/git/ignore
 	sshCommand = ssh -i ~/.ssh/id_ed25519
+	preloadindex = true
+	fscache = true
 
 [init]
 	defaultBranch = main
@@ -211,6 +213,24 @@
 
 [receive]
 	fsckObjects = true
+[http]
+	postBuffer = 524288000
+	lowSpeedLimit = 0
+	lowSpeedTime = 999999
+[gc]
+	auto = 256
+[pack]
+	threads = 18
+	deltaCacheSize = 512m
+	windowMemory = 512m
+[coderabbit]
+	machineId = cli/463639c5107c4ad18a5b63d0fd0a9ca0
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
 
 {{- if eq .class "Work" }}
 {{/* [url "git@github.com-work:"]
@@ -222,12 +242,4 @@
 
 [credential "https://dev.azure.com"]
 	useHttpPath = true
-
-[credential "https://github.com"]
-	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
-
-[credential "https://gist.github.com"]
-	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
 {{- end }}

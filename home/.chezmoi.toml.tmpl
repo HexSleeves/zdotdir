@@ -69,8 +69,14 @@ encryption = "age"
     ephemeral = {{ $ephemeral }}
     signingkey = "F5B8831AED0743F77428AC154B696C8ED1B35912"
 
-[bitwarden]
-    command = "bw"
+[onepassword]
+    command = "op"
+    # Use biometric authentication on macOS (recommended)
+    {{- if eq .chezmoi.os "darwin" }}
+    prompt = true
+    {{- else }}
+    prompt = false
+    {{- end }}
 
 [diff]
     exclude = ["scripts"]

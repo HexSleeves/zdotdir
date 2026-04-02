@@ -66,7 +66,7 @@ notify_end = "on_failure"
 # bashit_branch = "stable"
 
 # Run specific steps - same options as the command line flag
-only = ["brew_formula", "brew_cask", "claude_code", "custom_commands"]
+#only = ["brew_formula", "brew_cask", "claude_code", "custom_commands"]
 
 # Whether to self update
 #

@@ -1,0 +1,559 @@
+version: "1.0"
+gateway:
+    host: 127.0.0.1
+    port: 9090
+auth:
+    # type: claude-code
+    type: codex
+adapters:
+    linear:
+        enabled: true
+        auto_assign: false
+        pilot_label: pilot
+        polling:
+            enabled: true
+            interval: 30s
+        workspaces:
+            - name: ROC
+              api_key: ${LINEAR_API_KEY}
+              team_id: fab998f5-5b35-4ab1-a56d-a9ce5181c163
+              auto_assign: false
+    slack:
+        enabled: false
+        bot_token: ""
+        app_token: ""
+        channel: "#dev-notifications"
+        signing_secret: ""
+        socket_mode: false
+        allowed_users: []
+        allowed_channels: []
+        approval:
+            enabled: false
+            channel: "#pilot-approvals"
+            signing_secret: ""
+    telegram:
+        enabled: false
+        bot_token: ""
+        chat_id: ""
+        polling: false
+        allowed_ids: []
+        plain_text_mode: true
+        transcription:
+            backend: whisper-api
+            openai_api_key: ""
+        rate_limit: null
+        llm_classifier: null
+    github:
+        enabled: true
+        token: ${GITHUB_TOKEN}
+        webhook_secret: ""
+        pilot_label: pilot
+        repo: Solace-Health/solace-health-server
+        project_path: /Users/lecoqjacob/Work/solace-health-server
+        polling:
+            enabled: true
+            interval: 30s
+            label: pilot
+        stale_label_cleanup:
+            enabled: true
+            interval: 30m0s
+            threshold: 1h0m0s
+            failed_threshold: 24h0m0s
+        project_board: null
+    # gitlab:
+    #     enabled: false
+    #     token: ""
+    #     base_url: https://gitlab.com
+    #     webhook_secret: ""
+    #     pilot_label: pilot
+    #     project: ""
+    #     polling:
+    #         enabled: false
+    #         interval: 30s
+    #         label: pilot
+    #     stale_label_cleanup:
+    #         enabled: true
+    #         interval: 30m0s
+    #         threshold: 1h0m0s
+    # azure_devops:
+    #     enabled: false
+    #     pat: ""
+    #     organization: ""
+    #     project: ""
+    #     repository: ""
+    #     base_url: https://dev.azure.com
+    #     webhook_secret: ""
+    #     pilot_tag: pilot
+    #     work_item_types:
+    #         - Bug
+    #         - Task
+    #         - User Story
+    #     polling:
+    #         enabled: false
+    #         interval: 30s
+    #     stale_label_cleanup:
+    #         enabled: true
+    #         interval: 30m0s
+    #         threshold: 1h0m0s
+    # jira:
+    #     enabled: false
+    #     platform: cloud
+    #     pilot_label: pilot
+    # asana:
+    #     enabled: false
+    #     access_token: ""
+    #     workspace_id: ""
+    #     webhook_secret: ""
+    #     pilot_tag: pilot
+    # plane:
+    #     enabled: false
+    #     base_url: https://api.plane.so
+    #     api_key: ""
+    #     webhook_secret: ""
+    #     workspace_slug: ""
+    #     project_ids: []
+    #     pilot_label: pilot
+    # discord:
+    #     enabled: false
+    #     bot_token: ""
+    #     bot_id: ""
+    #     allowed_guilds: []
+    #     allowed_channels: []
+    #     command_prefix: ""
+    #     rate_limit:
+    #         messages_per_second: 5
+    #         tasks_per_minute: 10
+    #     llm_classifier: null
+orchestrator:
+    model: claude-sonnet-4-6
+    max_concurrent: 1
+    daily_brief:
+        enabled: true
+        schedule: 0 9 * * 1-5
+        time: ""
+        timezone: America/Chicago
+        channels: []
+        content:
+            include_metrics: true
+            include_errors: true
+            max_items_per_section: 10
+        filters:
+            projects: []
+    execution:
+        mode: sequential
+        wait_for_merge: true
+        poll_interval: 30s
+        pr_timeout: 1h0m0s
+    autopilot:
+        enabled: false
+        environment: dev
+        environments:
+            dev:
+                branch: main
+                require_approval: false
+                ci_timeout: 5m0s
+                skip_post_merge_ci: true
+                post_merge:
+                    action: none
+            prod:
+                branch: main
+                require_approval: true
+                approval_source: telegram
+                approval_timeout: 1h0m0s
+                ci_timeout: 30m0s
+                skip_post_merge_ci: false
+                post_merge:
+                    action: tag
+            stage:
+                branch: main
+                require_approval: false
+                ci_timeout: 30m0s
+                skip_post_merge_ci: false
+                post_merge:
+                    action: none
+        approval_source: telegram
+        github_review:
+            poll_interval: 30s
+        auto_review: true
+        auto_merge: false
+        merge_method: squash
+        ci_wait_timeout: 30m0s
+        dev_ci_timeout: 5m0s
+        ci_poll_interval: 30s
+        required_checks:
+            - typecheck
+            - build
+            - lint
+            - test
+        ci_checks:
+            mode: auto
+            exclude: []
+            required: []
+            discovery_grace_period: 1m0s
+        auto_create_issues: true
+        issue_labels:
+            - pilot
+            - autopilot-fix
+        notify_on_failure: true
+        review_feedback:
+            enabled: true
+            max_iterations: 3
+        max_failures: 3
+        max_ci_fix_iterations: 3
+        failure_reset_timeout: 30m0s
+        max_merges_per_hour: 10
+        approval_timeout: 1h0m0s
+        release: null
+        merged_pr_scan_window: 30m0s
+        name: ""
+executor:
+    type: claude-code
+    auto_create_pr: true
+    detect_ephemeral: true
+    use_worktree: true
+    claude_code:
+        command: claude
+        use_session_resume: true
+        use_from_pr: true
+        use_structured_output: true
+    opencode:
+        server_url: http://127.0.0.1:4096
+        model: anthropic/claude-sonnet-4-6
+        provider: anthropic
+        auto_start_server: true
+        server_command: opencode serve
+    qwen_code:
+        command: qwen
+    model_routing:
+        enabled: true
+        trivial: claude-haiku
+        simple: claude-sonnet-4-6
+        medium: claude-sonnet-4-6
+        complex: claude-opus-4-6
+    timeout:
+        default: 30m
+        trivial: 5m
+        simple: 10m
+        medium: 30m
+        complex: 60m
+    effort_routing:
+        enabled: true
+        trivial: low
+        simple: medium
+        medium: high
+        complex: high
+    effort_classifier:
+        enabled: true
+        model: claude-haiku-4-5-20251001
+        timeout: 30s
+    decompose:
+        enabled: true
+        min_complexity: complex
+        max_subtasks: 5
+        min_description_words: 50
+    intent_judge:
+        enabled: true
+        model: claude-haiku-4-5-20251001
+        max_diff_chars: 8000
+    navigator:
+        auto_init: true
+        templates_path: ""
+    hooks:
+        enabled: true
+        run_tests_on_stop: true
+        block_destructive: true
+        lint_on_save: false
+    retry:
+        enabled: false
+        rate_limit:
+            max_attempts: 3
+            initial_backoff: 30s
+            backoff_multiplier: 2
+        api_error:
+            max_attempts: 3
+            initial_backoff: 5s
+            backoff_multiplier: 2
+        timeout:
+            max_attempts: 2
+            initial_backoff: 0s
+            backoff_multiplier: 0
+            extend_timeout: true
+            timeout_multiplier: 1.5
+    stagnation:
+        enabled: true
+        warn_timeout: 10m0s
+        pause_timeout: 20m0s
+        abort_timeout: 30m0s
+        warn_at_iteration: 8
+        pause_at_iteration: 12
+        abort_at_iteration: 15
+        state_history_size: 5
+        identical_states_threshold: 3
+        grace_period: 30s
+        commit_partial_work: true
+    simplification:
+        enabled: false
+        trigger: post-implementation
+        scope: modified
+        skip_patterns:
+            - "*.test.*"
+            - "*_test.go"
+            - "*.spec.*"
+            - "*.md"
+            - "*.json"
+            - "*.yaml"
+            - "*.yml"
+        max_file_size: 50000
+        preserve_comments: true
+    pre_push_lint: true
+    planning_timeout: 2m0s
+memory:
+    path: /Users/lecoqjacob/.pilot/data
+    cross_project: true
+    learning:
+        enabled: true
+        min_confidence: 0.6
+        max_patterns: 5
+        include_anti: true
+projects:
+    - name: solace-health-server
+      path: /Users/lecoqjacob/Work/solace-health-server
+      navigator: true
+      default_branch: develop
+      github:
+          owner: Solace-Health
+          repo: solace-health-server
+    - name: solace-health-admin
+      path: /Users/lecoqjacob/Work/solace-health-admin
+      navigator: true
+      default_branch: develop
+      github:
+          owner: Solace-Health
+          repo: solace-health-admin
+    - name: gc-agency-ui-monorepo
+      path: /Users/lecoqjacob/Work/gc-agency-ui-monorepo
+      navigator: true
+      default_branch: development
+      github:
+          owner: bayer-int
+          repo: gc-agency-ui-monorepo
+    - name: gc-middleware-svc
+      path: /Users/lecoqjacob/Work/gc-middleware-svc
+      navigator: true
+      default_branch: development
+      github:
+          owner: bayer-int
+          repo: gc-middleware-svc
+default_project: solace-health-server
+dashboard:
+    refresh_interval: 1000
+    show_logs: true
+alerts:
+    enabled: true
+    channels: []
+    rules:
+        - name: task_stuck
+          type: task_stuck
+          enabled: true
+          condition:
+              progress_unchanged_for: 10m0s
+              consecutive_failures: 0
+              daily_spend_threshold: 0
+              budget_limit: 0
+              usage_spike_percent: 0
+              pattern: ""
+              file_pattern: ""
+              paths: []
+          severity: warning
+          channels: []
+          cooldown: 15m0s
+          description: Alert when a task has no progress for 10 minutes
+        - name: task_failed
+          type: task_failed
+          enabled: true
+          condition:
+              progress_unchanged_for: 0s
+              consecutive_failures: 0
+              daily_spend_threshold: 0
+              budget_limit: 0
+              usage_spike_percent: 0
+              pattern: ""
+              file_pattern: ""
+              paths: []
+          severity: warning
+          channels: []
+          cooldown: 0s
+          description: Alert when a task fails
+        - name: consecutive_failures
+          type: consecutive_failures
+          enabled: true
+          condition:
+              progress_unchanged_for: 0s
+              consecutive_failures: 3
+              daily_spend_threshold: 0
+              budget_limit: 0
+              usage_spike_percent: 0
+              pattern: ""
+              file_pattern: ""
+              paths: []
+          severity: critical
+          channels: []
+          cooldown: 30m0s
+          description: Alert when 3 or more consecutive tasks fail
+        - name: daily_spend
+          type: daily_spend_exceeded
+          enabled: false
+          condition:
+              progress_unchanged_for: 0s
+              consecutive_failures: 0
+              daily_spend_threshold: 50
+              budget_limit: 0
+              usage_spike_percent: 0
+              pattern: ""
+              file_pattern: ""
+              paths: []
+          severity: warning
+          channels: []
+          cooldown: 1h0m0s
+          description: Alert when daily spend exceeds threshold
+        - name: budget_depleted
+          type: budget_depleted
+          enabled: false
+          condition:
+              progress_unchanged_for: 0s
+              consecutive_failures: 0
+              daily_spend_threshold: 0
+              budget_limit: 500
+              usage_spike_percent: 0
+              pattern: ""
+              file_pattern: ""
+              paths: []
+          severity: critical
+          channels: []
+          cooldown: 4h0m0s
+          description: Alert when budget limit is exceeded
+    defaults:
+        cooldown: 5m0s
+        default_severity: warning
+        suppress_duplicates: true
+budget:
+    enabled: true
+    daily_limit: 50
+    monthly_limit: 500
+    per_task:
+        max_tokens: 500000
+        max_duration: 1h0m0s
+    on_exceed:
+        daily: pause
+        monthly: stop
+        per_task: stop
+    thresholds:
+        warn_percent: 80
+logging:
+    level: info
+    format: text
+    output: stdout
+    rotation: null
+approval:
+    enabled: false
+    pre_execution:
+        enabled: false
+        approvers: []
+        timeout: 1h0m0s
+        default_action: rejected
+        require_all: false
+    pre_merge:
+        enabled: false
+        approvers: []
+        timeout: 24h0m0s
+        default_action: rejected
+        require_all: false
+    post_failure:
+        enabled: false
+        approvers: []
+        timeout: 1h0m0s
+        default_action: rejected
+        require_all: false
+    rules: []
+    default_timeout: 1h0m0s
+    default_action: rejected
+quality:
+    enabled: true
+    parallel: null
+    gates:
+        - name: typecheck
+          type: typecheck
+          command: npm run tsc
+          required: true
+          timeout: 8m0s
+          threshold: 0
+          max_retries: 2
+          retry_delay: 5s
+          failure_hint: Fix TypeScript errors and preserve the repo's @/ path alias usage.
+        - name: build
+          type: build
+          command: npm run build
+          required: true
+          timeout: 10m0s
+          threshold: 0
+          max_retries: 1
+          retry_delay: 5s
+          failure_hint: Fix NestJS build failures and invalid generated metadata.
+        - name: lint
+          type: lint
+          command: npm run eslint:quiet
+          required: true
+          timeout: 10m0s
+          threshold: 0
+          max_retries: 1
+          retry_delay: 2s
+          failure_hint: Fix ESLint violations, unused imports, and eslint-plugin-solace rule failures.
+        - name: prettier
+          type: custom
+          command: npx prettier --check "src/**/*.ts" "test/**/*.ts" "migrations/**/*.ts" "scripts/**/*.mjs"
+          required: true
+          timeout: 3m0s
+          threshold: 0
+          max_retries: 1
+          retry_delay: 2s
+          failure_hint: Keep changed TypeScript and script files formatted with Prettier.
+        - name: test
+          type: test
+          command: npm run migrate:up-test && npm run test
+          required: true
+          timeout: 25m0s
+          threshold: 0
+          max_retries: 1
+          retry_delay: 10s
+          failure_hint: Fix failing tests and keep the test database schema current before running Jest.
+        - name: knip
+          type: custom
+          command: npm run knip
+          required: false
+          timeout: 10m0s
+          threshold: 0
+          max_retries: 1
+          retry_delay: 5s
+          failure_hint: Remove dead files and unused exports introduced by the change.
+    on_failure:
+        action: retry
+        max_retries: 2
+        notify_on:
+            - failed
+tunnel:
+    enabled: false
+    provider: cloudflare
+    domain: ""
+    port: 9090
+webhooks:
+    enabled: false
+    endpoints: []
+    defaults:
+        timeout: 30s
+        retry:
+            max_attempts: 3
+            initial_delay: 1s
+            max_delay: 1m0s
+            multiplier: 2
+team_id: ""
+team: null
