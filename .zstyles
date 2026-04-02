@@ -9,6 +9,7 @@
 
 # Use caching.
 zstyle ':zephyr:plugin:*' 'use-cache' yes
+zstyle ':zephyr:plugin:history' histfile "$ZSH_DATA_DIR/.zsh_history"
 
 #
 # Completions

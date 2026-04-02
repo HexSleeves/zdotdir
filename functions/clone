@@ -1,5 +1,7 @@
 #!/bin/zsh
 
+emulate -L zsh
+
 ##? clone - clone a git repo
 if [[ -z "$1" ]]; then
   echo "What git repo do you want?" >&2
@@ -21,7 +23,7 @@ fi
 
 local giturl
 zstyle -s ':zsh_custom:plugin:git' default-site giturl || giturl=github.com
-local dest=${XDG_PROJECTS_HOME:-~/Projects}/$user/$repo
+local dest=${XDG_PROJECTS_DIR:-$HOME/Projects}/$user/$repo
 
 if [[ ! -d $dest ]]; then
   git clone --recurse-submodules "git@${giturl}:${user}/${repo}.git" "$dest"
@@ -29,4 +31,4 @@ else
   echo "No need to clone, that directory already exists."
   echo "Taking you there."
 fi
-cd $dest
+cd "$dest"

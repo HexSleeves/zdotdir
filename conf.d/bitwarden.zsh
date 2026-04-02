@@ -9,12 +9,14 @@ command -v bw >/dev/null 2>&1 || return 0
 
 # Helper: Get secret from keychain
 _bw_keychain_get() {
+    emulate -L zsh
     local service="$1"
     security find-generic-password -a "bitwarden" -s "$service" -w 2>/dev/null
 }
 
 # Helper: Set secret in keychain
 _bw_keychain_set() {
+    emulate -L zsh
     local service="$1"
     local secret="$2"
     security delete-generic-password -a "bitwarden" -s "$service" 2>/dev/null || true
@@ -23,12 +25,33 @@ _bw_keychain_set() {
 
 # Helper: Delete secret from keychain
 _bw_keychain_delete() {
+    emulate -L zsh
     local service="$1"
     security delete-generic-password -a "bitwarden" -s "$service" 2>/dev/null || true
 }
 
+_bw_load_credentials() {
+    emulate -L zsh
+    local client_id client_secret
+
+    client_id=$(_bw_keychain_get "BW_CLIENTID")
+    client_secret=$(_bw_keychain_get "BW_CLIENTSECRET")
+
+    [[ -n "$client_id" ]] && export BW_CLIENTID="$client_id"
+    [[ -n "$client_secret" ]] && export BW_CLIENTSECRET="$client_secret"
+}
+
+_bw_restore_session() {
+    emulate -L zsh
+    local session
+
+    session=$(_bw_keychain_get "BW_SESSION")
+    [[ -n "$session" ]] && export BW_SESSION="$session"
+}
+
 # Setup Bitwarden API credentials interactively
 bw-setup() {
+    emulate -L zsh
     echo "Bitwarden API Key Setup"
     echo "======================="
     echo ""
@@ -53,10 +76,12 @@ bw-setup() {
 
 # Login to Bitwarden using API key from keychain
 bw-login() {
+    emulate -L zsh
     local client_id client_secret
 
-    client_id=$(_bw_keychain_get "BW_CLIENTID")
-    client_secret=$(_bw_keychain_get "BW_CLIENTSECRET")
+    _bw_load_credentials
+    client_id=${BW_CLIENTID:-}
+    client_secret=${BW_CLIENTSECRET:-}
 
     if [[ -z "$client_id" ]] || [[ -z "$client_secret" ]]; then
         echo "API credentials not found in keychain. Run 'bw-setup' first."
@@ -87,16 +112,11 @@ bw-login() {
 
 # Unlock Bitwarden vault and store session in keychain
 bw-unlock() {
-    local client_id client_secret session
+    emulate -L zsh
+    local session
 
-    # Load API credentials
-    client_id=$(_bw_keychain_get "BW_CLIENTID")
-    client_secret=$(_bw_keychain_get "BW_CLIENTSECRET")
-
-    if [[ -n "$client_id" ]] && [[ -n "$client_secret" ]]; then
-        export BW_CLIENTID="$client_id"
-        export BW_CLIENTSECRET="$client_secret"
-    fi
+    _bw_load_credentials
+    _bw_restore_session
 
     # Check status
     local status
@@ -128,6 +148,7 @@ bw-unlock() {
 
 # Lock Bitwarden vault and clear session
 bw-lock() {
+    emulate -L zsh
     bw lock >/dev/null 2>&1
     unset BW_SESSION
     _bw_keychain_delete "BW_SESSION"
@@ -136,10 +157,13 @@ bw-lock() {
 
 # Show Bitwarden status
 bw-status() {
+    emulate -L zsh
     local client_id session status_json status email
 
-    client_id=$(_bw_keychain_get "BW_CLIENTID")
-    session=$(_bw_keychain_get "BW_SESSION")
+    _bw_load_credentials
+    _bw_restore_session
+    client_id=${BW_CLIENTID:-}
+    session=${BW_SESSION:-}
 
     echo "Bitwarden Status"
     echo "================"
@@ -175,39 +199,11 @@ bw-status() {
     [[ -n "$email" ]] && echo "User Email:   $email"
 }
 
-# Initialize Bitwarden session from keychain (called on shell startup)
+# Initialize Bitwarden environment from keychain without touching the CLI.
 bw-init() {
-    local session client_id client_secret
-
-    # Load session from keychain
-    session=$(_bw_keychain_get "BW_SESSION")
-
-    if [[ -n "$session" ]]; then
-        export BW_SESSION="$session"
-
-        # Verify session is still valid
-        local status
-        status=$(bw status 2>/dev/null | jq -r '.status' 2>/dev/null || echo "error")
-
-        if [[ "$status" == "unlocked" ]]; then
-            # Session is valid
-            return 0
-        elif [[ "$status" == "locked" ]]; then
-            # Session expired, clear it
-            unset BW_SESSION
-            _bw_keychain_delete "BW_SESSION"
-        fi
-    fi
-
-    # Load API credentials for potential login
-    client_id=$(_bw_keychain_get "BW_CLIENTID")
-    client_secret=$(_bw_keychain_get "BW_CLIENTSECRET")
-
-    if [[ -n "$client_id" ]] && [[ -n "$client_secret" ]]; then
-        export BW_CLIENTID="$client_id"
-        export BW_CLIENTSECRET="$client_secret"
-    fi
+    emulate -L zsh
+    _bw_load_credentials
+    _bw_restore_session
 }
 
-# Skip automatic startup initialization to keep shell launch fast.
-# Run `bw-init` manually (or call `bw-status`/`bw-login`) when needed.
+# Load Bitwarden environment on demand instead of touching the CLI during startup.

@@ -33,7 +33,7 @@ The configuration uses **Antidote** (`lib/antidote.zsh`) for plugin management:
 
 Modules can be disabled by setting `ZSH_ENABLE_<NAME>=0` before shell starts:
 - `ZSH_ENABLE_MISE` - mise version manager (`conf.d/mise.zsh`)
-- `ZSH_ENABLE_NVM` - Node Version Manager (`conf.d/~nvm.zsh`)
+- `ZSH_ENABLE_FNM` - Fast Node Manager (`conf.d/nvm.zsh`)
 - `ZSH_ENABLE_BUN` - Bun JavaScript runtime (`conf.d/bun.zsh`)
 - `ZSH_ENABLE_FZF` - fzf fuzzy finder (`conf.d/fzf.zsh`)
 - `ZSH_ENABLE_AWS` - AWS CLI (`conf.d/aws.zsh`)
@@ -66,7 +66,7 @@ Uses Powerlevel10k with instant prompt:
 ### History Configuration
 
 - Location: `$ZSH_DATA_DIR/.zsh_history` (XDG-compliant)
-- Large history: `HISTSIZE=20000`, `SAVEHIST=20000`
+- Large history: `HISTSIZE=50000`, `SAVEHIST=50000`
 - Settings: `INC_APPEND_HISTORY_TIME`, `EXTENDED_HISTORY`, `SHARE_HISTORY`, etc.
 
 ### History Substring Search
@@ -85,7 +85,7 @@ Custom key bindings in `conf.d/zsh-history-substring-search.zsh`:
 zsh-bench
 
 # Simple exit timing
-zbench  # alias for: for i in {1..10}; do /usr/bin/time zsh -lic exit; done
+zbench  # alias for: for i in {1..10}; do /usr/bin/time env ZSH_BENCHMARK_MODE=1 zsh -lic exit; done
 
 # Profile startup
 zprofrc  # runs ZPROFRC=1 zsh

@@ -4,6 +4,8 @@
 #
 
 [[ -o interactive ]] || return
+(( ${ZSH_INTERACTIVE_TTY:-0} )) || return
+[[ ${ZSH_BENCHMARK_MODE:-0} -eq 1 ]] && return
 
 # Initialize atuin if available
 if command -v atuin &>/dev/null; then

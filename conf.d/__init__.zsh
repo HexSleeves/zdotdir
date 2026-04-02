@@ -28,5 +28,10 @@ path=(
 # Keep these arrays unique to avoid bloating PATH/FPATH on repeated loads.
 typeset -U path fpath cdpath
 
+# Drop stale machine-specific paths inherited from old shells or copied configs.
+path=(
+  ${path:#/Users/jacob.lecoq.ext/*}
+)
+
 # Keep completion dumps in cache, not $HOME.
 ZSH_COMPDUMP=${ZSH_COMPDUMP:-$ZSH_CACHE_DIR/.zcompdump}

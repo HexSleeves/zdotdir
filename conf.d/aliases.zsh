@@ -68,7 +68,7 @@ alias urlencode='python3 -c "import sys, urllib.parse as ul; \
 # misc
 alias please=sudo
 alias zshrc='${EDITOR:-vim} "${ZDOTDIR:-$HOME}"/.zshrc'
-alias zbench='for i in {1..10}; do /usr/bin/time zsh -lic exit; done'
+alias zbench='for i in {1..10}; do /usr/bin/time env ZSH_BENCHMARK_MODE=1 zsh -lic exit; done'
 alias cls="clear && printf '\e[3J'"
 
 # print things

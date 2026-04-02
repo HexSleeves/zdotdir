@@ -9,16 +9,17 @@ export WORKON_HOME="${WORKON_HOME:-${XDG_DATA_HOME:-$HOME/.local/share}/venvs}"
 alias py3='python3'
 alias py='python'
 alias pip3update="pip3 list --outdated | cut -d ' ' -f1 | xargs -n1 pip3 install -U"
-alias pipup="pip list --outdated | cut -d ' ' -f1 | xargs -n1 pip install -U"
 alias pyfind='find . -name "*.py"'
 alias pygrep='grep --include="*.py"'
 alias pyva="source .venv/bin/activate"
 
 function pipup {
+  emulate -L zsh
   pip list --outdated | cut -d ' ' -f1 | xargs -n1 pip install -U
 }
 
 function pyclean {
+  emulate -L zsh
   # Clean common python cache files.
   find "${@:-.}" -type f -name "*.py[co]" -delete
   find "${@:-.}" -type d -name "__pycache__" -delete
@@ -27,6 +28,7 @@ function pyclean {
 }
 
 function venv {
+  emulate -L zsh
   # venv - Manage Python venvs.
   local workon_home
   local -a usage o_list o_remove o_path
@@ -120,6 +122,7 @@ function venv {
 }
 
 function workon {
+  emulate -L zsh
   venv -- "$@"
 }
 

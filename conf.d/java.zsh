@@ -2,4 +2,7 @@
 # java
 #
 
-alias setjavahome="export JAVA_HOME=\`/usr/libexec/java_home\`"
+setjavahome() {
+  emulate -L zsh
+  export JAVA_HOME="$(/usr/libexec/java_home)"
+}

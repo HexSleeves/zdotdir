@@ -4,11 +4,13 @@
 
 ##? Show all extensions in current folder structure.
 function allexts {
-  find . -not \( -path '*/.git/*' -prune \) -type f -name '*.*' | sed 's|.*\.|\.|' | sort | uniq -c
+  emulate -L zsh
+  command find . -not \( -path '*/.git/*' -prune \) -type f -name '*.*' | command sed 's|.*\.|\.|' | sort | uniq -c
 }
 
 ##? Backup files or directories
 function bak {
+  emulate -L zsh
   local now f
   now=$(date +"%Y%m%d-%H%M%S")
   for f in "$@"; do
@@ -22,22 +24,27 @@ function bak {
 
 ##? noext - Find files with no file extension
 function noext {
+  emulate -L zsh
   # for fun, rename with: noext -exec mv '{}' '{}.sql' \;
-  find . -not \( -path '*/.git/*' -prune \) -type f ! -name '*.*'
+  command find . -not \( -path '*/.git/*' -prune \) -type f ! -name '*.*'
 }
 
 ##? optdiff - show a diff between set options and Zsh defaults
 function optdiff {
-  tmp1=$(mktemp)
-  tmp2=$(mktemp)
-  zsh -df -c "set -o" >| $tmp1
-  set -o >| $tmp2
-  gdiff --changed-group-format='%<' --unchanged-group-format='' $tmp2 $tmp1
-  rm $tmp1 $tmp2
+  emulate -L zsh
+  local tmp1 tmp2 diff_cmd
+  tmp1=$(mktemp) || return 1
+  tmp2=$(mktemp) || { command rm -f -- "$tmp1"; return 1; }
+  diff_cmd=${commands[gdiff]:-${commands[diff]:-diff}}
+  zsh -df -c "set -o" >| "$tmp1"
+  set -o >| "$tmp2"
+  "$diff_cmd" --changed-group-format='%<' --unchanged-group-format='' "$tmp2" "$tmp1"
+  command rm -f -- "$tmp1" "$tmp2"
 }
 
 ##? Remove zwc files
 function rmzwc {
+  emulate -L zsh
   if [[ "$1" == "--help" ]] || [[ "$1" == "-h" ]]; then
     echo "rmzwc"
     echo "  removes zcompiled files"
@@ -65,8 +72,9 @@ function rmzwc {
 
 ##? Substitutes string parts with environment variables
 function substenv {
+  emulate -L zsh
   if (( $# == 0 )); then
-    subenv ZDOTDIR | subenv HOME
+    substenv ZDOTDIR | substenv HOME
   else
     local sedexp="s|${(P)1}|\$$1|g"
     shift
@@ -76,8 +84,9 @@ function substenv {
 
 ##? Better tail -f
 function tailf {
+  emulate -L zsh
   local nl
-  tail -f $2 | while read j; do
+  command tail -f "${1:-/dev/null}" | while IFS= read -r j; do
     print -n "$nl$j"
     nl="\n"
   done
@@ -85,6 +94,7 @@ function tailf {
 
 ##? Makes any dirs recursively and then touches a file if it doesn't exist
 function touchf {
+  emulate -L zsh
   if [[ -n "$1" ]] && [[ ! -f "$1" ]]; then
     mkdir -p "$1:h" && touch "$1"
   fi
@@ -92,7 +102,8 @@ function touchf {
 
 ##? What's the weather?
 function weather {
-  curl "http://wttr.in/$1"
+  emulate -L zsh
+  curl "https://wttr.in/${1:-}"
 }
 
 ##? Compile Zsh files in a directory
@@ -120,8 +131,6 @@ function zcompiledir {
 
 ##? Echo to stderror
 function echoerr {
+  emulate -L zsh
   echo >&2 "$@"
 }
-
-##? Pass thru for copy/paste markdown
-function $ { $@ }

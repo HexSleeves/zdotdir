@@ -11,8 +11,4 @@
 # Common variables you might set in the local file:
 #   NPM_TOKEN
 
-if [[ -f "$SOLACE_ENV_FILE" ]]; then
-  setopt localoptions allexport
-  source "$SOLACE_ENV_FILE"
-  unsetopt allexport
-fi
+load_exports_file "$SOLACE_ENV_FILE"

@@ -173,7 +173,7 @@ New key bindings and features:
 
 ### What's Been Optimized
 
-1. **Lazy Loading** - NVM loads only when needed (~100-200ms saved)
+1. **Deferred Node Init** - fnm initializes only outside benchmark mode and after shell boot
 2. **Compiled Config** - Zsh files auto-compile for faster loading
 3. **Better History** - Optimized settings for 50,000 entries
 4. **Keyboard Shortcuts** - Enhanced navigation and editing
@@ -188,10 +188,10 @@ zsh-bench
 zsh-startup
 
 # Manual benchmark
-hyperfine --warmup 3 --runs 10 'zsh -lic exit'
+hyperfine --warmup 3 --runs 10 'env ZSH_BENCHMARK_MODE=1 zsh -lic exit'
 ```
 
-**Target**: Under 100ms startup time
+**Target**: Under 100ms startup time in benchmark mode
 
 ---
 

@@ -10,5 +10,5 @@ export BUN_INSTALL="${BUN_INSTALL:-$HOME/.cache/.bun}"
 
 # Add bun to PATH if present.
 if [[ -d "$BUN_INSTALL/bin" ]]; then
-  path=($BUN_INSTALL/bin $path)
+  path=("$BUN_INSTALL/bin" $path)
 fi

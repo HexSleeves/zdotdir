@@ -18,8 +18,4 @@
 #   GEMINI_API_KEY
 #   MISTRAL_API_KEY
 
-if [[ -f "$AI_PROVIDERS_FILE" ]]; then
-  setopt localoptions allexport
-  source "$AI_PROVIDERS_FILE"
-  unsetopt allexport
-fi
+load_exports_file "$AI_PROVIDERS_FILE"

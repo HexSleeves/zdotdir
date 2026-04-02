@@ -3,7 +3,28 @@
 # fzf-enhanced.zsh - Enhanced FZF configuration
 #
 
+[[ ${ZSH_ENABLE_FZF:-1} -eq 1 ]] || return
+(( ${ZSH_INTERACTIVE_TTY:-0} )) || return
+[[ ${ZSH_BENCHMARK_MODE:-0} -eq 1 ]] && return
+
 if command -v fzf &>/dev/null; then
+  _fzf_source_integration() {
+    emulate -L zsh
+    local integration
+
+    for integration in \
+      /opt/homebrew/opt/fzf/shell/key-bindings.zsh \
+      /usr/local/opt/fzf/shell/key-bindings.zsh \
+      "$XDG_CONFIG_HOME/fzf/key-bindings.zsh"
+    do
+      [[ -r "$integration" ]] || continue
+      source "$integration"
+      break
+    done
+  }
+
+  _fzf_source_integration
+
   # Use fd for file finding if available
   if command -v fd &>/dev/null; then
     export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git --exclude node_modules'
@@ -54,25 +75,28 @@ if command -v fzf &>/dev/null; then
 
   # Git integration functions
   fzf-git-branch() {
+    emulate -L zsh
     local branches branch
     branches=$(git branch -a | grep -v HEAD) &&
     branch=$(echo "$branches" | fzf +m) &&
-    git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+    git checkout "$(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")"
   }
   zle -N fzf-git-branch
   bindkey '^g^b' fzf-git-branch
 
   fzf-git-log() {
+    emulate -L zsh
     local commits commit
     commits=$(git log --color=always --pretty=oneline --abbrev-commit --reverse) &&
     commit=$(echo "$commits" | fzf --ansi +s +m -e) &&
-    git show $(echo "$commit" | sed "s/ .*//")
+    git show "$(echo "$commit" | sed "s/ .*//")"
   }
   zle -N fzf-git-log
   bindkey '^g^l' fzf-git-log
 
   # File search with preview
   fzf-file-widget() {
+    emulate -L zsh
     local file
     file=$(fzf --query "$LBUFFER" --select-1 --exit-0)
     if [[ -n "$file" ]]; then
@@ -85,6 +109,7 @@ if command -v fzf &>/dev/null; then
 
   # Process killer
   fzf-kill() {
+    emulate -L zsh
     local pid
     if command -v procs &>/dev/null; then
       pid=$(procs | sed 1d | fzf -m | awk '{print $1}')
@@ -100,6 +125,7 @@ if command -v fzf &>/dev/null; then
 
   # Environment variable viewer
   fzf-env() {
+    emulate -L zsh
     env | fzf --preview 'echo {}' --preview-window down:3:wrap
   }
   alias fenv='fzf-env'
@@ -107,6 +133,7 @@ if command -v fzf &>/dev/null; then
   # Command history search (if not using atuin)
   if ! command -v atuin &>/dev/null; then
     fzf-history-widget() {
+      emulate -L zsh
       local selected
       selected=$(fc -rl 1 | awk '{ cmd=$0; sub(/^[ \t]*[0-9]+\**[ \t]+/, "", cmd); if (!seen[cmd]++) print $0 }' |
         fzf --query "$LBUFFER" --tac --no-sort --exact)
@@ -122,6 +149,7 @@ if command -v fzf &>/dev/null; then
   # Tmux session selector
   if command -v tmux &>/dev/null; then
     fzf-tmux-session() {
+      emulate -L zsh
       local session
       session=$(tmux list-sessions -F "#{session_name}" 2>/dev/null | fzf --exit-0)
       if [[ -n "$session" ]]; then
@@ -133,8 +161,9 @@ if command -v fzf &>/dev/null; then
 
   # SSH host selector
   fzf-ssh() {
+    emulate -L zsh
     local host
-    host=$(grep -E '^Host ' $HOME/.ssh/config 2>/dev/null |
+    host=$(grep -E '^Host ' "$HOME/.ssh/config" 2>/dev/null |
       grep -v '*' |
       awk '{print $2}' |
       fzf --exit-0)
@@ -147,12 +176,14 @@ if command -v fzf &>/dev/null; then
   # Docker container selector
   if command -v docker &>/dev/null; then
     fzf-docker() {
+      emulate -L zsh
       local container
       container=$(docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}\t{{.Image}}" |
         tail -n +2 |
         fzf --header-lines=0)
       if [[ -n "$container" ]]; then
-        local container_id=$(echo "$container" | awk '{print $1}')
+        local container_id
+        container_id=$(echo "$container" | awk '{print $1}')
         docker exec -it "$container_id" /bin/bash || docker exec -it "$container_id" /bin/sh
       fi
     }
@@ -162,13 +193,15 @@ if command -v fzf &>/dev/null; then
   # Kubernetes pod selector
   if command -v kubectl &>/dev/null; then
     fzf-kubectl() {
+      emulate -L zsh
       local pod
       pod=$(kubectl get pods --all-namespaces |
         tail -n +2 |
         fzf --header-lines=0)
       if [[ -n "$pod" ]]; then
-        local namespace=$(echo "$pod" | awk '{print $1}')
-        local pod_name=$(echo "$pod" | awk '{print $2}')
+        local namespace pod_name
+        namespace=$(echo "$pod" | awk '{print $1}')
+        pod_name=$(echo "$pod" | awk '{print $2}')
         kubectl exec -it -n "$namespace" "$pod_name" -- /bin/bash || \
         kubectl exec -it -n "$namespace" "$pod_name" -- /bin/sh
       fi

@@ -2,10 +2,7 @@
 # zoxide: Configure zoxide.
 #
 
-if ! (( $+commands[zoxide] )); then
-  echo "zoxide not found" >&2
-  return 1
-fi
+(( $+commands[zoxide] )) || return 0
 
 # https://github.com/ajeetdsouza/zoxide
 if (( $+functions[cached-eval] )); then

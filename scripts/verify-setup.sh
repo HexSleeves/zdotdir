@@ -141,10 +141,10 @@ if [ $INSTALLED -eq $TOTAL ]; then
   echo "  • help <cmd>   - Quick command examples"
 else
   echo -e "${YELLOW}⚠️  Some tools are missing. Run the installation script:${NC}"
-  echo "  bash ~/.config/zsh/install-tools.sh"
+  echo "  bash ~/.config/zsh/scripts/install-tools.sh"
 fi
 
 echo ""
 echo "For detailed information, see:"
-echo "  cat ~/.config/zsh/OPTIMIZATION_GUIDE.md"
+echo "  cat ~/.config/zsh/docs/OPTIMIZATION_GUIDE.md"
 echo ""

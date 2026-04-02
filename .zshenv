@@ -13,25 +13,31 @@ export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
 export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-$HOME/.xdg}
 export XDG_PROJECTS_DIR=${XDG_PROJECTS_DIR:-$HOME/Projects}
 export XDG_WORK_DIR=${XDG_WORK_DIR:-$HOME/Work}
-
-# Fish-like dirs
-: ${__zsh_config_dir:=${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}}
-: ${__zsh_user_data_dir:=${XDG_DATA_HOME:-$HOME/.local/share}/zsh}
-: ${__zsh_cache_dir:=${XDG_CACHE_HOME:-$HOME/.cache}/zsh}
+export ZSH_CONFIG_DIR=${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}
+export ZSH_DATA_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/zsh
+export ZSH_CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}/zsh
+: ${__zsh_config_dir:=$ZSH_CONFIG_DIR}
+: ${__zsh_user_data_dir:=$ZSH_DATA_DIR}
+: ${__zsh_cache_dir:=$ZSH_CACHE_DIR}
 
 # Ensure Zsh directories exist.
 () {
-  local zdir
-  for zdir in $@; do
-    [[ -d "${(P)zdir}" ]] || mkdir -p -- "${(P)zdir}"
+  local dir
+  for dir in "$@"; do
+    [[ -d "$dir" ]] || mkdir -p -- "$dir"
   done
-} __zsh_{config,user_data,cache}_dir XDG_{CONFIG,CACHE,DATA,STATE}_HOME XDG_{RUNTIME,PROJECTS}_DIR
+} "$ZSH_CONFIG_DIR" "$ZSH_DATA_DIR" "$ZSH_CACHE_DIR" \
+  "$XDG_STATE_HOME" "$XDG_RUNTIME_DIR" "$XDG_PROJECTS_DIR"
 
 # Make Terminal.app behave.
 if [[ "$OSTYPE" == darwin* ]]; then
   export SHELL_SESSIONS_DISABLE=1
 fi
-if [[ -d "$HOME/.cargo/bin" ]]; then
-  typeset -gU PATH path
-  path=("$HOME/.cargo/bin" $path)
-fi
+typeset -gU PATH path
+[[ -d "$HOME/.cargo/bin" ]] && path=("$HOME/.cargo/bin" $path)
+
+for cargo_env in "$HOME/.cargo/env" "$HOME/.local/share/cargo/env"; do
+  [[ -r "$cargo_env" ]] || continue
+  source "$cargo_env"
+  break
+done

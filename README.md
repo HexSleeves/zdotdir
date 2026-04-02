@@ -55,7 +55,7 @@ Modules in `conf.d/` can be selectively enabled or disabled using environment va
 
 Common feature toggles:
 - `ZSH_ENABLE_MISE`: Enable [mise](https://mise.jdx.dev) version manager.
-- `ZSH_ENABLE_NVM`: Enable Node Version Manager.
+- `ZSH_ENABLE_FNM`: Enable [fnm](https://github.com/Schniz/fnm) Node version management.
 - `ZSH_ENABLE_BUN`: Enable Bun runtime.
 - `ZSH_ENABLE_FZF`: Enable fzf integration.
 - `ZSH_ENABLE_AWS`: Enable AWS CLI completions and helpers.
@@ -92,6 +92,7 @@ If installed, modern replacements are automatically aliased:
 ### Autoloaded Functions (`functions/`)
 - **`clone <user>/<repo>`**: Smart wrapper for `git clone` that organizes projects into `$XDG_PROJECTS_DIR`.
 - **`cdpr`**: `cd` to the Project Root of the current git repository.
+- **`load_exports_file <file>`**: Helper used by secret-bearing modules to source local exports safely.
 
 ## Key Bindings
 - **Vi Mode**: Enabled by default.
