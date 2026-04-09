@@ -1,28 +1,28 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-typeset -r _p10k_user="${USER:-$(id -un)}"
-typeset -r _p10k_instant_prompt_file="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${_p10k_user}.zsh"
+_p10k_user="${USER:-$(id -un)}"
+_p10k_instant_prompt_file="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${_p10k_user}.zsh"
 if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && [[ -r "$_p10k_instant_prompt_file" ]]; then
   # shellcheck source=/dev/null
   source "$_p10k_instant_prompt_file"
 fi
 unset _p10k_user _p10k_instant_prompt_file
 
-#!/bin/zsh
 #
 # .zshrc - Zsh file loaded on interactive shell sessions.
 #
 
 # Profiling
-[[ "$ZPROFRC" -ne 1 ]] || zmodload zsh/zprof
-alias zprofrc="ZPROFRC=1 zsh"
+if [[ ${ZPROFRC:-0} -eq 1 ]]; then
+  zmodload zsh/zprof
+fi
+alias zprofrc='ZPROFRC=1 zsh'
 
-# Set Zsh location vars.
-ZSH_CONFIG_DIR="${ZSH_CONFIG_DIR:-${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}}"
-ZSH_DATA_DIR="${ZSH_DATA_DIR:-${XDG_DATA_HOME:-$HOME/.local/share}/zsh}"
-ZSH_CACHE_DIR="${ZSH_CACHE_DIR:-${XDG_CACHE_HOME:-$HOME/.cache}/zsh}"
-mkdir -p -- "$ZSH_CONFIG_DIR" "$ZSH_DATA_DIR" "$ZSH_CACHE_DIR"
+# .zshenv normally exports these already; keep cheap fallbacks for manual sourcing.
+: "${ZSH_CONFIG_DIR:=${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}}"
+: "${ZSH_DATA_DIR:=${XDG_DATA_HOME:-$HOME/.local/share}/zsh}"
+: "${ZSH_CACHE_DIR:=${XDG_CACHE_HOME:-$HOME/.cache}/zsh}"
 
 # Set essential options
 setopt EXTENDED_GLOB INTERACTIVE_COMMENTS
@@ -82,37 +82,34 @@ unset _had_null_glob
 [[ "$PWD" != "/" ]] || cd || exit
 
 # Local settings
-[ -r "$HOME"/.local/config/zsh/.zshrc.local ] \
-&& . "$HOME"/.local/config/zsh/.zshrc.local
+[[ -r "$HOME/.local/config/zsh/.zshrc.local" ]] && source "$HOME/.local/config/zsh/.zshrc.local"
 
 
 # >>> forge initialize >>>
 # !! Contents within this block are managed by 'forge zsh setup' !!
 # !! Do not edit manually - changes will be overwritten !!
 
-# Add required zsh plugins if not already present
-typeset -i _has_autosuggestions=0 _has_syntax_highlighting=0
-for _plugin in "${plugins[@]}"; do
-    [[ "$_plugin" == "zsh-autosuggestions" ]] && _has_autosuggestions=1
-    [[ "$_plugin" == "zsh-syntax-highlighting" ]] && _has_syntax_highlighting=1
-done
-(( _has_autosuggestions )) || plugins+=(zsh-autosuggestions)
-(( _has_syntax_highlighting )) || plugins+=(zsh-syntax-highlighting)
-unset _plugin _has_autosuggestions _has_syntax_highlighting
+typeset -i _has_forge=0
+if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && (( ZSH_INTERACTIVE_TTY )) && command -v forge >/dev/null 2>&1; then
+  _has_forge=1
+fi
 
 # Load forge shell plugin (commands, completions, keybindings) if not already loaded
-if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && (( ZSH_INTERACTIVE_TTY )) && command -v forge >/dev/null 2>&1 && [[ -z "$_FORGE_PLUGIN_LOADED" ]]; then
+if (( _has_forge )) && [[ -z ${_FORGE_PLUGIN_LOADED:-} ]]; then
     eval "$(forge zsh plugin)"
 fi
 
 # Load forge shell theme (prompt with AI context) if not already loaded
-if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && (( ZSH_INTERACTIVE_TTY )) && command -v forge >/dev/null 2>&1 && [[ -z "$_FORGE_THEME_LOADED" ]]; then
+if (( _has_forge )) && [[ -z ${_FORGE_THEME_LOADED:-} ]]; then
     eval "$(forge zsh theme)"
 fi
+unset _has_forge
 # <<< forge initialize <<<
 
 # Finish profiling by calling zprof.
-[[ "$ZPROFRC" -eq 1 ]] && zprof
+if [[ ${ZPROFRC:-0} -eq 1 ]]; then
+  zprof
+fi
 [[ -v ZPROFRC ]] && unset ZPROFRC
 
 # Always return success
