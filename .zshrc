@@ -29,11 +29,13 @@ typeset -gi ZSH_INTERACTIVE_TTY=0
 fpath=("$ZSH_CONFIG_DIR/completions" $fpath)
 
 # Lazy-load (autoload) Zsh function files from a directory.
-for _fndir in "$ZSH_CONFIG_DIR"/functions(/FN) "$ZSH_CONFIG_DIR"/functions/*(/FN); do
+typeset -a _fndirs
+_fndirs=("$ZSH_CONFIG_DIR"/functions(N/F) "$ZSH_CONFIG_DIR"/functions/*(N/F))
+for _fndir in $_fndirs; do
   fpath=($_fndir $fpath)
   autoload -Uz $_fndir/*~*/_*(N.:t)
 done
-unset _fndir
+unset _fndir _fndirs
 
 # Set any zstyles you might use for configuration.
 [[ -r "$ZSH_CONFIG_DIR/.zstyles" ]] && source "$ZSH_CONFIG_DIR/.zstyles"
@@ -57,6 +59,10 @@ for _rc in "$ZSH_CONFIG_DIR"/conf.d/*.zsh(N); do
 done
 unset _rc
 
+autoload -Uz compinit
+ZSH_COMPDUMP=$XDG_CACHE_HOME/zsh/zcompdump
+compinit -i -d "$ZSH_COMPDUMP"
+
 # Never start in the root file system.
 [[ "$PWD" != "/" ]] || cd
 
@@ -68,6 +74,14 @@ unset _rc
 # >>> forge initialize >>>
 # !! Contents within this block are managed by 'forge zsh setup' !!
 # !! Do not edit manually - changes will be overwritten !!
+
+# Add required zsh plugins if not already present
+if [[ ! " ${plugins[@]} " =~ " zsh-autosuggestions " ]]; then
+    plugins+=(zsh-autosuggestions)
+fi
+if [[ ! " ${plugins[@]} " =~ " zsh-syntax-highlighting " ]]; then
+    plugins+=(zsh-syntax-highlighting)
+fi
 
 # Load forge shell plugin (commands, completions, keybindings) if not already loaded
 if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && (( ZSH_INTERACTIVE_TTY )) && (( $+commands[forge] )) && [[ -z "$_FORGE_PLUGIN_LOADED" ]]; then
