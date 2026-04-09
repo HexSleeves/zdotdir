@@ -15,6 +15,10 @@ zstyle ':zephyr:plugin:history' histfile "$ZSH_DATA_DIR/.zsh_history"
 # Completions
 #
 
+# Favor cached, deferred completion initialization.
+zstyle ':plugin:ez-compinit' use-cache yes
+zstyle ':plugin:ez-compinit:compstyleinit' defer yes
+
 zstyle ':zsh_custom:plugin:*' 'use-cache' no
 zstyle ':zsh_custom:plugin:completion' compstyle zshzoo
 

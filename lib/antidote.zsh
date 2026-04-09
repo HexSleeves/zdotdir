@@ -34,17 +34,19 @@ zsh_plugins=${ZDOTDIR:-$HOME}/.zsh_plugins
 # Ensure the .zsh_plugins.txt file exists so you can add plugins.
 [[ -f ${zsh_plugins}.txt ]] || touch ${zsh_plugins}.txt
 
-source $ANTIDOTE_REPO/antidote.zsh
-antidote load
+# Prime common Zsh helper functions used by plugins before sourcing the bundle.
+autoload -Uz add-zsh-hook add-zle-hook-widget colors is-at-least
 
-# # Lazy-load antidote from its functions directory.
-# fpath=($ANTIDOTE_REPO $fpath)
-# autoload -Uz antidote
+# Regenerate the static plugins file only when the bundle list changes.
+if [[ ! -f ${zsh_plugins}.zsh || ${zsh_plugins}.txt -nt ${zsh_plugins}.zsh ]]; then
+  source $ANTIDOTE_REPO/antidote.zsh
+  antidote bundle <${zsh_plugins}.txt >|${zsh_plugins}.zsh
+fi
 
-# # Generate a new static file whenever .zsh_plugins.txt is updated.
-# if [[ ! ${zsh_plugins}.zsh -nt ${zsh_plugins}.txt ]]; then
-#   antidote bundle <${zsh_plugins}.txt >|${zsh_plugins}.zsh
-# fi
-
-# # Source your static plugins file.
-# source ${zsh_plugins}.zsh
+# Prefer the static bundle on the hot path for faster startup.
+if [[ -r ${zsh_plugins}.zsh ]]; then
+  source ${zsh_plugins}.zsh
+else
+  source $ANTIDOTE_REPO/antidote.zsh
+  antidote load
+fi

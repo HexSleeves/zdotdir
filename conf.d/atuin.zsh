@@ -9,8 +9,11 @@
 
 # Initialize atuin if available
 if command -v atuin &>/dev/null; then
-  # Initialize atuin
-  eval "$(atuin init zsh)"
+  if (( $+functions[cached-eval] )); then
+    cached-eval 'atuin-init-zsh' atuin init zsh
+  else
+    eval "$(atuin init zsh)"
+  fi
 
   # Bind Ctrl+R to atuin search (override default history search)
   bindkey '^r' atuin-search
