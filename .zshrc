@@ -78,6 +78,9 @@ unset _rc _rc_name
 (( _had_null_glob )) || unsetopt null_glob
 unset _had_null_glob
 
+ZSH_COMPDUMP=$XDG_CACHE_HOME/zsh/zcompdump
+compinit -i -d "$ZSH_COMPDUMP"
+
 # Never start in the root file system.
 [[ "$PWD" != "/" ]] || cd || exit
 
