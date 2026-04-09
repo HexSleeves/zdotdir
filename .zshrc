@@ -1,9 +1,13 @@
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.config/zsh/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+typeset -r _p10k_user="${USER:-$(id -un)}"
+typeset -r _p10k_instant_prompt_file="${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${_p10k_user}.zsh"
+if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && [[ -r "$_p10k_instant_prompt_file" ]]; then
+  # shellcheck source=/dev/null
+  source "$_p10k_instant_prompt_file"
 fi
+unset _p10k_user _p10k_instant_prompt_file
 
 #!/bin/zsh
 #
@@ -26,7 +30,7 @@ typeset -gi ZSH_INTERACTIVE_TTY=0
 [[ -t 0 && -t 1 && -t 2 ]] && ZSH_INTERACTIVE_TTY=1
 
 # Add custom completions
-fpath=("$ZSH_CONFIG_DIR/completions" $fpath)
+fpath=("$ZSH_CONFIG_DIR/completions" "${fpath[@]}")
 
 # Lazy-load (autoload) Zsh function files from a directory.
 typeset -i _had_null_glob=0
@@ -37,7 +41,7 @@ typeset -a _fndirs
 _fndirs=("$ZSH_CONFIG_DIR/functions" "$ZSH_CONFIG_DIR"/functions/*)
 for _fndir in "${_fndirs[@]}"; do
   [[ -d "$_fndir" ]] || continue
-  fpath=("$_fndir" $fpath)
+  fpath=("$_fndir" "${fpath[@]}")
   for _fn in "$_fndir"/*; do
     [[ -f "$_fn" ]] || continue
     [[ "${_fn##*/}" != _* ]] || continue
@@ -66,6 +70,7 @@ for _rc in "$ZSH_CONFIG_DIR"/conf.d/*.zsh; do
   # ignore files that begin with ~
   [[ "$_rc_name" != '~'* ]] || continue
   [[ " ${IGNORE_LIST[*]} " != *" ${_rc_name} "* ]] || continue
+  # shellcheck source=/dev/null
   source "$_rc"
 done
 unset _rc _rc_name
@@ -96,12 +101,12 @@ done
 unset _plugin _has_autosuggestions _has_syntax_highlighting
 
 # Load forge shell plugin (commands, completions, keybindings) if not already loaded
-if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && (( ZSH_INTERACTIVE_TTY )) && (( $+commands[forge] )) && [[ -z "$_FORGE_PLUGIN_LOADED" ]]; then
+if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && (( ZSH_INTERACTIVE_TTY )) && command -v forge >/dev/null 2>&1 && [[ -z "$_FORGE_PLUGIN_LOADED" ]]; then
     eval "$(forge zsh plugin)"
 fi
 
 # Load forge shell theme (prompt with AI context) if not already loaded
-if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && (( ZSH_INTERACTIVE_TTY )) && (( $+commands[forge] )) && [[ -z "$_FORGE_THEME_LOADED" ]]; then
+if [[ ${ZSH_BENCHMARK_MODE:-0} -ne 1 ]] && (( ZSH_INTERACTIVE_TTY )) && command -v forge >/dev/null 2>&1 && [[ -z "$_FORGE_THEME_LOADED" ]]; then
     eval "$(forge zsh theme)"
 fi
 # <<< forge initialize <<<
