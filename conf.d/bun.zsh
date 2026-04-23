@@ -12,3 +12,6 @@ export BUN_INSTALL="${BUN_INSTALL:-$HOME/.cache/.bun}"
 if [[ -d "$BUN_INSTALL/bin" ]]; then
   path=("$BUN_INSTALL/bin" $path)
 fi
+
+# bun completions
+[ -s "/Users/lecoqjacob/.cache/.bun/_bun" ] && source "/Users/lecoqjacob/.cache/.bun/_bun"

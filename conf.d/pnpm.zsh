@@ -1,3 +1,7 @@
 # pnpm
-export PNPM_HOME="${PNPM_HOME:-$XDG_DATA_HOME/pnpm}"
-[[ -d "$PNPM_HOME" ]] && path=("$PNPM_HOME" $path)
+export PNPM_HOME="/Users/lecoqjacob/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

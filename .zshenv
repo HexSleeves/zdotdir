@@ -41,3 +41,4 @@ for cargo_env in "$HOME/.cargo/env" "$HOME/.local/share/cargo/env"; do
   source "$cargo_env"
   break
 done
+. "/Users/lecoqjacob/.local/share/cargo/env"
