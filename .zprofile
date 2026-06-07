@@ -1,5 +1,5 @@
-#!/bin/zsh
+[ -f "$HOME/.profile" ] && . "$HOME/.profile"
 
-export SHELL_SESSIONS_DISABLE=1
-export EDITOR=nvim
-export VISUAL=code
+# Added by OrbStack: command-line tools and integration
+# This won't be added again if you remove it.
+source ~/.orbstack/shell/init.zsh 2>/dev/null || :

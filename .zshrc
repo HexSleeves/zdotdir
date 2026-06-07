@@ -14,6 +14,15 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Antibody compatibility shim → delegates to antidote
+antibody() {
+  case "${1:-}" in
+    init) ;;
+    bundle) command antidote bundle "${@:2}" ;;
+    *) command antidote "$@" ;;
+  esac
+}
+
 # Create an amazing Zsh config using antidote plugins.
 source $ZDOTDIR/lib/antidote-fast.zsh
 

@@ -10,7 +10,28 @@ export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
+export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-$HOME/.xdg}
+export XDG_PROJECTS_DIR=${XDG_PROJECTS_DIR:-$HOME/Projects}
+export XDG_WORK_DIR=${XDG_WORK_DIR:-$HOME/Work}
+export ZSH_CONFIG_DIR=${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}
+export ZSH_DATA_DIR=${XDG_DATA_HOME:-$HOME/.local/share}/zsh
+export ZSH_CACHE_DIR=${XDG_CACHE_HOME:-$HOME/.cache}/zsh
+: ${__zsh_config_dir:=$ZSH_CONFIG_DIR}
+: ${__zsh_user_data_dir:=$ZSH_DATA_DIR}
+: ${__zsh_cache_dir:=$ZSH_CACHE_DIR}
 
-if [[ ! -o LOGIN ]] && [[ -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprofile"
+# Ensure Zsh directories exist.
+() {
+  local dir
+  for dir in "$@"; do
+    [[ -d "$dir" ]] || mkdir -p -- "$dir"
+  done
+} "$ZSH_CONFIG_DIR" "$ZSH_DATA_DIR" "$ZSH_CACHE_DIR" \
+  "$XDG_STATE_HOME" "$XDG_RUNTIME_DIR" "$XDG_PROJECTS_DIR" "$XDG_WORK_DIR"
+
+# Make Terminal.app behave.
+if [[ "$OSTYPE" == darwin* ]]; then
+  export SHELL_SESSIONS_DISABLE=1
 fi
+typeset -gU PATH path
+[ -f "$HOME/.config/shell/profile.sh" ] && . "$HOME/.config/shell/profile.sh"
