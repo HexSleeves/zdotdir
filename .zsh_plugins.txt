@@ -37,6 +37,7 @@ romkatv/powerlevel10k
 
 using:HexSleeves/zsh_custom path:plugins
 HexSleeves/zsh_custom autoload:functions
+HexSleeves/zsh_custom path:plugins/git
 xdg-apps
 azure
 clipboard
@@ -47,7 +48,6 @@ dotfiles
 dotnet
 extract
 fzf
-git
 git-cmds
 iwd
 jupyter
