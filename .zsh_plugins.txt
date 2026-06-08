@@ -38,25 +38,9 @@ romkatv/powerlevel10k
 using:HexSleeves/zsh_custom path:plugins
 HexSleeves/zsh_custom autoload:functions
 HexSleeves/zsh_custom path:plugins/git
-xdg-apps
-azure
-clipboard
-common-aliases
-common-functions
-direnv
-dotfiles
-dotnet
-extract
-fzf
-git-cmds
-iwd
-jupyter
-perl
-prj
-python
-ruby
-#terminal
-zoxide
+# loaded via $plugins array in .zshrc → zsh_custom.zsh loop:
+# xdg-apps azure clipboard common-aliases common-functions confd direnv
+# dotfiles dotnet extract fzf git-cmds iwd jupyter perl prj python ruby zoxide
 
 #
 # Utils

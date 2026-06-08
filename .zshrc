@@ -23,6 +23,30 @@ antibody() {
   esac
 }
 
+# Plugins for zsh_custom
+plugins=(
+  azure
+  clipboard
+  common-aliases
+  common-functions
+  confd
+  direnv
+  dotfiles
+  dotnet
+  extract
+  fzf
+  git
+  git-cmds
+  iwd
+  jupyter
+  perl
+  prj
+  python
+  ruby
+  xdg-apps
+  zoxide
+)
+
 # Create an amazing Zsh config using antidote plugins.
 source $ZDOTDIR/lib/antidote-fast.zsh
 

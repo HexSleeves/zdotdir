@@ -35,3 +35,10 @@ path=(
 
 # Keep completion dumps in cache, not $HOME.
 ZSH_COMPDUMP=${ZSH_COMPDUMP:-$ZSH_CACHE_DIR/.zcompdump}
+
+# Helper: source a file and export all variables it defines.
+load_exports_file() {
+  local file=$1
+  [[ -r $file ]] || return 1
+  set -a; source "$file"; set +a
+}
