@@ -53,7 +53,7 @@ zstyle ':zsh_custom:plugin:editor:*' 'enabled' 'yes'
 zstyle ':zsh_custom:plugin:git' default-user mattmc3
 
 # zshrc.d location
-zstyle ':zsh_custom:plugin:zshrcd' directory $ZDOTDIR/conf.d
+zstyle ':zsh_custom:plugin:confd' directory $ZDOTDIR/conf.d
 
 # zfunctions location
 zstyle ':zsh_custom:plugin:zfunctions' directory $ZDOTDIR/functions

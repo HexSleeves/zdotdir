@@ -22,6 +22,7 @@ antibody() {
     *) command antidote "$@" ;;
   esac
 }
+commands[antibody]=antibody
 
 # Plugins for zsh_custom
 plugins=(
