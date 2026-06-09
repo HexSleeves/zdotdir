@@ -87,3 +87,17 @@ alias autorotate="jhead -autorot"
 pps() {
   ps aux | rg "$@" | rg -v rg
 }
+
+# Pi Coding Agent extensions
+_PI_EXT="/Users/lecoqjacob/Developer/pi-vs-claude-code/extensions"
+alias pi-min="pi -e $_PI_EXT/minimal.ts -e $_PI_EXT/theme-cycler.ts"
+alias pi-focus="pi -e $_PI_EXT/pure-focus.ts"
+alias pi-team="pi -e $_PI_EXT/agent-team.ts -e $_PI_EXT/theme-cycler.ts"
+alias pi-safe="pi -e $_PI_EXT/damage-control.ts -e $_PI_EXT/minimal.ts -e $_PI_EXT/theme-cycler.ts"
+alias pi-tasks="pi -e $_PI_EXT/tilldone.ts -e $_PI_EXT/theme-cycler.ts"
+alias pi-coms="pi -e $_PI_EXT/coms-net.ts -e $_PI_EXT/minimal.ts -e $_PI_EXT/theme-cycler.ts"
+
+# Quick alias for Claude Code
+alias cc='claude'
+# Claude Code with skip permissions for trusted projects
+alias ccs='claude --dangerously-skip-permissions'

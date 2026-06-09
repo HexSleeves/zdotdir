@@ -10,3 +10,4 @@ if output="$(mole completion zsh 2>/dev/null)"; then eval "$output"; fi
 
 # opencode
 export PATH="$HOME/.opencode/bin:$PATH"
+export PATH="/Users/lecoqjacob/.cap/bin:$PATH"
