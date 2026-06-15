@@ -18,11 +18,14 @@ fi
 antibody() {
   case "${1:-}" in
     init) ;;
-    bundle) command antidote bundle "${@:2}" ;;
-    *) command antidote "$@" ;;
+    bundle) antidote bundle "${@:2}" ;;
+    *) antidote "$@" ;;
   esac
 }
 commands[antibody]=antibody
+
+# Add Hermes tooling (uv) to PATH
+export PATH="$HOME/.hermes/bin:$PATH"
 
 # Plugins for zsh_custom
 plugins=(
