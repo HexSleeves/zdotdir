@@ -18,7 +18,7 @@ fi
 antibody() {
   case "${1:-}" in
     init) ;;
-    bundle) antidote bundle "${@:2}" ;;
+    bundle) source <(antidote bundle "${@:2}") ;;
     *) antidote "$@" ;;
   esac
 }
