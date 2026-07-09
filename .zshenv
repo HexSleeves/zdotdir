@@ -35,3 +35,12 @@ if [[ "$OSTYPE" == darwin* ]]; then
 fi
 typeset -gU PATH path
 [ -f "$HOME/.config/shell/profile.sh" ] && . "$HOME/.config/shell/profile.sh"
+
+# If running via zsh -c (command execution string), skip the rest.
+# This prevents hangs when tools like Protopack spawn "zsh -c --login -i"
+# and trigger heavy plugin loading (antidote, p10k, etc.).
+[[ -z "$ZSH_EXECUTION_STRING" ]] || return 0
+
+# Mark true interactive TTY shells so conf.d files that gate on this
+# (atuin, performance, prompt, fzf-enhanced) actually load.
+[[ -o interactive && -t 1 ]] && export ZSH_INTERACTIVE_TTY=1
