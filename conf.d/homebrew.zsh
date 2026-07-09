@@ -10,4 +10,4 @@ fi
 
 [[ -x "$HOMEBREW_PREFIX/bin/brew" ]] || return
 
-eval "$($HOMEBREW_PREFIX/bin/brew shellenv)"
+eval "$(brew shellenv)"

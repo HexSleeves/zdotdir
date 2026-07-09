@@ -40,14 +40,14 @@ HexSleeves/zsh_custom autoload:functions
 HexSleeves/zsh_custom path:plugins/git
 # loaded via $plugins array in .zshrc → zsh_custom.zsh loop:
 # xdg-apps azure clipboard common-aliases common-functions confd direnv
-# dotfiles dotnet extract fzf git-cmds iwd jupyter perl prj python ruby zoxide
+# dotfiles dotnet extract git-cmds iwd jupyter perl prj python ruby zoxide
 
 #
 # Utils
 #
 
 romkatv/zsh-bench kind:path
-# aloxaf/fzf-tab
+aloxaf/fzf-tab
 mattmc3/zman
 
 #

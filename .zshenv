@@ -34,6 +34,23 @@ if [[ "$OSTYPE" == darwin* ]]; then
   export SHELL_SESSIONS_DISABLE=1
 fi
 typeset -gU PATH path
+
+# `brew shellenv` forks the brew binary and gets called independently by
+# profile.sh, zshrc1, zsh_custom's z1.zsh, and conf.d/homebrew.zsh — cache
+# its output once so the other 3 calls become instant.
+# ponytail: cache never expires; `rm $ZSH_CACHE_DIR/brew-shellenv.zsh` to refresh after a brew upgrade.
+if (( $+commands[brew] )); then
+  brew() {
+    if [[ $1 == shellenv ]]; then
+      local cachefile="$ZSH_CACHE_DIR/brew-shellenv.zsh"
+      [[ -s $cachefile ]] || { mkdir -p ${cachefile:h}; command brew shellenv >| $cachefile; }
+      cat $cachefile
+      return
+    fi
+    command brew "$@"
+  }
+fi
+
 [ -f "$HOME/.config/shell/profile.sh" ] && . "$HOME/.config/shell/profile.sh"
 
 # If running via zsh -c (command execution string), skip the rest.

@@ -38,7 +38,6 @@ plugins=(
   dotfiles
   dotnet
   extract
-  fzf
   git
   git-cmds
   iwd
