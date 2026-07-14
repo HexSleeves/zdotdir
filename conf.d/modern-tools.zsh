@@ -5,8 +5,14 @@
 
 [[ -o interactive ]] || return
 
+# Batch-check which modern tools are available (single hash lookup each, no fork)
+typeset -gA _have
+for _tool in eza bat rg fd dust duf procs btm delta doggo hexyl tldr gping lazygit difftastic difft ouch jless watchexec dua bandwhich choose hyperfine tokei zoxide; do
+  (( $+commands[$_tool] )) && _have[$_tool]=1
+done
+
 # Use modern tools if available
-if command -v eza &>/dev/null; then
+if [[ -n ${_have[eza]:-} ]]; then
   alias ls='eza --group-directories-first --icons'
   alias ll='eza -l --group-directories-first --icons --git'
   alias la='eza -la --group-directories-first --icons --git'
@@ -15,7 +21,7 @@ if command -v eza &>/dev/null; then
   alias l='eza --group-directories-first --icons'
 fi
 
-if command -v bat &>/dev/null; then
+if [[ -n ${_have[bat]:-} ]]; then
   alias cat='bat --paging=never'
   alias ccat='/bin/cat'  # Preserve original cat
   export MANPAGER="sh -c 'col -bx | bat -l man -p'"
@@ -23,38 +29,38 @@ if command -v bat &>/dev/null; then
   export BAT_STYLE="numbers,changes,header"
 fi
 
-if command -v rg &>/dev/null; then
+if [[ -n ${_have[rg]:-} ]]; then
   alias grep='rg'
   alias ggrep='/usr/bin/grep'  # Preserve original grep
 fi
 
-if command -v fd &>/dev/null; then
+if [[ -n ${_have[fd]:-} ]]; then
   alias find='fd'
   alias ffind='/usr/bin/find'  # Preserve original find
 fi
 
-if command -v dust &>/dev/null; then
+if [[ -n ${_have[dust]:-} ]]; then
   alias du='dust'
   alias ddu='/usr/bin/du'  # Preserve original du
 fi
 
-if command -v duf &>/dev/null; then
+if [[ -n ${_have[duf]:-} ]]; then
   alias df='duf'
   alias ddf='/bin/df'  # Preserve original df
 fi
 
-if command -v procs &>/dev/null; then
+if [[ -n ${_have[procs]:-} ]]; then
   alias ps='procs'
   alias pps='/bin/ps'  # Preserve original ps
 fi
 
-if command -v btm &>/dev/null; then
+if [[ -n ${_have[btm]:-} ]]; then
   alias top='btm'
   alias htop='btm'
   alias ttop='/usr/bin/top'  # Preserve original top
 fi
 
-if command -v delta &>/dev/null; then
+if [[ -n ${_have[delta]:-} ]]; then
   export GIT_PAGER='delta'
 fi
 
@@ -65,27 +71,27 @@ fi
 #   alias https='xh --https'
 # fi
 
-if command -v doggo &>/dev/null; then
+if [[ -n ${_have[doggo]:-} ]]; then
   alias dig='doggo'
   alias ddig='/usr/bin/dig'  # Preserve original dig
 fi
 
-if command -v hexyl &>/dev/null; then
+if [[ -n ${_have[hexyl]:-} ]]; then
   alias xxd='hexyl'
   alias hd='hexyl'
 fi
 
-if command -v tldr &>/dev/null; then
+if [[ -n ${_have[tldr]:-} ]]; then
   alias help='tldr'
   alias man='tldr'
 fi
 
-if command -v gping &>/dev/null; then
+if [[ -n ${_have[gping]:-} ]]; then
   alias ping='gping'
   alias pping='/sbin/ping'  # Preserve original ping
 fi
 
-if command -v lazygit &>/dev/null; then
+if [[ -n ${_have[lazygit]:-} ]]; then
   alias lg='lazygit'
 fi
 
@@ -96,12 +102,12 @@ fi
 # fi
 
 # Git aliases with modern tools
-if command -v delta &>/dev/null; then
+if [[ -n ${_have[delta]:-} ]]; then
   alias gdiff='git diff'
   alias gshow='git show'
 fi
 
-if command -v difft &>/dev/null; then
+if [[ -n ${_have[difft]:-} ]]; then
   alias gdifft='git difftool --tool=difftastic'
   alias difftastic='difft'  # Alias for convenience
 fi
@@ -114,50 +120,50 @@ alias gp='git push'
 alias gpl='git pull'
 
 # Compression/decompression (ouch handles zip, tar, gz, bz2, xz, 7z, etc.)
-if command -v ouch &>/dev/null; then
+if [[ -n ${_have[ouch]:-} ]]; then
   alias compress='ouch compress'
   alias decompress='ouch decompress'
   alias lsarchive='ouch list'
 fi
 
 # Interactive JSON viewer
-if command -v jless &>/dev/null; then
+if [[ -n ${_have[jless]:-} ]]; then
   alias jv='jless'
 fi
 
 # File watcher - run commands on file changes
-if command -v watchexec &>/dev/null; then
+if [[ -n ${_have[watchexec]:-} ]]; then
   alias watch='watchexec'
 fi
 
 # Interactive disk usage (complements dust for exploration)
-if command -v dua &>/dev/null; then
+if [[ -n ${_have[dua]:-} ]]; then
   alias dui='dua interactive'
 fi
 
 # Bandwidth monitor by process
-if command -v bandwhich &>/dev/null; then
+if [[ -n ${_have[bandwhich]:-} ]]; then
   alias bwich='sudo bandwhich'
 fi
 
 # Friendlier cut/awk for field extraction
-if command -v choose &>/dev/null; then
+if [[ -n ${_have[choose]:-} ]]; then
   alias field='choose'
 fi
 
 # Quick benchmarking
-if command -v hyperfine &>/dev/null; then
+if [[ -n ${_have[hyperfine]:-} ]]; then
   alias bench='hyperfine'
 fi
 
 # Code statistics
-if command -v tokei &>/dev/null; then
+if [[ -n ${_have[tokei]:-} ]]; then
   alias cloc='tokei'
   alias loc='tokei'
 fi
 
 # Zoxide aliases are configured in conf.d/zoxide.zsh
-if command -v zoxide &>/dev/null; then
+if [[ -n ${_have[zoxide]:-} ]]; then
   alias cd='z'
   alias ccd='builtin cd'  # Preserve original cd
   alias zi='zi'  # Interactive zoxide
@@ -178,3 +184,5 @@ alias .....='cd ../../../..'
 # Directory stack
 alias d='dirs -v'
 for index ({1..9}) alias "$index"="cd +${index}"; unset index
+
+unset _have _tool

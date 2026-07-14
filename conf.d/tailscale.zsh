@@ -65,7 +65,14 @@ tsstart() {
   echo "tailscaled started (PID $!)"
 }
 
-# Shell completion
+# Shell completion (cached — tailscale completion takes ~13ms)
 if command -v tailscale &>/dev/null; then
-  source <(tailscale completion zsh 2>/dev/null) 2>/dev/null
+  () {
+    local cache="$ZSH_CACHE_DIR/tailscale-completion.zsh"
+    if [[ ! -s $cache ]]; then
+      mkdir -p "${cache:h}"
+      tailscale completion zsh >| "$cache" 2>/dev/null
+    fi
+    [[ -s $cache ]] && source "$cache" 2>/dev/null
+  }
 fi

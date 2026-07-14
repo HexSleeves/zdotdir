@@ -7,28 +7,30 @@
 (( ${ZSH_INTERACTIVE_TTY:-0} )) || return
 [[ ${ZSH_BENCHMARK_MODE:-0} -eq 1 ]] && return
 
-# Initialize atuin if available
-if command -v atuin &>/dev/null; then
+_atuin_init() {
+  emulate -L zsh
+  unset -f _atuin_init
+  [[ ${ZSH_BENCHMARK_MODE:-0} -eq 1 ]] && return
+  command -v atuin &>/dev/null || return
+
   if (( $+functions[cached-eval] )); then
     cached-eval 'atuin-init-zsh' atuin init zsh
   else
     eval "$(atuin init zsh)"
   fi
 
-  # Bind Ctrl+R to atuin search (override default history search)
   bindkey '^r' atuin-search
-
-  # Optional: bind up arrow to atuin search (comment out if you prefer default behavior)
-  # bindkey '^[[A' atuin-up-search
-  # bindkey '^[OA' atuin-up-search
-
-  # Aliases for atuin commands
   alias history='atuin history'
   alias hs='atuin search'
   alias hstats='atuin stats'
 
-  # Quick import of existing history (run once)
   if [[ ! -f $HOME/.local/share/atuin/history.db ]]; then
     print -P "%F{yellow}Atuin history database not found. Run 'atuin import auto' to import existing history.%f"
   fi
+}
+
+if (( $+functions[zsh-defer] )); then
+  zsh-defer _atuin_init
+else
+  _atuin_init
 fi

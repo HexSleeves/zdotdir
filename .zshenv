@@ -61,3 +61,7 @@ fi
 # Mark true interactive TTY shells so conf.d files that gate on this
 # (atuin, performance, prompt, fzf-enhanced) actually load.
 [[ -o interactive && -t 1 ]] && export ZSH_INTERACTIVE_TTY=1
+
+# Vite+ bin (https://viteplus.dev)
+. "$HOME/.vite-plus/env"
+. "/Users/lecoqjacob/.local/share/cargo/env"

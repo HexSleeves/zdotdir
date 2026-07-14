@@ -1,13 +1,7 @@
 #
 # homebrew: Initialize Homebrew based on OS
+# NOTE: brew shellenv is already sourced in ~/.config/shell/profile.sh via .zshenv.
+# This file is now a guard — skip the redundant re-init entirely.
 #
 
-if [[ $OSTYPE == darwin* ]]; then
-  export HOMEBREW_PREFIX=/opt/homebrew
-elif [[ $OSTYPE == linux* ]]; then
-  export HOMEBREW_PREFIX=/home/linuxbrew/.linuxbrew
-fi
-
-[[ -x "$HOMEBREW_PREFIX/bin/brew" ]] || return
-
-eval "$(brew shellenv)"
+[[ -n "$HOMEBREW_PREFIX" ]] && return

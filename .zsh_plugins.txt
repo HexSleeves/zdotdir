@@ -36,6 +36,7 @@ romkatv/powerlevel10k
 #
 
 using:HexSleeves/zsh_custom path:plugins
+romkatv/zsh-defer
 HexSleeves/zsh_custom autoload:functions
 HexSleeves/zsh_custom path:plugins/git
 # loaded via $plugins array in .zshrc → zsh_custom.zsh loop:

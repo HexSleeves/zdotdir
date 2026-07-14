@@ -12,9 +12,14 @@ path=("$HOME/.local/share/mise/shims" $path)
 
 
 if (( $+commands[mise] )); then
-  # Use mise hook for faster startup than activate + eval
-  if [[ -z ${_ZSH_MISE_ACTIVATED:-} ]]; then
-    _ZSH_MISE_ACTIVATED=1
+  _mise_init() {
+    emulate -L zsh
+    unset -f _mise_init
     eval "$(mise hook zsh 2>/dev/null)" || true
+  }
+  if (( $+functions[zsh-defer] )); then
+    zsh-defer _mise_init
+  else
+    _mise_init
   fi
 fi

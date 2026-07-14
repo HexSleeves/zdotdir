@@ -7,7 +7,10 @@
 (( ${ZSH_INTERACTIVE_TTY:-0} )) || return
 [[ ${ZSH_BENCHMARK_MODE:-0} -eq 1 ]] && return
 
-if command -v fzf &>/dev/null; then
+_fzf_enhanced_init() {
+  emulate -L zsh
+  unset -f _fzf_enhanced_init
+  command -v fzf &>/dev/null || return
   _fzf_source_integration() {
     emulate -L zsh
     local integration
@@ -208,4 +211,10 @@ if command -v fzf &>/dev/null; then
     }
     alias fkube='fzf-kubectl'
   fi
+}
+
+if (( $+functions[zsh-defer] )); then
+  zsh-defer _fzf_enhanced_init
+else
+  _fzf_enhanced_init
 fi
