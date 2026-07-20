@@ -39,3 +39,16 @@ fi
 
 # Source the static plugins file.
 source ${zsh_plugins}.zsh
+
+# Clean fpath: remove git repo roots that antidote adds by default.
+# These pollute the function namespace with non-function files
+# (.gitignore, LICENSE, README.md, *.plugin.zsh, etc.).
+# We only remove entries that contain a .git dir AND have no completion (_*) files.
+local _fp
+for _fp in $fpath; do
+  [[ -d "$_fp/.git" ]] || continue
+  set -- "$_fp"/_*(N)
+  (( $# )) && continue  # keep if it has _completion files
+  fpath=("${fpath[@]:#$_fp}")
+done
+unset _fp
