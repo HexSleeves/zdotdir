@@ -14,12 +14,21 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Antibody compatibility shim → delegates to antidote (fast-pathed).
-# `source <(antidote bundle ...)` costs ~3.4s/shell (subprocess + antidote
-# boot). Resolve clone/path calls directly so startup is instant.
+# Antibody compatibility shim → resolves clone/path/bundle directly so
+# startup is instant. The real autoloaded `antidote` boots the whole
+# framework + spawns git on every call (~4s each); this shim short-
+# circuits the calls that fire on every shell start.
+#
+# The real framework is bootstrapped lazily, only for genuine misses
+# (non-clone bundle generation, `antidote update`, etc.).
+_antidote_real() {
+  (( ${+functions[antidote-dispatch]} )) || \
+    builtin source "${ANTIDOTE_REPO:-$ZDOTDIR/.antidote}/antidote.zsh"
+  antidote-dispatch "$@"
+}
 antibody() {
   case "${1:-}" in
-    init) ;;
+    init) ;;  # `source <(antibody init)` → no-op; we define antidote ourselves
     bundle)
       local repo="${@:2}"
       repo="${repo%% *}"
@@ -31,7 +40,7 @@ antibody() {
       local cache="$ZSH_CACHE_DIR/antibody-bundle-$key.zsh"
       if [[ ! -s $cache ]]; then
         mkdir -p "${cache:h}"
-        antidote bundle "${@:2}" >| "$cache"
+        _antidote_real bundle "${@:2}" >| "$cache"
       fi
       source "$cache"
       ;;
@@ -40,7 +49,7 @@ antibody() {
       repo="${repo%% *}"
       print -r "${ANTIDOTE_HOME:-${XDG_CACHE_HOME:-$HOME/.cache}/repos}/github.com/$repo"
       ;;
-    *) antidote "$@" ;;
+    *) _antidote_real "$@" ;;
   esac
 }
 commands[antibody]=antibody
@@ -70,6 +79,13 @@ plugins=(
   xdg-apps
   zoxide
 )
+
+# Route zsh_custom's vendored init/antidote.zsh through the antibody shim
+# above. Without this it takes the `else` branch: sources the 61KB antidote
+# framework + runs `source <(antidote init)` + spawns the framework for every
+# `antidote bundle/path` call — ~4s/shell each. The antibody branch is a
+# complete no-op here (commands[antibody] is already defined by the shim).
+zstyle ':zsh_custom:antidote' use-antibody yes
 
 # Create an amazing Zsh config using antidote plugins.
 source $ZDOTDIR/lib/antidote-fast.zsh

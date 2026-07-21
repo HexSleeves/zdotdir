@@ -46,6 +46,7 @@ source ${zsh_plugins}.zsh
 # We only remove entries that contain a .git dir AND have no completion (_*) files.
 local _fp
 for _fp in $fpath; do
+  [[ "$_fp" == "$ANTIDOTE_REPO" ]] && continue
   [[ -d "$_fp/.git" ]] || continue
   set -- "$_fp"/_*(N)
   (( $# )) && continue  # keep if it has _completion files
