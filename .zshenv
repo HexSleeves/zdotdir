@@ -64,4 +64,4 @@ fi
 
 # Vite+ bin (https://viteplus.dev)
 . "$HOME/.vite-plus/env"
-. "/Users/lecoqjacob/.local/share/cargo/env"
+. "$HOME/.local/share/cargo/env"

@@ -21,7 +21,7 @@ function juno {
     deactivate
   fi
 
-  local jupyter_prj=$HOME/Projects/mattmc3/jupyter
+  local jupyter_prj=${XDG_PROJECTS_DIR:-$HOME/Projects}/jupyter
   if [[ ! -d $jupyter_prj ]]; then
     git clone git@github.com:mattmc3/jupyter $jupyter_prj
   fi

@@ -50,7 +50,7 @@ zstyle ':zsh_custom:plugin:editor:*' 'enabled' 'yes'
 #
 
 # git
-zstyle ':zsh_custom:plugin:git' default-user mattmc3
+zstyle ':zsh_custom:plugin:git' default-user lecoqjacob
 
 # zshrc.d location
 zstyle ':zsh_custom:plugin:confd' directory $ZDOTDIR/conf.d
