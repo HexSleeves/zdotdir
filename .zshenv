@@ -62,6 +62,5 @@ fi
 # (atuin, performance, prompt, fzf-enhanced) actually load.
 [[ -o interactive && -t 1 ]] && export ZSH_INTERACTIVE_TTY=1
 
-# Vite+ bin (https://viteplus.dev)
-. "$HOME/.vite-plus/env"
-. "$HOME/.local/share/cargo/env"
+[ -f "$HOME/.vite-plus/env" ] && . "$HOME/.vite-plus/env"
+[ -f "$HOME/.local/share/cargo/env" ] && . "$HOME/.local/share/cargo/env"

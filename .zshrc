@@ -14,6 +14,9 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+# Add Hermes tooling (uv) to PATH
+export PATH="$HOME/.hermes/bin:$PATH"
+
 # Antibody compatibility shim → resolves clone/path/bundle directly so
 # startup is instant. The real autoloaded `antidote` boots the whole
 # framework + spawns git on every call (~4s each); this shim short-
@@ -52,10 +55,18 @@ antibody() {
     *) _antidote_real "$@" ;;
   esac
 }
-commands[antibody]=antibody
-
-# Add Hermes tooling (uv) to PATH
-export PATH="$HOME/.hermes/bin:$PATH"
+# A fake `commands[antibody]=antibody` hash entry gets silently wiped by
+# any later `path`/`PATH` reassignment (e.g. zshrc1's prepath merge below),
+# which zsh treats as a signal to invalidate the whole command hash table.
+# A real (never-executed — the function above always wins on lookup) stub
+# file on $PATH survives that invalidation, since zsh re-resolves it from
+# disk instead of relying on the manual poke.
+if [[ ! -x "$ZSH_CACHE_DIR/shims/antibody" ]]; then
+  mkdir -p "$ZSH_CACHE_DIR/shims"
+  : >| "$ZSH_CACHE_DIR/shims/antibody"
+  chmod +x "$ZSH_CACHE_DIR/shims/antibody"
+fi
+path=("$ZSH_CACHE_DIR/shims" $path)
 
 # Plugins for zsh_custom
 plugins=(
