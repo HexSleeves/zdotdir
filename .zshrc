@@ -74,6 +74,8 @@ plugins=(
   clipboard
   common-aliases
   common-functions
+  completions
+  compstyle
   confd
   direnv
   dotfiles
@@ -125,3 +127,5 @@ source $ZDOTDIR/.p10k.zsh
 
 # Always return success
 true
+
+if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
