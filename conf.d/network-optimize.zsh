@@ -6,7 +6,6 @@
 # Apply TCP tuning on shell login (non-sudo parts only)
 if [[ "$OSTYPE" == darwin* ]]; then
   # Faster cURL defaults (used by many CLI tools)
-  export CURL_CA_BUNDLE=""
   export CURL_CONNECT_TIMEOUT=5
   export CURL_MAX_TIME=30
 
