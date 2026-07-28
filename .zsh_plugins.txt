@@ -29,7 +29,10 @@ romkatv/zsh-no-ps2
 # sindresorhus/pure kind:fpath
 # miekg/lean kind:fpath
 # mattmc3/zephyr path:plugins/prompt
-romkatv/powerlevel10k
+# path: pins the bundle to the p10k theme alone. Without it antidote also globs
+# powerlevel9k.zsh-theme, which is a compat shim that re-sources
+# powerlevel10k.zsh-theme — loading the whole theme twice per shell.
+romkatv/powerlevel10k path:powerlevel10k.zsh-theme
 
 #
 # Custom
@@ -38,7 +41,9 @@ romkatv/powerlevel10k
 using:HexSleeves/zsh_custom path:plugins
 romkatv/zsh-defer
 HexSleeves/zsh_custom autoload:functions
-HexSleeves/zsh_custom path:plugins/git
+# plugins/git is already loaded via the `git` entry in the plugins array in
+# .zshrc. Registering it here too loaded it — and the ohmyzsh git plugin it
+# sources at its last line — twice per shell, forking `git version` each time.
 # loaded via $plugins array in .zshrc → zsh_custom.zsh loop:
 # xdg-apps azure clipboard common-aliases common-functions confd direnv
 # dotfiles dotnet extract git-cmds iwd jupyter perl prj python ruby zoxide
@@ -55,8 +60,13 @@ mattmc3/zman
 # Final
 #
 
-zdharma-continuum/fast-syntax-highlighting
-zsh-users/zsh-autosuggestions
-zsh-users/zsh-history-substring-search post:bindkey-hss
+# kind:defer loads these after the first prompt is drawn (via romkatv/zsh-defer,
+# bundled above) instead of blocking it. They are purely interactive niceties,
+# and this is the arrangement antidote's own README recommends for them.
+# Deliberately NOT deferred: zsh-vi-mode (rebuilds keymaps and fights deferred
+# init) and fzf-tab (must bind after compinit).
+zdharma-continuum/fast-syntax-highlighting kind:defer
+zsh-users/zsh-autosuggestions kind:defer
+zsh-users/zsh-history-substring-search kind:defer post:bindkey-hss
 
 # vi: ft=properties

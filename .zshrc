@@ -10,8 +10,17 @@ alias zprofrc="ZPROFRC=1 zsh"
 # Enable Powerlevel10k instant prompt. Should stay close to the top of .zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+#
+# Interactive TTYs only: gitstatusd needs `setopt monitor` (job control), which
+# zsh cannot enable without a controlling terminal. Callers that spawn an
+# interactive login shell over plain pipes (e.g. Electron's child_process) hit
+# "can't change option: monitor", and gitstatus then hangs retrying rather than
+# failing fast. ZSH_INTERACTIVE_TTY is set in .zshenv; `p10k finalize` below is
+# gated on the same flag so instant prompt is never left un-finalized.
+if (( ${ZSH_INTERACTIVE_TTY:-0} )); then
+  if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+    source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+  fi
 fi
 
 # Add Hermes tooling (uv) to PATH
@@ -77,7 +86,8 @@ plugins=(
   completions
   compstyle
   confd
-  direnv
+  # direnv: handled by conf.d/direnv.zsh, which caches the hook instead of
+  # forking `direnv hook zsh` on every startup.
   dotfiles
   dotnet
   extract
@@ -111,8 +121,11 @@ source $ZDOTDIR/lib/antidote-fast.zsh
 # setopt transient_rprompt
 # prompt z1
 
-source $ZDOTDIR/.p10k.zsh
-(( ! ${+functions[p10k]} )) || p10k finalize
+# .p10k.zsh is sourced by conf.d/prompt.zsh (loaded above via the confd plugin),
+# so sourcing it again here just re-read 92KB on every shell. Only finalize.
+if (( ${ZSH_INTERACTIVE_TTY:-0} )); then
+  (( ! ${+functions[p10k]} )) || p10k finalize
+fi
 
 # Never start in the root file system.
 [[ "$PWD" != "/" ]] || cd
@@ -127,5 +140,3 @@ source $ZDOTDIR/.p10k.zsh
 
 # Always return success
 true
-
-if command -v wt >/dev/null 2>&1; then eval "$(command wt config shell init zsh)"; fi
