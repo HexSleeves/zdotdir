@@ -34,3 +34,27 @@ cached-source() {
 
   source $f
 }
+
+# cached-eval <name> <command...>   OR   cached-eval <command...>
+#
+# Compat wrapper that routes the vendored `cached-eval` calls through
+# `cached-source`. The upstream `cached-eval` (from zshrc1) expects
+# `cached-eval <command...>` and runs "$@" verbatim, deriving the cache name
+# from ${1:t}. But every caller in this config — conf.d *and* the zsh_custom
+# plugins — invokes it as `cached-eval <name> <command...>`, so upstream ran
+# the *name* as a command ("command not found: zoxide-init-zsh") and left a
+# trail of zero-byte temp files. cached-source already handles
+# <name> <command...> correctly, so normalise both conventions onto it:
+#   - if $1 is not itself a command, it's a <name> (the common case here);
+#   - otherwise it's a direct <command> (e.g. z1.zsh's `cached-eval brew
+#     shellenv`), so derive the name from the command head as upstream does.
+cached-eval() {
+  emulate -L zsh
+  (( $+functions[cached-source] )) || return 1
+  (( $# )) || return 1
+  if (( $# >= 2 )) && ! (( $+commands[$1] )); then
+    cached-source "$@"
+  else
+    cached-source "${1:t}" "$@"
+  fi
+}

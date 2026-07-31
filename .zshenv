@@ -35,6 +35,14 @@ if [[ "$OSTYPE" == darwin* ]]; then
 fi
 typeset -gU PATH path
 
+# Guarantee the core system binary directories are always on PATH. Interactive
+# shells spawned by non-login parents (tmux, editor terminals, subprocesses)
+# can inherit a PATH that omits /bin and /usr/bin, leaving even mkdir/rm/mv/cat
+# unresolvable during startup — e.g. the cached-eval / cached-source
+# cache-rebuild paths. Appended (deduped via typeset -U above), so this never
+# perturbs the carefully-tuned PATH order in front of it.
+path+=(/bin /usr/bin /usr/sbin /sbin)
+
 # `brew shellenv` forks the brew binary and gets called independently by
 # profile.sh, zshrc1, zsh_custom's z1.zsh, and conf.d/homebrew.zsh — cache
 # its output once so the other 3 calls become instant.
