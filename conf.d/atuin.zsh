@@ -14,7 +14,7 @@ _atuin_init() {
   command -v atuin &>/dev/null || return
 
   if (( $+functions[cached-eval] )); then
-    cached-eval 'atuin-init-zsh' atuin init zsh
+    cached-eval atuin init zsh
   else
     eval "$(atuin init zsh)"
   fi

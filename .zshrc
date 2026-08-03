@@ -100,7 +100,6 @@ plugins=(
   python
   ruby
   xdg-apps
-  zoxide
 )
 
 # Route zsh_custom's vendored init/antidote.zsh through the antibody shim

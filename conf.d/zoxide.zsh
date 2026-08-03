@@ -6,7 +6,7 @@
 
 # https://github.com/ajeetdsouza/zoxide
 if (( $+functions[cached-eval] )); then
-  cached-eval 'zoxide-init-zsh' zoxide init zsh
+  cached-eval zoxide init zsh
 else
   source <(zoxide init zsh)
 fi
