@@ -43,6 +43,22 @@ typeset -gU PATH path
 # perturbs the carefully-tuned PATH order in front of it.
 path+=(/bin /usr/bin /usr/sbin /sbin)
 
+# Nix profiles. This machine is managed by nix-darwin + home-manager, which
+# install into profile dirs that nothing else adds to PATH:
+#   /etc/profiles/per-user/$USER  home-manager packages (direnv, gpg, atuin, ...)
+#   /run/current-system/sw        nix-darwin system profile (darwin-rebuild, ...)
+# Without these, ~160 installed binaries are unreachable and the guarded conf.d
+# files below silently skip their integrations (this is what broke direnv/gpg
+# after the Homebrew -> nix migration). Prepended so conf.d/*.zsh — which loads
+# from .zshrc, after this file — can see the tools when it probes $commands.
+path=(
+  /etc/profiles/per-user/${USERNAME:-$(id -un)}/bin(N)
+  $HOME/.nix-profile/bin(N)
+  /run/current-system/sw/bin(N)
+  /nix/var/nix/profiles/default/bin(N)
+  $path
+)
+
 # `brew shellenv` forks the brew binary and gets called independently by
 # profile.sh, zshrc1, zsh_custom's z1.zsh, and conf.d/homebrew.zsh — cache
 # its output once so the other 3 calls become instant.
