@@ -94,14 +94,5 @@ export ANTIDOTE_HOME="$HOME/.cache/repos"
 # (atuin, performance, prompt, fzf-enhanced) actually load.
 [[ -o interactive && -t 1 ]] && export ZSH_INTERACTIVE_TTY=1
 
-# GitHub token for API-authenticated operations (mise, etc.).
-# Interactive TTYs only, and below the guard above: `gh` is a subprocess that
-# reads the login keychain, so running it on every zsh start cost ~90ms per
-# shell (2.4x a bare `zsh -c`) and blocks outright if the keychain is locked
-# or the network stalls — which hangs every shell on the machine.
-if (( ${ZSH_INTERACTIVE_TTY:-0} )) && [[ -z "$GITHUB_TOKEN" ]]; then
-  export GITHUB_TOKEN="$(command gh auth token 2>/dev/null || true)"
-fi
-
 [ -f "$HOME/.vite-plus/env" ] && . "$HOME/.vite-plus/env"
 [ -f "$HOME/.local/share/cargo/env" ] && . "$HOME/.local/share/cargo/env"
