@@ -6,7 +6,7 @@ path+=(
   ${CARGO_HOME:-?}/bin(N)
   ${GOPATH:-?}/bin(N)
   ${NIMBLE_DIR:-$HOME/.nimble}/bin(N)
-  $HOME/.dotnet/tools(N)
+  ${DOTNET_CLI_HOME:-$HOME}/.dotnet/tools(N)
   $XDG_CONFIG_HOME/emacs/bin(N)
   $HOMEBREW_PREFIX/opt/go/libexec/bin(N)
   $HOMEBREW_PREFIX/opt/postgresql@18/bin(N)
