@@ -9,6 +9,7 @@ mattmc3/use-xdg-basedirs
 
 # Utils
 mattmc3/zman
+mattmc3/zshrinkwrap
 aloxaf/fzf-tab
 #zshzoo/macos conditional:is-macos
 
