@@ -16,21 +16,6 @@ if [[ $OSTYPE == darwin* && $ZSH_VERSION == 5.9 && -o interactive && -t 1 && -z 
   fi
 fi
 
-# Temporary A/B switch for startup diagnosis. Unset in normal shells.
-if [[ -n ${ZSH_SKIP_Z1_COMPINIT:-} ]]; then
-  zstyle ':z1:compinit' skip yes
-fi
-if [[ -n ${ZSH_SKIP_USER_COMPINIT:-} ]]; then
-  zstyle ':z1:compinit' skip yes
-  autoload -Uz add-zsh-hook
-  _zsh_skip_user_compinit() {
-    functions[compinit]=':'
-    functions[compinit-fast]=':'
-    add-zsh-hook -d precmd _zsh_skip_user_compinit
-  }
-  add-zsh-hook precmd _zsh_skip_user_compinit
-fi
-
 
 export ZDOTDIR=${ZDOTDIR:-$HOME/.config/zsh}
 
