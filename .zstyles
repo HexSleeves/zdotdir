@@ -17,6 +17,11 @@ zstyle ':zephyr:plugin:*' 'use-cache' yes
 zstyle ':zsh_custom:plugin:*' 'use-cache' no
 zstyle ':zsh_custom:plugin:completion' compstyle zshzoo
 
+# zshrc1's post-zshrc hook calls `compinit` with no -C, which rebuilds the
+# completion dump on every prompt. zsh_custom's compinit-fast still runs and
+# uses `compinit -C` while the dump is under 20 hours old.
+zstyle ':z1:compinit' skip yes
+
 #
 # History
 #

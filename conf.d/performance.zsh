@@ -90,7 +90,13 @@ bindkey '^x^e' edit-command-line
 alias zsh-startup='hyperfine --warmup 3 "ZSH_BENCHMARK_MODE=1 zsh -lic exit"'
 
 # Quick reload
-alias reload='exec zsh'
+# `exec zsh` follows PATH and can land on /bin/zsh 5.9, which invalidates
+# wordcode compiled by Homebrew's 5.9.2.
+if [[ -x /opt/homebrew/bin/zsh ]]; then
+  alias reload='exec /opt/homebrew/bin/zsh'
+else
+  alias reload='exec zsh'
+fi
 alias src='source ${ZDOTDIR:-$HOME}/.zshrc'
 
 # Cleanup functions

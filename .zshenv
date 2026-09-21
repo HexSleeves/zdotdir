@@ -3,6 +3,35 @@
 # .zshenv: Zsh environment file, loaded always.
 #
 
+# macOS login shells are /bin/zsh 5.9. Homebrew zsh is 5.9.2, and wordcode
+# compiled by one will not load in the other, so every crossing recompiles
+# plugins and the completion dump. That error text also makes Powerlevel10k
+# discard instant prompt. chsh rejects Homebrew zsh until it is listed in
+# /etc/shells, so switch interactive TTYs over before any of that work.
+if [[ $OSTYPE == darwin* && $ZSH_VERSION == 5.9 && -o interactive && -t 1 && -z ${ZSH_EXECUTION_STRING:-} && -x /opt/homebrew/bin/zsh ]]; then
+  if [[ -o login ]]; then
+    exec /opt/homebrew/bin/zsh -l
+  else
+    exec /opt/homebrew/bin/zsh
+  fi
+fi
+
+# Temporary A/B switch for startup diagnosis. Unset in normal shells.
+if [[ -n ${ZSH_SKIP_Z1_COMPINIT:-} ]]; then
+  zstyle ':z1:compinit' skip yes
+fi
+if [[ -n ${ZSH_SKIP_USER_COMPINIT:-} ]]; then
+  zstyle ':z1:compinit' skip yes
+  autoload -Uz add-zsh-hook
+  _zsh_skip_user_compinit() {
+    functions[compinit]=':'
+    functions[compinit-fast]=':'
+    add-zsh-hook -d precmd _zsh_skip_user_compinit
+  }
+  add-zsh-hook precmd _zsh_skip_user_compinit
+fi
+
+
 export ZDOTDIR=${ZDOTDIR:-$HOME/.config/zsh}
 
 # XDG

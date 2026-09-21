@@ -1,0 +1,154 @@
+#compdef cursor
+
+# Completion for the Cursor editor CLI (Cursor.app).
+# Flags mirror `cursor --help`, `cursor agent --help`, and
+# `cursor tunnel --help` (Cursor 3.19). Re-check those after upgrades.
+
+local curcontext="$curcontext" state line
+local -i ret=1
+
+local -a main_opts=(
+  '(-h --help)'{-h,--help}'[print usage]'
+  '(-v --version)'{-v,--version}'[print version]'
+  '(-s --status)'{-s,--status}'[print process usage and diagnostics information]'
+  '(-d --diff)'{-d,--diff}'[compare two files with each other]:file to compare:_files:file to compare with:_files'
+  '(-m --merge)'{-m,--merge}'[perform a three-way merge]:theirs:_files:yours:_files:base:_files:result:_files'
+  \*{-a,--add}'[add folder(s) to the last active window]:folder:_directories'
+  '--remove[remove folder(s) from the last active window]:folder:_directories'
+  '(-g --goto)'{-g,--goto}'[open a file at the path on the specified line and character position]:file\:line[\:character]:_files -r \:'
+  '(-n --new-window -r --reuse-window)'{-n,--new-window}'[force to open a new window]'
+  '(-n --new-window -r --reuse-window)'{-r,--reuse-window}'[force to open a file or folder in an already opened window]'
+  '(-w --wait)'{-w,--wait}'[wait for the files to be closed before returning]'
+  '--suppress-popups-on-startup[suppress notification popups on startup]'
+  '--web-worker-exthost[run all web-capable extensions in a web worker extension host]'
+  '--glass[enable the multi-workbench architecture (dev-only)]'
+  '--classic[disable glass mode and force classic windows (dev-only)]'
+  '--locale=[the locale to use (e.g. en-US or zh-TW)]:locale:'
+  '--user-data-dir[the directory that user data is kept in]:directory:_directories'
+  '--profile[open the workspace with the given profile]:profile:'
+  '--add-mcp[add an MCP server definition]:json:'
+  '--chat[open a standalone chat window without the full IDE]'
+  '--extensions-dir[set the root path for extensions]:root path:_directories'
+  '--list-extensions[list the installed extensions]'
+  '--show-versions[show versions of installed extensions, when using --list-extensions]'
+  '--category[filter installed extensions by category, when using --list-extensions]:category:'
+  \*--install-extension'[install or update an extension]:extension id or vsix:_files -g "*.vsix(-.)"'
+  '--pre-release[install the pre-release version, with --install-extension]'
+  \*--uninstall-extension'[uninstall an extension]:extension id:'
+  '--update-extensions[update the installed extensions]'
+  \*--enable-proposed-api'[enable proposed API features for an extension]:extension id:'
+  '--log=[log level to use]:level [info]:(critical error warn info debug trace off)'
+  '--sync[turn settings sync on or off]:state:(on off)'
+  '--prof-startup[run CPU profiler during startup]'
+  '(--disable-extension)--disable-extensions[disable all installed extensions]'
+  \*--disable-extension'[disable the provided extension]:extension id:'
+  '--inspect-extensions[allow debugging and profiling of extensions]:port:'
+  '--inspect-brk-extensions[debug extensions with the extension host paused after start]:port:'
+  '--disable-lcd-text[disable LCD font rendering]'
+  '--disable-gpu[disable GPU hardware acceleration]'
+  '--disable-chromium-sandbox[disable the Chromium sandbox]'
+  '--locate-shell-integration-path[print the path to a shell integration script]:shell:(bash pwsh zsh fish)'
+  '--telemetry[show all collected telemetry events]'
+)
+
+local -a agent_opts=(
+  '(-h --help)'{-h,--help}'[display help for command]'
+  '(-v --version)'{-v,--version}'[output the version number]'
+  '--api-key[API key for authentication]:key:'
+  \*{-H,--header}'[add a custom header to agent requests]:header:'
+  '(-e --endpoint)'{-e,--endpoint}'[target API endpoint URL]:url:'
+  '(-p --print)'{-p,--print}'[print responses to console (non-interactive use)]'
+  '--output-format[output format, only with --print]:format:(text json stream-json)'
+  '--stream-partial-output[stream partial output as text deltas]'
+  '--mode[start in the given execution mode]:mode:(plan ask)'
+  '--plan[start in plan mode (shorthand for --mode=plan)]'
+  '--resume[select a session to resume]::chat id:'
+  '--continue[continue the previous session]'
+  '--model[model to use]:model:'
+  '--list-models[list available models and exit]'
+  '(--yolo -f --force)'{-f,--force}'[force allow commands unless explicitly denied]'
+  '(--yolo -f --force)--yolo[alias for --force (run everything)]'
+  '--auto-review[use auto-review (smart auto) for tool calls]'
+  '--sandbox[explicitly enable or disable sandbox mode]:mode:(enabled disabled)'
+  '--approve-mcps[automatically approve all MCP servers]'
+  '--trust[trust the current workspace without prompting]'
+  '--workspace[workspace directory or saved workspace name]:workspace:_directories'
+  \*--add-dir'[add an additional workspace root]:directory:_directories'
+  \*--plugin-dir'[load a local plugin directory]:directory:_directories'
+  '(-w --worktree)'{-w,--worktree}'[start in an isolated git worktree]::worktree name:'
+  '--worktree-base[branch or ref to base the new worktree on]:branch:'
+  '--skip-worktree-setup[skip running worktree setup scripts]'
+)
+
+local -a agent_cmds=(
+  'persist:start or manage a session that survives terminal disconnects'
+  'install-shell-integration:install shell integration to ~/.zshrc'
+  'uninstall-shell-integration:remove shell integration from ~/.zshrc'
+  'login:authenticate with Cursor'
+  'logout:sign out and clear stored authentication'
+  'mcp:manage MCP servers'
+  'plugin:manage plugins and plugin marketplaces'
+  'worker:run a self-hosted cloud agent worker'
+)
+
+local -a tunnel_cmds=(
+  'prune:delete all servers which are currently not running'
+  'kill:stop any running tunnel on the system'
+  'restart:restart the running tunnel'
+  'status:show whether there is a tunnel running'
+  'rename:rename the name of this machine'
+  'unregister:remove this machine from the service'
+  'user:show the current tunnel user'
+  'service:manage the tunnel as a system service (preview)'
+  'help:print help for a subcommand'
+)
+
+local -a tunnel_opts=(
+  '(-h --help)'{-h,--help}'[print help]'
+  '--name[set the machine name]:name:'
+  '--random-name[randomly name the machine]'
+  '--no-sleep[prevent the machine going to sleep while the tunnel runs]'
+  '--accept-server-license-terms[accept the server license terms without a prompt]'
+  '--extensions-dir[set the root path for extensions]:root path:_directories'
+  '--server-data-dir[the directory that server data is kept in]:directory:_directories'
+  \*--install-extension'[extensions to preload on connecting servers]:extension id:'
+  '--cli-data-dir[directory where CLI metadata is stored]:directory:_directories'
+  '--verbose[print verbose output (implies --wait)]'
+  '--log[log level to use]:level:(trace debug info warn error critical off)'
+)
+
+local -a subcmds=($agent_cmds $tunnel_cmds)
+
+_arguments -C -s $main_opts \
+  '1: :->cmds' \
+  '*::arg:->args' && ret=0
+
+case $state in
+  cmds)
+    _describe -t subcommand 'subcommand' subcmds
+    _files && ret=0
+    ;;
+  args)
+    case $words[1] in
+      agent)
+        _arguments -C -s $agent_opts \
+          '1:agent-subcommand:->asub' \
+          '*:prompt:' && ret=0
+        [[ $state == asub ]] && \
+          _describe -t agent-command 'agent subcommand' agent_cmds
+        ;;
+      tunnel)
+        _arguments -C -s $tunnel_opts \
+          '1:tunnel-subcommand:->tsub' \
+          '*::arg:->targs' && ret=0
+        [[ $state == tsub ]] && \
+          _describe -t tunnel-command 'tunnel subcommand' tunnel_cmds
+        ;;
+      *)
+        _files && ret=0
+        ;;
+    esac
+    ;;
+esac
+
+return ret

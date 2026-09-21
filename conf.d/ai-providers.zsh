@@ -18,4 +18,7 @@
 #   GEMINI_API_KEY
 #   MISTRAL_API_KEY
 
+# Vercel AI Gateway credentials are stored in the macOS Keychain.
+export AI_GATEWAY_API_KEY="$(/usr/bin/security find-generic-password -s 'Vercel AI Gateway' -a 'vercel-ai-gateway' -w 2>/dev/null)"
+
 load_exports_file "$AI_PROVIDERS_FILE"
