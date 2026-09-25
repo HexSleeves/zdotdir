@@ -1,5 +1,10 @@
 #
-# __init__: This runs prior to any other conf.d contents.
+# 00-init: This runs prior to any other conf.d contents.
+# The `00-` prefix is load-bearing: z1's run_confd sources conf.d in
+# ${(o)} (locale-collated) name order, and under en_US.UTF-8 the old
+# `__init__.zsh` name sorted LAST (underscore collates after letters),
+# so callers of load_exports_file failed with "command not found".
+# Digits sort before letters in every locale, keeping this first.
 #
 
 # Apps

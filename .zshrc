@@ -67,12 +67,14 @@ antibody() {
 # A fake `commands[antibody]=antibody` hash entry gets silently wiped by
 # any later `path`/`PATH` reassignment (e.g. zshrc1's prepath merge below),
 # which zsh treats as a signal to invalidate the whole command hash table.
-# A real (never-executed — the function above always wins on lookup) stub
-# file on $PATH survives that invalidation, since zsh re-resolves it from
-# disk instead of relying on the manual poke.
-if [[ ! -x "$ZSH_CACHE_DIR/shims/antibody" ]]; then
+# A real stub file on $PATH survives that invalidation, since zsh
+# re-resolves it from disk instead of relying on the manual poke.
+# The function above always wins on lookup, so zsh never executes this
+# file — but topgrade does (`antibody update`), and an empty file dies
+# there with "Exec format error". Keep it a no-op script so both pass.
+if [[ "$(head -c 9 "$ZSH_CACHE_DIR/shims/antibody" 2>/dev/null)" != "#!/bin/sh" ]]; then
   mkdir -p "$ZSH_CACHE_DIR/shims"
-  : >| "$ZSH_CACHE_DIR/shims/antibody"
+  printf '#!/bin/sh\nexit 0\n' >| "$ZSH_CACHE_DIR/shims/antibody"
   chmod +x "$ZSH_CACHE_DIR/shims/antibody"
 fi
 path=("$ZSH_CACHE_DIR/shims" $path)
@@ -153,3 +155,6 @@ fi
 
 # Always return success
 true
+
+# opencode
+export PATH=/home/lecoqjacob/.opencode/bin:$PATH
