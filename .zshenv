@@ -24,7 +24,16 @@ export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
 export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
 export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
-export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-$HOME/.xdg}
+# Prefer the systemd per-user runtime dir when present. Falling back to
+# $HOME/.xdg (or inheriting a stale $HOME/.xdg value, e.g. from daemons
+# started outside a login session) leaves systemctl --user without a bus.
+if [[ -d "/run/user/$(id -u)" ]]; then
+  if [[ "${XDG_RUNTIME_DIR:-}" == "$HOME/.xdg" || -z "${XDG_RUNTIME_DIR:-}" ]]; then
+    export XDG_RUNTIME_DIR="/run/user/$(id -u)"
+  fi
+else
+  export XDG_RUNTIME_DIR=${XDG_RUNTIME_DIR:-$HOME/.xdg}
+fi
 export XDG_PROJECTS_DIR=${XDG_PROJECTS_DIR:-$HOME/Projects}
 export XDG_WORK_DIR=${XDG_WORK_DIR:-$HOME/Work}
 export ZSH_CONFIG_DIR=${ZDOTDIR:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}
