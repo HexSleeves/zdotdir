@@ -1,5 +1,6 @@
 # Faster than light!
-mattmc3/starship-ftl post:'ftl-prompt $zsh_theme; ftl-transient on'
+# Warp draws its own blocks and does not support transient prompts.
+mattmc3/starship-ftl post:'ftl-prompt $zsh_theme; is-warp || ftl-transient on'
 
 # Better Zsh defaults
 #$HOME/Projects/mattmc3/z1
@@ -10,7 +11,7 @@ mattmc3/use-xdg-basedirs
 # Utils
 mattmc3/zman
 mattmc3/zshrinkwrap
-aloxaf/fzf-tab
+aloxaf/fzf-tab conditional:is-not-warp
 #zshzoo/macos conditional:is-macos
 
 # romkatv/powerlevel10k

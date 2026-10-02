@@ -8,4 +8,4 @@ cached-eval direnv hook zsh
 cached-eval zoxide init zsh
 # x-shell completions
 export CARAPACE_BRIDGES="${CARAPACE_BRIDGES:-fish,bash}"
-cached-eval carapace _carapace
+is-warp || cached-eval carapace _carapace

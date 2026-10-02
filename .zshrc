@@ -13,7 +13,7 @@ alias zprofrc="ZPROFRC=1 zsh"
 
 # Create an amazing Zsh config using antidote plugins.
 fpath+=($ZDOTDIR/functions $fpath)
-autoload -Uz is-macos
+autoload -Uz is-macos is-warp is-not-warp
 zsh_theme=(starship zephyr)
 source $ZDOTDIR/lib/antidote-edge.zsh
 
@@ -34,6 +34,9 @@ run_post_zshrc
 # Finish profiling by calling zprof.
 [[ "$ZPROFRC" -eq 1 ]] && zprof
 [[ -v ZPROFRC ]] && unset ZPROFRC
+
+# Warpify subshells (docker exec, nested zsh); must run after everything else.
+is-warp && printf '\eP$f{"hook": "SourcedRcFileForWarp", "value": { "shell": "zsh"}}\x9c'
 
 # Always return success
 true
