@@ -15,11 +15,21 @@ export VISUAL=code
 export PAGER=less
 export SHELL_SESSIONS_DISABLE=1
 
-# Set the path elements that should always be first
+# Set the path elements that should always be first.
+#
+# ~/.local/bin MUST precede /opt/homebrew/bin. Two different tools ship as
+# `kubelogin`: Azure's (AAD flags, what deploy-doctor and kubeconfig exec
+# stanzas call) and int128/kubelogin (generic OIDC) from Homebrew. The shim at
+# ~/.local/bin/kubelogin routes the bare name to Azure's; with Homebrew first,
+# int128's wins instead and every AAD flag fails as `unknown flag: --login`.
+#
+# This mirrors the shared PATH contract in ~/.config/shell/path.sh. That file
+# is sourced from ~/.zshenv, but login shells read .zprofile *afterwards*, so
+# this prepath is the last word on the brew-vs-~/.local/bin question.
 prepath=(
   $HOME/bin(N)
-  /opt/homebrew/bin(N)
   $HOME/.local/bin(N)
+  /opt/homebrew/bin(N)
 )
 path=( $prepath $path )
 
