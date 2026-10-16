@@ -1,0 +1,5 @@
+#!/usr/bin/env zsh
+# Warp draws its own prompt and ignores PS1 unless honor_ps1 is on in its settings.
+[[ "$TERM_PROGRAM" != WarpTerminal ]] && return
+local settings=${WARP_SETTINGS_FILE:-$HOME/.warp/settings.toml}
+[[ -r $settings && $'\n'"$(<$settings)" == *$'\n'honor_ps1\ =\ true* ]]

@@ -1,6 +1,11 @@
 # Faster than light!
-# Warp draws its own blocks and does not support transient prompts.
-mattmc3/starship-ftl post:'ftl-prompt $zsh_theme; is-warp || ftl-transient on'
+# Warp draws its own blocks and does not support transient prompts. Unless it
+# honors PS1, it never shows this prompt, so skip starship there entirely.
+mattmc3/starship-ftl conditional:is-ps1-visible post:'ftl-prompt $zsh_theme; is-warp || ftl-transient on'
+
+# Ahead of z1, which resets PATH anyway: a PATH change after it costs every
+# later $commands lookup a full rehash.
+romkatv/zsh-bench kind:path
 
 # Better Zsh defaults
 #$HOME/Projects/mattmc3/z1
@@ -10,12 +15,12 @@ mattmc3/use-xdg-basedirs
 
 # Utils
 mattmc3/zman
-mattmc3/zshrinkwrap
+# Repairs prompts a terminal reflowed on resize; Warp redraws its own.
+mattmc3/zshrinkwrap conditional:is-not-warp
 aloxaf/fzf-tab conditional:is-not-warp
 #zshzoo/macos conditional:is-macos
 
 # romkatv/powerlevel10k
-romkatv/zsh-bench kind:path
 
 # Completions
 zsh-users/zsh-completions kind:fpath path:src

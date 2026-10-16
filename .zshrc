@@ -13,7 +13,7 @@ alias zprofrc="ZPROFRC=1 zsh"
 
 # Create an amazing Zsh config using antidote plugins.
 fpath+=($ZDOTDIR/functions $fpath)
-autoload -Uz is-macos is-warp is-not-warp
+autoload -Uz is-macos is-warp is-not-warp is-ps1-visible
 zsh_theme=(starship zephyr)
 source $ZDOTDIR/lib/antidote-edge.zsh
 
@@ -30,6 +30,24 @@ source $ZDOTDIR/lib/confd.zsh
 
 # Run the end of zshrc hook manually (defined in Z1)
 run_post_zshrc
+
+# A sourced file's .zwc skips parsing it. zsh ignores a .zwc older than its
+# source, so only stale ones get rebuilt, in the background. umask 077: the
+# *.local.zsh files hold secrets, and their .zwc must not be world-readable.
+() {
+  local f
+  local -a stale
+  for f in $ZDOTDIR/{.zshenv,.zprofile,.zshrc,.zstyles} \
+           $ZDOTDIR/{lib,conf.d}/*.zsh(N.) $ZSH_CACHE_DIR/cached-eval/*.zsh(N.); do
+    [[ $f.zwc -nt $f ]] || stale+=($f)
+  done
+  (( $#stale )) || return
+  {
+    umask 077
+    autoload -Uz zrecompile
+    for f in $stale; do zrecompile -pq -R $f; done
+  } &!
+}
 
 # Finish profiling by calling zprof.
 [[ "$ZPROFRC" -eq 1 ]] && zprof

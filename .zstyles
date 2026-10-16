@@ -33,6 +33,9 @@ zstyle ':z1:editor:default-command' git-command 'git status -sb'
 # Warp's input editor owns Enter; rebinding ^M/^J makes it need two presses.
 [[ $TERM_PROGRAM == WarpTerminal ]] || zstyle ':z1:editor' accept-line-or-newline true
 
+# Warp's input editor never shows zle autosuggestions.
+[[ $TERM_PROGRAM != WarpTerminal ]] || zstyle ':z1:autosuggest' skip yes
+
 # If we use the Z1 prompt, uncomment this
 # zstyle ':z1:prompt' transient 'yes'
 
