@@ -14,6 +14,14 @@ alias zprofrc="ZPROFRC=1 zsh"
 # Create an amazing Zsh config using antidote plugins.
 fpath+=($ZDOTDIR/functions $fpath)
 autoload -Uz is-macos is-warp is-not-warp is-ps1-visible
+
+# Define cached-eval if it doesn't exist
+if ! typeset -f cached-eval >/dev/null 2>&1; then
+  cached-eval() {
+    local cmd="$1"; shift
+    eval "$("$cmd" "$@")"
+  }
+fi
 zsh_theme=(starship zephyr)
 source $ZDOTDIR/lib/antidote-edge.zsh
 
@@ -29,7 +37,7 @@ source $ZDOTDIR/lib/confd.zsh
  && . $HOME/.local/config/zsh/.zshrc.local
 
 # Run the end of zshrc hook manually (defined in Z1)
-run_post_zshrc
+(( $+functions[run_post_zshrc] )) && run_post_zshrc
 
 # A sourced file's .zwc skips parsing it. zsh ignores a .zwc older than its
 # source, so only stale ones get rebuilt, in the background. umask 077: the
