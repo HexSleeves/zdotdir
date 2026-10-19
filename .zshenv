@@ -108,7 +108,7 @@ path+=(/bin /usr/bin /usr/sbin /sbin)
 path+=(/bin /usr/bin /usr/sbin /sbin)
 
 # pnpm - ensure global bin dir is in PATH for non-interactive shells (e.g. topgrade)
-export PNPM_HOME="/Users/lecoqjacob/.local/share/pnpm"
+export PNPM_HOME="$HOME/.local/share/pnpm"
 [[ ":$PATH:" == *":$PNPM_HOME/bin:"* ]] || export PATH="$PNPM_HOME/bin:$PATH"
 
 # antidote home for antibody update
