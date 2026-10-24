@@ -19,6 +19,10 @@ fi
 
 export ZDOTDIR=${ZDOTDIR:-$HOME/.config/zsh}
 
+# Claude Code runs every Bash call as zsh -c. With EQUALS on, a word that
+# starts with = (echo ===, [ a == b ]) expands to a command path and fails.
+[[ -n $CLAUDECODE ]] && setopt NO_EQUALS
+
 # XDG
 export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
 export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
